@@ -55,33 +55,14 @@ let navBrand =
 
 let containerBox (model: Model) (dispatch: Msg -> unit) =
     Bulma.box [
-        Bulma.content [
-            Html.ol [
-                for todo in model.Todos do
-                    Html.li [ prop.text todo.Description ]
-            ]
-        ]
-        Bulma.field.div [
-            field.isGrouped
-            prop.children [
-                Bulma.control.p [
-                    control.isExpanded
-                    prop.children [
-                        Bulma.input.text [
-                            prop.value model.Input
-                            prop.placeholder "What needs to be done?"
-                            prop.onChange (fun x -> SetInput x |> dispatch)
-                        ]
+        Bulma.container [
+            Html.div [
+                svg
+                    [ ViewBox "0 0 800 800"; unbox ("width", "800ox")]
+                        [ circle
+                        [ Cx (!! "50"); Cy (!! "50"); R (!! "45"); !! ("fill", "#0B79CE") ]
+                        []
                     ]
-                ]
-                Bulma.control.p [
-                    Bulma.button.a [
-                        color.isPrimary
-                        prop.disabled (Todo.isValid model.Input |> not)
-                        prop.onClick (fun _ -> dispatch AddTodo)
-                        prop.text "Add"
-                    ]
-                ]
             ]
         ]
     ]

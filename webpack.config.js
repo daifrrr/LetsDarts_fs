@@ -123,7 +123,7 @@ module.exports = function(env, arg) {
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*)?$/,
-                    use: ['file-loader']
+                    type: 'assets/inline'
                 },
                 {
                     test: /\.js$/,
