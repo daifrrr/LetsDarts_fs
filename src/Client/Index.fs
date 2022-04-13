@@ -83,12 +83,29 @@ let navBrand =
         ]
     ]
 
-
 let handleClick (ev: Browser.Types.Event) =
     let evm = ev |> unbox<Browser.Types.MouseEvent>
     let id = evm.target |> unbox<Browser.Types.Element>
     Browser.Dom.console.log(id.getAttribute("id"))
     mapEvent.Trigger (Msg.MyEvent(evm.target))
+
+let sections startAngle endAngle =
+    seq { startAngle .. 36. .. endAngle }
+    |> Seq.map (fun v ->
+            Svg.g [
+                svg.id "g19"
+                svg.transform.rotate v
+                svg.children [
+                    Svg.use' [ svg.id "use21"; svg.href "#double"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
+                    Svg.use' [ svg.id "use23"; svg.href "#outer"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
+                    Svg.use' [ svg.id "use25"; svg.href "#triple"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
+                    Svg.use' [ svg.id "use27"; svg.href "#inner"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
+                ]
+            ]
+    )
+    |> List.ofSeq
+    |> Fable.React.Helpers.ofList
+
 
 let containerBox (model: Model) (dispatch: Msg -> unit) =
     Bulma.box [
@@ -122,16 +139,8 @@ let containerBox (model: Model) (dispatch: Msg -> unit) =
                             Svg.g [
                                 svg.id "dartboard"
                                 svg.children [
-                                    Svg.g [
-                                        svg.id "g19"
-                                        svg.transform.rotate 0.
-                                        svg.children [
-                                            Svg.use' [ svg.id "use21"; svg.href "#double"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
-                                            Svg.use' [ svg.id "use23"; svg.href "#outer"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
-                                            Svg.use' [ svg.id "use25"; svg.href "#triple"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
-                                            Svg.use' [ svg.id "use27"; svg.href "#inner"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
-                                        ]
-                                    ]
+                                    sections 0. 324.
+                                    sections 18. 342.
                                 ]
                             ]
                         ]
