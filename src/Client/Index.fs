@@ -5,6 +5,8 @@ open Fable.Remoting.Client
 open Shared
 
 
+let numbs = seq {20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 9, 12, 5}
+
 type Model = { Todos: Todo list; Input: string; }
 
 type Msg =
@@ -57,18 +59,6 @@ let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
 open Feliz
 open Feliz.Bulma
 
-type transform with
-    static member inline matrix(x1: float, y1: float, z1: float, x2: float, y2: float, z2: float) =
-            Interop.svgAttribute "transform" (
-                "matrix(" +
-                (unbox<string> x1) + "," +
-                (unbox<string> y1) + "," +
-                (unbox<string> z1) + "," +
-                (unbox<string> x2) + "," +
-                (unbox<string> y2) + "," +
-                (unbox<string> z2) + ")"
-            )
-
 let navBrand =
     Bulma.navbarBrand.div [
         Bulma.navbarItem.a [
@@ -89,17 +79,16 @@ let handleClick (ev: Browser.Types.Event) =
     Browser.Dom.console.log(id.getAttribute("id"))
     mapEvent.Trigger (Msg.MyEvent(evm.target))
 
-let sections startAngle endAngle =
+let sections startAngle endAngle color =
     seq { startAngle .. 36. .. endAngle }
     |> Seq.map (fun v ->
             Svg.g [
                 svg.id "g19"
                 svg.transform.rotate v
                 svg.children [
-                    Svg.use' [ svg.id "use21"; svg.href "#double"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
-                    Svg.use' [ svg.id "use23"; svg.href "#outer"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
-                    Svg.use' [ svg.id "use25"; svg.href "#triple"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#ff0000"; svg.onClick handleClick]
-                    Svg.use' [ svg.id "use27"; svg.href "#inner"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill "#000000"; svg.onClick handleClick]
+                    Svg.use' [ svg.id "use23"; svg.href "#single"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill (fst color); svg.onClick handleClick]
+                    Svg.use' [ svg.id "use21"; svg.href "#double"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill (snd color); svg.onClick handleClick]
+                    Svg.use' [ svg.id "use25"; svg.href "#triple"; svg.height 500; svg.width 500; svg.y 0; svg.x 0; svg.fill (snd color); svg.onClick handleClick]
                 ]
             ]
     )
@@ -125,22 +114,29 @@ let containerBox (model: Model) (dispatch: Msg -> unit) =
                         svg.id "defs6"
                         svg.children [
                             Svg.line [ svg.id "refwire"; svg.y2 167.4; svg.y1 16.2; svg.stroke "#c0c0c0"; svg.x2 26.52; svg.x1 2.566 ]
-                            Svg.path [ svg.id "SLICE"; svg.strokeWidth 0; svg.d "m 0 0 l 15.64 98.77 c -10.362 1.64 -20.918 1.64 -31.28 0 l 15.64 -98.77 z" ]
-                            Svg.use' [ svg.id "double"; unbox("xlinkHref", "#SLICE"); svg.transform.scale 1.695; svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
-                            Svg.use' [ svg.id "outer"; unbox("xlinkHref", "#SLICE"); svg.transform.scale 1.605; svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
-                            Svg.use' [ svg.id "triple"; unbox("xlinkHref", "#SLICE"); svg.transform.scale 1.065; svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
-                            Svg.use' [ svg.id "inner"; unbox("xlinkHref", "#SLICE"); svg.transform.scale 0.975; svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
+                            Svg.path [ svg.id "SLICE"; svg.strokeWidth 0; svg.d "M 0 0 L 39.108616 246.922085 A 250 250 0 0 0 -39.108616 246.922085 L 0 0 Z" ]
+                            Svg.path [ svg.id "DLICE"; svg.strokeWidth 0; svg.d "M 31.286893 197.537668 L 39.108616 246.922085 A 250 250 0 0 1 -39.108616 246.922085 L -31.286893 197.537668 A 200 200 0 0 0 31.286893 197.537668 Z" ]
+                            Svg.path [ svg.id "TLICE"; svg.strokeWidth 0; svg.d "M 15.643447 98.768834 L 23.465169 148.153251 A 150 150 0 0 1 -23.465169 148.153251 L -15.643447 98.768834 A 100 100 0 0 0 15.643447 98.768834 Z" ]
+                            Svg.use' [ svg.id "single"; unbox("xlinkHref", "#SLICE"); svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
+                            Svg.use' [ svg.id "double"; unbox("xlinkHref", "#DLICE"); svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
+                            Svg.use' [ svg.id "triple"; unbox("xlinkHref", "#TLICE"); svg.height 500; svg.width 500; svg.y 0; svg.x 0 ]
                         ]
                     ]
                     Svg.g [
                         svg.id "g14"
-                        transform.matrix (1.104, 0., 0., -1.104, -1.3036, -0.48743)
+                        svg.transform.matrix (1, 0, 0, -1, -1, 0)
                         svg.children [
                             Svg.g [
                                 svg.id "dartboard"
                                 svg.children [
-                                    sections 0. 324.
-                                    sections 18. 342.
+                                    // WHATABOUT:
+                                    // let! redSections =
+                                    // (seq of dartsnumber, seq of corresponding angles)
+                                    // ||> Seq.map2 (fun dartnumber, angle -> (dartnumber, angle))
+                                    // |> Seq.indexed
+                                    // |> Seq.filter (fun (i, (_,_) -> i % 2 = 0)))
+                                    sections 0. 324. ("#000000", "#ff0000")
+                                    sections 18. 342. ("#ffffff", "#00ff00")
                                 ]
                             ]
                         ]
