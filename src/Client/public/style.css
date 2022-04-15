@@ -2,3 +2,8 @@ use:hover
 {
     fill: rgb(116, 116, 153);
 }
+
+.dartboardContainer {
+    width: 80%;
+    height: 80%;
+}
