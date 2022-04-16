@@ -37,7 +37,7 @@ type Msg =
     | SwitchDoubleOut
     | SwitchDoubleIn
     | AddPlayer
-    | PlayernameChange of string
+    | PlayernameChange of int * string
 
 let todosApi =
     Remoting.createApi ()
@@ -92,21 +92,13 @@ let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
                 { model.Game with
                     Players =
                         model.Game.Players
-                        @ [ { Player.Default with Name = "Hans" } ] } },
+                        @ [ { Player.Default with Name = "Player" + string (model.Game.Players.Length + 1) } ] } },
         Cmd.none
-    | PlayernameChange n ->
-        { model with
-            Game =
-                { model.Game with
-                    Players =
-                        (model.Game.Players
-                         |> List.map (fun p ->
-                             match p.Name with
-                             | ns when ns = n -> { p with Name = n }
-                             | _ -> p
-
-                         )) } },
-        Cmd.none
+    | PlayernameChange (index, name) -> Browser.Dom.console.log(index)
+                                        Browser.Dom.console.log(name)
+                                        let newPlayerList = model.Game.Players |> List.mapi (fun i p -> if i = index then { p with Name = name } else p)
+                                        { model with Game = { model.Game with Players = newPlayerList }
+                                        }, Cmd.none
 
 open Feliz
 open Feliz.Bulma
@@ -130,6 +122,11 @@ let handleClick (ev: Browser.Types.Event) =
     let id = evm.target |> unbox<Browser.Types.Element>
     Browser.Dom.console.log (id.getAttribute ("id"))
     mapEvent.Trigger(GetThrow(id.getAttribute ("id")))
+
+let handleInput index name =
+    Browser.Dom.console.log(name)
+    Browser.Dom.console.log(index)
+    mapEvent.Trigger(PlayernameChange(index, name))
 
 let sections (dartnumber: int, angle: float) (color: string * string) =
     Svg.g [
@@ -168,7 +165,6 @@ let sections (dartnumber: int, angle: float) (color: string * string) =
             ]
         ]
     ]
-
 
 let containerBox (model: Model) (dispatch: Msg -> unit) =
     Bulma.box [
@@ -253,7 +249,7 @@ let containerBox (model: Model) (dispatch: Msg -> unit) =
                                         // TODO: Seq<a'> Seq<b'> must have same length, check!
                                         svg.id "dartboard"
                                         svg.children [
-                                            (numbs, seq { 0...18...342. })
+                                            (numbs, seq { 0.0..18.0..342.0 })
                                             ||> Seq.map2 (fun n a -> (n, a))
                                             |> Seq.indexed
                                             |> Seq.map (fun (i, (n, a)) ->
@@ -370,8 +366,9 @@ let view (model: Model) (dispatch: Msg -> unit) =
                                                 |> List.mapi (fun i p ->
                                                     Bulma.input.text [
                                                         text.hasTextCentered
-                                                        prop.value p.Name
-                                                        prop.onChange (PlayernameChange >> dispatch)
+                                                        prop.placeholder p.Name
+                                                        prop.custom ("index", i)
+                                                        prop.onChange (fun n -> handleInput i n)
                                                     ])
                                                 |> Fable.React.Helpers.ofList
                                             ]
