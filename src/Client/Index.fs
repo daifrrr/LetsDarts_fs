@@ -4,20 +4,17 @@ open Elmish
 open Fable.Remoting.Client
 open Shared
 
-type Model = { Game: Game }
+type Model = { State: State; Game: Game }
 
 type Mode =
     | M301 of int
     | M501 of int
 
-type State =
-    | Create
-    | Running
-    | ShowResult
-
 type Msg =
-    | GotTodos of Todo List
+    | GameSettingsSumbit
+    | GameStateChanged of State * Game
     | GetThrow of string
+    | GotThrow of Game
     | SwitchDoubleOut
     | SwitchDoubleIn
     | AddPlayer
@@ -26,23 +23,26 @@ type Msg =
     | LegsChanged of string
 
 module State =
-    let todosApi =
+    let gameApi =
         Remoting.createApi ()
         |> Remoting.withRouteBuilder Route.builder
-        |> Remoting.buildProxy<ITodosApi>
+        |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model = { Game = Game.Default }
+        let model = { State = Create; Game = Game.Default }
 
-        let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
+        // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
+        let cmd = Cmd.none
 
         model, cmd
 
 
     let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
         match msg with
-        | GotTodos todos -> model, Cmd.none
-        | GetThrow me -> model, Cmd.none
+        | GameSettingsSumbit -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameStateChanged
+        | GameStateChanged (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | GetThrow t -> model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
+        | GotThrow g -> { model with Game = g }, Cmd.none
         | SwitchDoubleOut ->
             { model with
                 Game =
@@ -98,11 +98,6 @@ module Events =
         Browser.Dom.console.log(name)
         Browser.Dom.console.log(index)
         mapEvent.Trigger(PlayernameChange(index, name))
-
-
-
-
-
 
 open Feliz
 open Feliz.Bulma
@@ -160,7 +155,7 @@ module Views =
             ]
         ]
 
-    let containerBox (model: Model) (dispatch: Msg -> unit) =
+    let dartBoard (model: Model) (dispatch: Msg -> unit) =
         Bulma.box [
             prop.children [
                 Bulma.container [
@@ -236,7 +231,7 @@ module Views =
                                     ]
                                 ]
                                 Svg.g [
-                                    svg.id "g14"
+                                    svg.id "gTransform"
                                     svg.transform.matrix (1, 0, 0, -1, -1, 0)
                                     svg.children [
                                         Svg.g [
@@ -253,20 +248,24 @@ module Views =
                                                 |> List.ofSeq
                                                 |> Fable.React.Helpers.ofList
                                                 Svg.circle [
+                                                    svg.id (string "s25")
                                                     svg.cx 0
                                                     svg.cx 0
                                                     svg.r 50
                                                     svg.stroke "#bbbbbb"
                                                     svg.strokeWidth 2
                                                     svg.fill "#00ff00"
+                                                    svg.onClick Events.handleClick
                                                 ]
                                                 Svg.circle [
+                                                    svg.id (string "d25")
                                                     svg.cx 0
                                                     svg.cx 0
                                                     svg.r 25
                                                     svg.stroke "#bbbbbb"
                                                     svg.strokeWidth 2
                                                     svg.fill "#ff0000"
+                                                    svg.onClick Events.handleClick
                                                 ]
                                             ]
                                         ]
@@ -279,6 +278,103 @@ module Views =
             ]
         ]
 
+    let createForm (model: Model) (dispatch: Msg -> unit) =
+        Bulma.container [
+            prop.children [
+                Bulma.box [
+                    prop.children [
+                        Bulma.title [
+                            text.hasTextCentered
+                            color.hasTextBlack
+                            prop.text "LetsDarts"
+                        ]
+                        Bulma.columns [
+                            Bulma.column [
+                                Bulma.label "Mode"
+                                Bulma.select [
+                                    prop.value (string model.Game.Mode)
+                                    text.hasTextCentered
+                                    prop.children [
+                                        Html.option "301"
+                                        Html.option "501"
+                                    ]
+                                    prop.onChange (ModeChanged >> dispatch)
+                                ]
+                            ]
+                            Bulma.column [
+                                Bulma.label "First To Legs"
+                                Bulma.select [
+                                    prop.value (string model.Game.Mode)
+                                    text.hasTextCentered
+                                    prop.children [
+                                        Html.option "1"
+                                        Html.option "3"
+                                        Html.option "5"
+                                        Html.option "7"
+                                    ]
+                                    prop.onChange (LegsChanged >> dispatch)
+                                ]
+                            ]
+                        ]
+                        Bulma.columns [
+                            Bulma.column [
+                                Bulma.label [
+                                    Bulma.input.checkbox [
+                                        prop.onCheckedChange (fun _ -> dispatch SwitchDoubleIn)
+                                        prop.isChecked model.Game.DoubleIn
+                                    ]
+                                    Bulma.text.span [
+                                        prop.style [ style.marginLeft 8 ]
+                                        prop.text "Double In"
+                                    ]
+                                ]
+                            ]
+                            Bulma.column [
+                                Bulma.label [
+                                    Bulma.input.checkbox [
+                                        prop.onCheckedChange (fun _ -> dispatch SwitchDoubleOut)
+                                        prop.isChecked model.Game.DoubleOut
+                                    ]
+                                    Bulma.text.span [
+                                        prop.style [ style.marginLeft 8 ]
+                                        prop.text "Double Out"
+                                    ]
+                                ]
+                            ]
+                        ]
+                        Bulma.columns [
+                            Bulma.column [ Bulma.label "Players" ]
+                            Bulma.column [
+                                Bulma.button.a [
+                                    color.isInfo
+                                    prop.text "+"
+                                    prop.onClick (fun _ -> dispatch AddPlayer)
+                                ]
+                            ]
+                        ]
+                        model.Game.Players
+                        |> List.mapi (fun i p ->
+                            Bulma.input.text [
+                                text.hasTextCentered
+                                prop.value p.Name
+                                prop.custom ("index", i)
+                                prop.onChange (fun n -> Events.handleInput i n)
+                            ])
+                        |> Fable.React.Helpers.ofList
+                        Bulma.button.a [
+                            color.isInfo
+                            prop.text "Start"
+                            prop.onClick (fun _ -> dispatch (GameSettingsSumbit))
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+    let playGame (model: Model) (dispatch: Msg -> unit) =
+        Bulma.container [
+
+        ]
 
     let view (model: Model) (dispatch: Msg -> unit) =
         Bulma.hero [
@@ -301,102 +397,16 @@ module Views =
                             Bulma.column [
                                 column.is4
                                 prop.children [
-                                    Bulma.container [
-                                        prop.children [
-                                            Bulma.box [
-                                                prop.children [
-                                                    Bulma.title [
-                                                        text.hasTextCentered
-                                                        color.hasTextBlack
-                                                        prop.text "LetsDarts"
-                                                    ]
-                                                    Bulma.columns [
-                                                        Bulma.column [
-                                                            Bulma.label "Mode"
-                                                            Bulma.select [
-                                                                prop.value (string model.Game.Mode)
-                                                                text.hasTextCentered
-                                                                prop.children [
-                                                                    Html.option "301"
-                                                                    Html.option "501"
-                                                                ]
-                                                                prop.onChange (ModeChanged >> dispatch)
-                                                            ]
-                                                        ]
-                                                        Bulma.column [
-                                                            Bulma.label "First To Legs"
-                                                            Bulma.select [
-                                                                prop.value (string model.Game.Mode)
-                                                                text.hasTextCentered
-                                                                prop.children [
-                                                                    Html.option "1"
-                                                                    Html.option "3"
-                                                                    Html.option "5"
-                                                                    Html.option "7"
-                                                                ]
-                                                                prop.onChange (LegsChanged >> dispatch)
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    Bulma.columns [
-                                                        Bulma.column [
-                                                            Bulma.label [
-                                                                Bulma.input.checkbox [
-                                                                    prop.onCheckedChange (fun _ -> dispatch SwitchDoubleIn)
-                                                                    prop.isChecked model.Game.DoubleIn
-                                                                ]
-                                                                Bulma.text.span [
-                                                                    prop.style [ style.marginLeft 8 ]
-                                                                    prop.text "Double In"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                        Bulma.column [
-                                                            Bulma.label [
-                                                                Bulma.input.checkbox [
-                                                                    prop.onCheckedChange (fun _ -> dispatch SwitchDoubleOut)
-                                                                    prop.isChecked model.Game.DoubleOut
-                                                                ]
-                                                                Bulma.text.span [
-                                                                    prop.style [ style.marginLeft 8 ]
-                                                                    prop.text "Double Out"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    Bulma.columns [
-                                                        Bulma.column [ Bulma.label "Players" ]
-                                                        Bulma.column [
-                                                            Bulma.button.a [
-                                                                color.isInfo
-                                                                prop.text "+"
-                                                                prop.onClick (fun _ -> dispatch AddPlayer)
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    model.Game.Players
-                                                    |> List.mapi (fun i p ->
-                                                        Bulma.input.text [
-                                                            text.hasTextCentered
-                                                            prop.value p.Name
-                                                            prop.custom ("index", i)
-                                                            prop.onChange (fun n -> Events.handleInput i n)
-                                                        ])
-                                                    |> Fable.React.Helpers.ofList
-                                                    Bulma.button.a [
-                                                        color.isInfo
-                                                        prop.text "Start"
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
+                                    match model.State with
+                                    | Create -> createForm model dispatch
+                                    | Running -> playGame model dispatch
+                                    | _ -> Bulma.box [ prop.children [ Html.p [ prop.textf "Finished" ]]]
                                 ]
                             ]
                             Bulma.column [
                                 column.is8
                                 prop.children [
-                                    containerBox model dispatch
+                                    dartBoard model dispatch
                                 ]
                             ]
                         ]

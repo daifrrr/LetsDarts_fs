@@ -2,7 +2,10 @@ namespace Shared
 
 open System
 
-type Todo = { Id: Guid; Description: string }
+type State =
+    | Create
+    | Running
+    | ShowResult
 
 type Leg =
     { CurrentScore: int
@@ -35,21 +38,15 @@ type Game =
             [ { Player.Default with Name = "Player1" }
               { Player.Default with Name = "Player2" } ] }
 
-module Todo =
-    let isValid (description: string) =
-        String.IsNullOrWhiteSpace description |> not
-
-    let create (description: string) =
-        { Id = Guid.NewGuid()
-          Description = description }
-
 module Route =
     let builder typeName methodName =
         sprintf "/api/%s/%s" typeName methodName
 
-type ITodosApi =
-    { getTodos: unit -> Async<Todo list>
-      addTodo: Todo -> Async<Todo> }
+type IGameApi =
+    {
+      initGame: Game -> Async<State * Game>
+      sendThrow: string -> Async<Game>
+    }
 
 module DartGame =
     let DefaultLeg = Leg.Default
