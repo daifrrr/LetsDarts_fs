@@ -3,6 +3,7 @@ namespace Index
 open Elmish
 open Fable.Remoting.Client
 open Shared
+open System
 
 type Model = { State: State; Game: Game }
 
@@ -29,7 +30,7 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model = { State = Create; Game = Game.Default }
+        let model = { State = Running; Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         let cmd = Cmd.none
@@ -371,9 +372,136 @@ module Views =
             ]
         ]
 
+    let player (p: Player) (dispatch: Msg -> unit) =
+        Bulma.box [
+            prop.children [
+                Bulma.columns [
+                    Bulma.column [
+                        column.is3
+                        prop.children [
+                            Bulma.text.span (sprintf "\u2300")
+                        ]
+                    ]
+                    Bulma.column [
+                        column.is6
+                        prop.children [
+                            Bulma.text.span p.Name
+                        ]
+                    ]
+                    Bulma.column [
+                        column.is3
+                        prop.children [
+                            Bulma.text.span ((-) 301 p.Legs.Head.CurrentScore)
+                        ]
+                    ]
+                ]
+                Bulma.box [
+                    Bulma.columns [
+                        prop.children [
+                            Bulma.column [
+                                column.is3
+                                column.isOffset1
+                                prop.children [
+                                    Bulma.tag [
+                                        prop.style [
+                                            style.width (length.percent 100)
+                                        ]
+                                        tag.isLarge
+                                        tag.isRounded
+                                        color.hasBackgroundGreyLight
+                                        prop.text "T20"
+                                    ]
+                                ]
+                            ]
+                            Bulma.column [
+                                column.is3
+                                column.isOffset1
+                                prop.children [
+                                    Bulma.tag [
+                                        prop.style [
+                                            style.width (length.percent 100)
+                                        ]
+                                        tag.isLarge
+                                        tag.isRounded
+                                        color.hasBackgroundGreyLight
+                                        prop.text "D18"
+                                    ]
+                                ]
+                            ]
+                            Bulma.column [
+                                column.is3
+                                column.isOffset1
+                                prop.children [
+                                    Bulma.tag [
+                                        prop.style [
+                                            style.width (length.percent 100)
+                                        ]
+                                        tag.isLarge
+                                        tag.isRounded
+                                        color.hasBackgroundGreyLight
+                                        prop.text "S15"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
     let playGame (model: Model) (dispatch: Msg -> unit) =
         Bulma.container [
-
+            prop.children [
+                Bulma.box [
+                    prop.children [
+                        Bulma.title [
+                        text.hasTextCentered
+                        color.hasTextBlack
+                        prop.text "LetsDarts"
+                        ]
+                        Bulma.columns [
+                            Bulma.column [
+                                prop.style [
+                                    style.border (1, borderStyle.solid, "#0")
+                                ]
+                                prop.text model.Game.Mode
+                            ]
+                            Bulma.column [
+                                prop.style [
+                                    style.border (1, borderStyle.solid, "#0")
+                                ]
+                                prop.text model.Game.Legs
+                            ]
+                            Bulma.column [
+                                prop.style [
+                                    style.border (1, borderStyle.solid, "#0")
+                                ]
+                                prop.text (string model.Game.DoubleIn)
+                            ]
+                            Bulma.column [
+                                prop.style [
+                                    style.border (1, borderStyle.solid, "#0")
+                                ]
+                                prop.text (string model.Game.DoubleOut)
+                            ]
+                        ]
+                        Bulma.box [
+                            model.Game.Players
+                            |> List.map (fun p -> player p dispatch)
+                            |> Fable.React.Helpers.ofList
+                        ]
+                        #if DEBUG
+                        Bulma.column [
+                            Bulma.button.a [
+                                color.isInfo
+                                prop.text "Checkout"
+                                prop.onClick (fun _ -> Browser.Dom.console.log("Checkout"))
+                            ]
+                        ]
+                        #endif
+                    ]
+                ]
+            ]
         ]
 
     let view (model: Model) (dispatch: Msg -> unit) =
