@@ -11,7 +11,8 @@ type Leg =
     { CurrentScore: int
       Records: (char * int) list }
 
-    static member Default = { CurrentScore = 0; Records = [] }
+    static member Default =
+        { CurrentScore = 501; Records = [] }
 
 type Player =
     { Name: string
@@ -19,6 +20,10 @@ type Player =
     static member Default =
         { Name = "Player"
           Legs = [ Leg.Default ] }
+
+    static member getLeg(p: Player) = p.Legs
+    static member getLegs(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
+    static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
 
 type Game =
     { Id: Guid
@@ -38,6 +43,8 @@ type Game =
             [ { Player.Default with Name = "Player1" }
               { Player.Default with Name = "Player2" } ] }
 
+    static member getPlayers(g: Game) = g.Players
+
 module Route =
     let builder typeName methodName =
         sprintf "/api/%s/%s" typeName methodName
@@ -46,6 +53,7 @@ type IGameApi =
     {
       initGame: Game -> Async<State * Game>
       sendThrow: string -> Async<Game>
+      undo: unit -> Async<Game>
     }
 
 module DartGame =
@@ -55,6 +63,6 @@ module DartGame =
 
     let DefaultGame = Game.Default
 
-module Constans =
+module Constants =
     let DartNumbers =
         seq {20;1;18;4;13;6;10;15;2;17;3;19;7;16;8;11;14;9;12;5}
