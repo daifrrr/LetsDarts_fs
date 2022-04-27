@@ -1,81 +1,74 @@
 module Router
 
-open System
 open LetsDartsCore
 open Shared
+open Shared.Helpers
 
 type DartsGameHistory() =
     let history = ResizeArray<_>()
 
-    member _.GetInfo(): unit =
+    member _.GetInfo() : unit =
         for g in history do
             printfn "%A" g
+
     member _.GetGames() = List.ofSeq history
-    member _.GetLast() : Game option =
+
+    member _.GetCurrentGame() : Game option =
         match List.ofSeq history with
         | [] -> None
-        | g -> Some(g |> List.last)
+        | g -> Some(g |> List.head)
 
-    member _.GetLastLast() : Game option =
-        match List.ofSeq history with
-        | [] -> None
-        | g -> g |> List.rev |> List.tryItem(2)
+    member _.AddGame(game: Game) = history.Insert(0, game)
 
-    member _.GetItemIndex(game: Game): int =
-        try
-            history.IndexOf(game)
-        with
-            | ex -> printfn $"%s{ex.ToString()}"; 0
+    member _.GetOneBeforeLastRemoveLastGame() : Game option =
+        let OneBeforeLast =
+            List.ofSeq history |> List.tryItem (1)
 
-    member _.Remove(start: int): unit =
-        try
-            history.RemoveRange(start, history.Count - 1)
-        with
-           | ex -> printfn $"%s{ex.ToString()}"
+        history.RemoveAt(0)
+        OneBeforeLast
 
-    member _.AddGame(game: Game) = history.Add game
-    member _.ClearHistory() = history.Clear()
+    member _.ClearGameHistory() = history.Clear()
 
 let DartsGameHistory = DartsGameHistory()
-
-// let getCurrentPlayer (game:Game): Player =
-//     game.Players |> List.tryFind (fun p -> p.Legs.Head.Records.Length % 3 <> 0)
-
-// let calcNewGame (throw:string) =
-//     let currentPlayer = getCurrentPlayer DartsGame.GetLast
-//     currentPlayer
-let log (from:string): Async<unit> = async {
-//            Console.Clear()
-//            Console.ForegroundColor <- ConsoleColor.Red
-            printfn $"{from}"
-            DartsGameHistory.GetInfo()
-            //Console.ResetColor()
-    }
 
 let gameApi =
     { initGame =
         fun game ->
             async {
-                DartsGameHistory.ClearHistory()
+                DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
-                log "INIT" |> Async.Start
+
+                Logger.log ("INIT", DartsGameHistory.GetInfo())
+                |> Async.Start
+
                 return (Running, game)
             }
-      sendThrow = fun str -> async {
-          let newGame = Game.calcNewGame str (DartsGameHistory.GetLast().Value)
-          DartsGameHistory.AddGame(newGame)
-          log "SEND THROW" |> Async.Start
-          return newGame
-      }
-      undo = fun _ -> async {
-        let oldGame = match DartsGameHistory.GetLastLast() with
-                      | Some i -> let idx = DartsGameHistory.GetItemIndex(i)
-                                  printfn $"IDX******: {idx}"
-                                  DartsGameHistory.Remove(idx)
-                                  DartsGameHistory.GetLast().Value
-                      | None -> DartsGameHistory.Remove(1)
-                                DartsGameHistory.GetLast().Value
-        log "UNDO" |> Async.Start
-        return oldGame
-      }
-    }
+      sendThrow =
+        fun str ->
+            async {
+                let newGame =
+                    Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
+
+                DartsGameHistory.AddGame(newGame)
+
+                Logger.log ("SEND THROW", DartsGameHistory.GetInfo())
+                |> Async.Start
+
+                return newGame
+            }
+      undo =
+        fun _ ->
+            async {
+                let oldGame =
+                    match DartsGameHistory.GetOneBeforeLastRemoveLastGame() with
+                    | Some g -> g
+                    | None ->
+                        match DartsGameHistory.GetCurrentGame() with
+                        | Some g -> g
+                        | None -> Game.Default
+
+                Logger.log ("UNDO", DartsGameHistory.GetInfo())
+                |> Async.Start
+
+                return oldGame
+            } }
