@@ -1,10 +1,15 @@
 module Router
 
+open System
 open LetsDartsCore
 open Shared
 
 type DartsGameHistory() =
     let history = ResizeArray<_>()
+
+    member _.GetInfo(): unit =
+        for g in history do
+            printfn "%A" g
     member _.GetGames() = List.ofSeq history
     member _.GetLast() : Game option =
         match List.ofSeq history with
@@ -14,11 +19,20 @@ type DartsGameHistory() =
     member _.GetLastLast() : Game option =
         match List.ofSeq history with
         | [] -> None
-        | g -> g |> List.tail |> List.rev |> List.tryItem(1)
+        | g -> g |> List.rev |> List.tryItem(2)
 
-    member _.RemoveLast(game: Game): unit =
-        let start = history.IndexOf(game)
-        history.RemoveRange(start, history.Count)
+    member _.GetItemIndex(game: Game): int =
+        try
+            history.IndexOf(game)
+        with
+            | ex -> printfn $"%s{ex.ToString()}"; 0
+
+    member _.Remove(start: int): unit =
+        try
+            history.RemoveRange(start, history.Count - 1)
+        with
+           | ex -> printfn $"%s{ex.ToString()}"
+
     member _.AddGame(game: Game) = history.Add game
     member _.ClearHistory() = history.Clear()
 
@@ -30,6 +44,13 @@ let DartsGameHistory = DartsGameHistory()
 // let calcNewGame (throw:string) =
 //     let currentPlayer = getCurrentPlayer DartsGame.GetLast
 //     currentPlayer
+let log (from:string): Async<unit> = async {
+//            Console.Clear()
+//            Console.ForegroundColor <- ConsoleColor.Red
+            printfn $"{from}"
+            DartsGameHistory.GetInfo()
+            //Console.ResetColor()
+    }
 
 let gameApi =
     { initGame =
@@ -37,15 +58,24 @@ let gameApi =
             async {
                 DartsGameHistory.ClearHistory()
                 DartsGameHistory.AddGame game
+                log "INIT" |> Async.Start
                 return (Running, game)
             }
       sendThrow = fun str -> async {
           let newGame = Game.calcNewGame str (DartsGameHistory.GetLast().Value)
           DartsGameHistory.AddGame(newGame)
+          log "SEND THROW" |> Async.Start
           return newGame
       }
       undo = fun _ -> async {
-        let oldGame = DartsGameHistory.GetLastLast().Value
+        let oldGame = match DartsGameHistory.GetLastLast() with
+                      | Some i -> let idx = DartsGameHistory.GetItemIndex(i)
+                                  printfn $"IDX******: {idx}"
+                                  DartsGameHistory.Remove(idx)
+                                  DartsGameHistory.GetLast().Value
+                      | None -> DartsGameHistory.Remove(1)
+                                DartsGameHistory.GetLast().Value
+        log "UNDO" |> Async.Start
         return oldGame
       }
     }
