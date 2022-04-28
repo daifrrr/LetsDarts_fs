@@ -50,11 +50,9 @@ module Route =
         sprintf "/api/%s/%s" typeName methodName
 
 type IGameApi =
-    {
-      initGame: Game -> Async<State * Game>
+    { initGame: Game -> Async<State * Game>
       sendThrow: string -> Async<Game>
-      undo: unit -> Async<Game>
-    }
+      undo: unit -> Async<Game> }
 
 module DartGame =
     let DefaultLeg = Leg.Default
@@ -64,5 +62,26 @@ module DartGame =
     let DefaultGame = Game.Default
 
 module Constants =
-    let DartNumbers =
-        seq {20;1;18;4;13;6;10;15;2;17;3;19;7;16;8;11;14;9;12;5}
+    let DARTNUMBERS =
+        seq {
+            20
+            1
+            18
+            4
+            13
+            6
+            10
+            15
+            2
+            17
+            3
+            19
+            7
+            16
+            8
+            11
+            14
+            9
+            12
+            5
+        }

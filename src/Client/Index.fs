@@ -27,10 +27,12 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model = { State = Running; Game = Game.Default }
+        let model =
+            { State = Running; Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
-        let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game GameStateChanged
+        let cmd =
+            Cmd.OfAsync.perform gameApi.initGame model.Game GameStateChanged
 
         model, cmd
 
@@ -76,8 +78,7 @@ module State =
                                         [ { CurrentScore = m |> int
                                             Records = [] } ] }) } },
             Cmd.none
-        | LegsChanged l ->
-            { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
+        | LegsChanged l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
         | Undo -> model, Cmd.OfAsync.perform gameApi.undo () UndoDone
         | UndoDone g -> { model with Game = g }, Cmd.none
 
@@ -100,9 +101,11 @@ module Events =
         mapEvent.Trigger(AddPlayer Player.Default)
 
     let handleClick (ev: Browser.Types.Event) =
-        let evm = ev |> unbox<Browser.Types.MouseEvent>
+        let evm =
+            ev |> unbox<Browser.Types.MouseEvent>
 
-        let id = evm.target |> unbox<Browser.Types.Element>
+        let id =
+            evm.target |> unbox<Browser.Types.Element>
 
         Browser.Dom.console.log (id.getAttribute "id")
         mapEvent.Trigger(GetThrow(id.getAttribute "id"))
@@ -138,8 +141,8 @@ module Views =
                 Svg.use' [
                     svg.id (string $"s{fieldValue}")
                     svg.href "#single"
-                    svg.height 500
-                    svg.width 500
+                    svg.height 400
+                    svg.width 400
                     svg.y 0
                     svg.x 0
                     svg.fill (fst color)
@@ -175,8 +178,8 @@ module Views =
                     prop.className "dartboardContainer"
                     prop.children [
                         Svg.svg [
-                            svg.id "svg2"
-                            svg.viewBox (-250, -250, 500, 500)
+                            svg.id "svg"
+                            svg.viewBox (-300, -300, 600, 600)
                             unbox ("version", "1.0")
                             unbox ("xmlns:rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                             unbox ("xmlns", "http://www.w3.org/2000/svg")
@@ -186,7 +189,7 @@ module Views =
                             unbox ("xmlns:svg", "http://www.w3.org/2000/svg")
                             svg.children [
                                 Svg.defs [
-                                    svg.id "defs6"
+                                    svg.id "defs"
                                     svg.children [
                                         Svg.path [
                                             svg.id "sSLICE"
@@ -243,7 +246,27 @@ module Views =
                                             // TODO: Seq<a'> Seq<b'> must have same length, check!
                                             svg.id "dartboard"
                                             svg.children [
-                                                (Constants.DartNumbers, seq { 0.0..18.0..342.0 })
+                                                Svg.circle [
+                                                    svg.id (string "s0")
+                                                    svg.cx 0
+                                                    svg.cx 0
+                                                    svg.r 299
+                                                    svg.stroke "#bbbbbb"
+                                                    svg.strokeWidth 2
+                                                    svg.fill "#0"
+                                                    svg.onClick Events.handleClick
+                                                ]
+                                                Svg.circle [
+                                                    svg.id (string "d25")
+                                                    svg.cx 0
+                                                    svg.cx 0
+                                                    svg.r 25
+                                                    svg.stroke "#bbbbbb"
+                                                    svg.strokeWidth 2
+                                                    svg.fill "#ff0000"
+                                                    svg.onClick Events.handleClick
+                                                ]
+                                                (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
                                                 ||> Seq.map2 (fun n a -> (n, a))
                                                 |> Seq.indexed
                                                 |> Seq.map (fun (i, (n, a)) ->
@@ -388,9 +411,9 @@ module Views =
                     |> List.map (fun (c, n) -> $"%c{c}%d{n}")
                 | c ->
                     (List.replicate ((-) 3 c) " "
-                    @ (r
-                       |> List.take c
-                       |> List.map (fun (c, n) -> $"%c{c}%d{n}")))
+                     @ (r
+                        |> List.take c
+                        |> List.map (fun (c, n) -> $"%c{c}%d{n}")))
                     |> List.rev
 
         Bulma.container [
