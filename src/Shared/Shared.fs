@@ -3,9 +3,10 @@ namespace Shared
 open System
 
 type State =
-    | Create
-    | Running
+    | CreateGame
+    | RunGame
     | ShowResult
+    | FinishGame
 
 type RuleSet =
     | GameOn
@@ -59,7 +60,7 @@ module Route =
 
 type IGameApi =
     { initGame: Game -> Async<State * Game>
-      sendThrow: string -> Async<Game>
+      sendThrow: string -> Async<State * Game>
       undo: unit -> Async<Game> }
 
 module DartGame =
