@@ -7,6 +7,14 @@ type State =
     | Running
     | ShowResult
 
+type RuleSet =
+    | GameOn
+    | GameOver
+    | LegOver
+    | DoubleInFail
+    | DoubleInSuccess
+    | DoubleOutFail
+
 type Leg =
     { CurrentScore: int
       Records: (char * int) list }

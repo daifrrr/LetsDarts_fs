@@ -38,9 +38,6 @@ let gameApi =
                 DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
 
-                Logger.log ("INIT", DartsGameHistory.GetInfo())
-                |> Async.Start
-
                 return (Running, game)
             }
       sendThrow =
@@ -49,12 +46,9 @@ let gameApi =
                 let newGame =
                     Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
-                DartsGameHistory.AddGame(newGame)
-
-                Logger.log ("SEND THROW", DartsGameHistory.GetInfo())
-                |> Async.Start
-
-                return newGame
+                DartsGameHistory.AddGame(snd newGame)
+                //                printfn $"{(fst newGame)}"
+                return (snd newGame)
             }
       undo =
         fun _ ->
@@ -66,9 +60,6 @@ let gameApi =
                         match DartsGameHistory.GetCurrentGame() with
                         | Some g -> g
                         | None -> Game.Default
-
-                Logger.log ("UNDO", DartsGameHistory.GetInfo())
-                |> Async.Start
 
                 return oldGame
             } }
