@@ -38,17 +38,21 @@ let gameApi =
                 DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
 
-                return (Running, game)
+                return (RunGame, game)
             }
       sendThrow =
         fun str ->
             async {
-                let newGame =
+                let nextStep, newGame =
                     Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
-                DartsGameHistory.AddGame(snd newGame)
-                //                printfn $"{(fst newGame)}"
-                return (snd newGame)
+                DartsGameHistory.AddGame(newGame)
+                printfn $"{nextStep}"
+                match nextStep with
+                | GameOn -> return RunGame, newGame
+                | LegOver -> return ShowResult, newGame
+                | GameOver -> return FinishGame, newGame
+                | _ -> return RunGame, newGame
             }
       undo =
         fun _ ->

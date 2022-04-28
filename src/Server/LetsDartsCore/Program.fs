@@ -4,16 +4,7 @@ open System
 open System.Text.RegularExpressions
 open Shared
 
-
-
 module Game =
-    type ruleSet =
-        | GameOn
-        | GameOver
-        | DoubleInFail
-        | DoubleInSuccess
-        | DoubleOutFail
-
     let getCurrentPlayerIndex (players: Player list) : int =
         let throwCounter =
             Player.getLegs players
@@ -47,8 +38,7 @@ module Game =
             | 0 -> 3
             | n -> n
 
-        let oldRecord =
-            l.Records |> List.skip numberOfToDeleteFromRecord
+        let oldRecord = l.Records |> List.skip numberOfToDeleteFromRecord
 
         let resetScore =
             l.Records
@@ -89,14 +79,11 @@ module Game =
 
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer =
-            game.Players[(Game.getPlayers game |> getCurrentPlayerIndex)]
+        let currentPlayer = game.Players[(Game.getPlayers game |> getCurrentPlayerIndex)]
 
-        let currentPlayerLeg =
-            Player.getCurrentLeg currentPlayer
+        let currentPlayerLeg = Player.getCurrentLeg currentPlayer
 
-        let currentThrow =
-            (throw |> parseThrow).Value
+        let currentThrow = (throw |> parseThrow).Value
 
         let state =
             applyGameLogic currentPlayerLeg currentThrow (game.DoubleIn, game.DoubleOut)
@@ -104,11 +91,6 @@ module Game =
         let currentPoints =
             state.Records
             |> List.fold (fun m t -> m - snd (thrownPoints t)) game.Mode
-
-        let u =
-            match currentPoints with
-            | 0 -> GameOver
-            | _ -> GameOn
 
         let players = Game.getPlayers game
 
@@ -119,4 +101,25 @@ module Game =
                 | true -> { p with Legs = [ state ] @ p.Legs.Tail }
                 | _ -> p)
 
-        { game with Players = newPlayers }
+
+        let nextStep =
+            match currentPoints with
+            | 0 ->
+                match Player.getLegs newPlayers with
+                | l when l.Length < game.Legs -> LegOver
+                | _ -> GameOver
+            | _ -> GameOn
+
+        match nextStep with
+        | LegOver ->
+            (nextStep,
+             { game with
+                 Players =
+                     newPlayers
+                     |> List.map (fun p ->
+                         { p with
+                             Legs =
+                                 [ { Leg.Default with CurrentScore = game.Mode } ]
+                                 @ p.Legs }) })
+        | GameOn -> (nextStep, { game with Players = newPlayers })
+        | _ -> (nextStep, { game with Players = newPlayers })
