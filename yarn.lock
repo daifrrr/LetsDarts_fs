@@ -431,11 +431,6 @@ array-union@^3.0.1:
   resolved "https://registry.npmjs.org/array-union/-/array-union-3.0.1.tgz"
   integrity sha512-1OvF9IbWwaeiM9VhzYXVQacMibxpXOMYVNIvMtKRyX9SImBXpKcFr8XvFDeEslCyuH/t6KRt7HEO94AlP8Iatw==
 
-async-limiter@~1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/async-limiter/-/async-limiter-1.0.1.tgz"
-  integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
-
 async-stream-emitter@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/async-stream-emitter/-/async-stream-emitter-4.0.0.tgz"
@@ -634,10 +629,10 @@ commander@^8.3.0:
   resolved "https://registry.npmjs.org/commander/-/commander-8.3.0.tgz"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
-component-emitter@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz"
-  integrity sha1-E3kY1teCg/ffemt8WmPhQOaUJeY=
+component-emitter@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.0.tgz"
+  integrity sha1-zNETqGOI0GSC0D3j/H35hSa6jv4=
 
 compressible@~2.0.16:
   version "2.0.18"
@@ -2046,15 +2041,15 @@ relateurl@^0.2.7:
   resolved "https://registry.npmjs.org/relateurl/-/relateurl-0.2.7.tgz"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-remotedev@^0.2.9:
-  version "0.2.9"
-  resolved "https://registry.npmjs.org/remotedev/-/remotedev-0.2.9.tgz"
-  integrity sha512-W8dHOv9BcFnetFEd08yNb5O9Hd+zkTFFnf9FRjNCkb4u+JgQ/U152Aw4q83AmY3m34d6KZwhK5ip/Qc331+4vA==
+remotedev@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.npmjs.org/remotedev/-/remotedev-0.2.7.tgz"
+  integrity sha1-he83C1LrVyG9PoadaB3HAn1SfuM=
   dependencies:
     jsan "^3.1.3"
     querystring "^0.2.0"
     rn-host-detect "^1.0.1"
-    socketcluster-client "^13.0.0"
+    socketcluster-client "^5.0.0"
 
 renderkid@^3.0.0:
   version "3.0.0"
@@ -2137,6 +2132,11 @@ safe-buffer@5.2.1, safe-buffer@>=5.1.0, safe-buffer@^5.1.0, safe-buffer@~5.2.0:
   resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
 
+safe-buffer@~5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.0.1.tgz"
+  integrity sha1-0mPKVGls2KMGtcplUekt5XkY++c=
+
 "safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0":
   version "2.1.2"
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
@@ -2159,24 +2159,31 @@ sass@^1.43.4:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-sc-channel@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/sc-channel/-/sc-channel-1.2.0.tgz"
-  integrity sha512-M3gdq8PlKg0zWJSisWqAsMmTVxYRTpVRqw4CWAdKBgAfVKumFcTjoCV0hYu7lgUXccCtCD8Wk9VkkE+IXCxmZA==
+sc-channel@~1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/sc-channel/-/sc-channel-1.0.6.tgz"
+  integrity sha1-s4vUepk+eCkPvFNGeGf2sqCghjk=
   dependencies:
-    component-emitter "1.2.1"
+    sc-emitter "1.x.x"
 
-sc-errors@^1.4.0:
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/sc-errors/-/sc-errors-1.4.1.tgz"
-  integrity sha512-dBn92iIonpChTxYLgKkIT/PCApvmYT6EPIbRvbQKTgY6tbEbIy8XVUv4pGyKwEK4nCmvX4TKXcN0iXC6tNW6rQ==
+sc-emitter@1.x.x, sc-emitter@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/sc-emitter/-/sc-emitter-1.1.0.tgz"
+  integrity sha1-7xGdQiL0xk+Ie0hpZO8REWzdDnU=
+  dependencies:
+    component-emitter "1.2.0"
 
 sc-errors@^2.0.0, sc-errors@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/sc-errors/-/sc-errors-2.0.1.tgz"
   integrity sha512-JoVhq3Ud+3Ujv2SIG7W0XtjRHsrNgl6iXuHHsh0s+Kdt5NwI6N2EGAZD4iteitdDv68ENBkpjtSvN597/wxPSQ==
 
-sc-formatter@^3.0.1, sc-formatter@^3.0.2:
+sc-errors@~1.3.0:
+  version "1.3.3"
+  resolved "https://registry.npmjs.org/sc-errors/-/sc-errors-1.3.3.tgz"
+  integrity sha1-wAvEx2apcMyNWTfQjNWOkx19rgU=
+
+sc-formatter@^3.0.2, sc-formatter@~3.0.0:
   version "3.0.2"
   resolved "https://registry.npmjs.org/sc-formatter/-/sc-formatter-3.0.2.tgz"
   integrity sha512-9PbqYBpCq+OoEeRQ3QfFIGE6qwjjBcd2j7UjgDlhnZbtSnuGgHdcRklPKYGuYFH82V/dwd+AIpu8XvA1zqTd+A==
@@ -2315,22 +2322,6 @@ slash@^4.0.0:
   resolved "https://registry.npmjs.org/slash/-/slash-4.0.0.tgz"
   integrity sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==
 
-socketcluster-client@^13.0.0:
-  version "13.0.1"
-  resolved "https://registry.npmjs.org/socketcluster-client/-/socketcluster-client-13.0.1.tgz"
-  integrity sha512-hxiE2xz6mgaBlhXbtBa4POgWVEvIcjCoHzf5LTUVhI9IL8V2ltV3Ze8pQsi9egqTjSz4RHPfyrJ7BiETe5Kthw==
-  dependencies:
-    base-64 "0.1.0"
-    clone "2.1.1"
-    component-emitter "1.2.1"
-    linked-list "0.1.0"
-    querystring "0.2.0"
-    sc-channel "^1.2.0"
-    sc-errors "^1.4.0"
-    sc-formatter "^3.0.1"
-    uuid "3.2.1"
-    ws "5.1.1"
-
 socketcluster-client@^16.0.4:
   version "16.0.4"
   resolved "https://registry.npmjs.org/socketcluster-client/-/socketcluster-client-16.0.4.tgz"
@@ -2348,6 +2339,21 @@ socketcluster-client@^16.0.4:
     stream-demux "^8.0.0"
     uuid "^3.2.1"
     ws "^7.4.6"
+
+socketcluster-client@^5.0.0:
+  version "5.5.2"
+  resolved "https://registry.npmjs.org/socketcluster-client/-/socketcluster-client-5.5.2.tgz"
+  integrity sha1-nUNp4Oci/35V5UIsLUT1r+Gv8Sg=
+  dependencies:
+    base-64 "0.1.0"
+    clone "2.1.1"
+    linked-list "0.1.0"
+    querystring "0.2.0"
+    sc-channel "~1.0.6"
+    sc-emitter "~1.1.0"
+    sc-errors "~1.3.0"
+    sc-formatter "~3.0.0"
+    ws "3.0.0"
 
 sockjs@^0.3.21:
   version "0.3.24"
@@ -2525,6 +2531,11 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
+ultron@~1.1.0:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/ultron/-/ultron-1.1.1.tgz"
+  integrity sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
+
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
@@ -2551,11 +2562,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-3.2.1.tgz"
-  integrity sha512-jZnMwlb9Iku/O3smGWvZhauCf6cvvpKi4BKRiliS3cxnI+Gz9j5MEpTz2UFuXiKPJocb7gnsLHwiS05ige5BEA==
 
 uuid@^3.2.1:
   version "3.4.0"
@@ -2732,12 +2738,13 @@ writable-consumable-stream@^2.0.0:
   dependencies:
     consumable-stream "^2.0.0"
 
-ws@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.npmjs.org/ws/-/ws-5.1.1.tgz"
-  integrity sha512-bOusvpCb09TOBLbpMKszd45WKC2KPtxiyiHanv+H2DE3Az+1db5a/L7sVJZVDPUC1Br8f0SKRr1KjLpD1U/IAw==
+ws@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/ws/-/ws-3.0.0.tgz"
+  integrity sha1-mN2wAFbIOQy3Ued4h4hJf5kQO2w=
   dependencies:
-    async-limiter "~1.0.0"
+    safe-buffer "~5.0.1"
+    ultron "~1.1.0"
 
 ws@^7.4.6:
   version "7.5.7"

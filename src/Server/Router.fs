@@ -2,14 +2,13 @@ module Router
 
 open LetsDartsCore
 open Shared
-open Shared.Helpers
 
 type DartsGameHistory() =
     let history = ResizeArray<_>()
 
     member _.GetInfo() : unit =
         for g in history do
-            printfn "%A" g
+            printfn $"%A{g}"
 
     member _.GetGames() = List.ofSeq history
 
@@ -21,8 +20,7 @@ type DartsGameHistory() =
     member _.AddGame(game: Game) = history.Insert(0, game)
 
     member _.GetOneBeforeLastRemoveLastGame() : Game option =
-        let OneBeforeLast =
-            List.ofSeq history |> List.tryItem (1)
+        let OneBeforeLast = List.ofSeq history |> List.tryItem 1
 
         history.RemoveAt(0)
         OneBeforeLast
@@ -47,7 +45,8 @@ let gameApi =
                     Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
                 DartsGameHistory.AddGame(newGame)
-                printfn $"{nextStep}"
+                printfn $"{newGame}"
+
                 match nextStep with
                 | GameOn -> return RunGame, newGame
                 | LegOver -> return ShowResult, newGame

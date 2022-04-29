@@ -2,7 +2,9 @@
 
 open System
 open System.Text.RegularExpressions
+open FSharp.Control.Websockets
 open Shared
+open Shared.Helpers
 
 module Game =
     let getCurrentPlayerIndex (players: Player list) : int =
@@ -105,8 +107,11 @@ module Game =
         let nextStep =
             match currentPoints with
             | 0 ->
-                match Player.getLegs newPlayers with
-                | l when l.Length < game.Legs -> LegOver
+                match Player.getLegs newPlayers
+                      |> List.concat with
+                | l when l.Length < ((-)((*) game.Legs 2) 1)  ->
+                    printfn $"{l}"
+                    LegOver
                 | _ -> GameOver
             | _ -> GameOn
 

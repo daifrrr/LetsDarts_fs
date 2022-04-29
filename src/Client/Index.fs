@@ -12,6 +12,7 @@ type Msg =
     | GetThrow of string
     | GotThrow of State * Game
     | CloseShowResults
+    | EndGame
     | SwitchDoubleOut of bool
     | SwitchDoubleIn of bool
     | AddPlayer of Player
@@ -35,17 +36,13 @@ module State =
             |> List.map (fun p -> { p with Legs = [ { Leg.Default with CurrentScore = 100 } ] })
 
         let model =
-            { State = RunGame
-              Game =
-                { Game.Default with
-                    Mode = 100
-                    Legs = 1
-                    Players = initPlayers } }
+            { State = CreateGame
+              Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
-        let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
+        //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
 
-        model, cmd
+        model, Cmd.none
 
 
     let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
@@ -55,6 +52,11 @@ module State =
         | GetThrow t -> model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
         | GotThrow (s, g) -> { model with State = s; Game = g }, Cmd.none
         | CloseShowResults -> { model with State = RunGame }, Cmd.none
+        | EndGame ->
+            { model with
+                State = CreateGame
+                Game = Game.Default },
+            Cmd.none
         | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
         | SwitchDoubleIn b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
         | AddPlayer p ->
@@ -250,7 +252,7 @@ module Views =
                                 ]
                                 Svg.g [
                                     svg.id "gTransform"
-                                    svg.transform.matrix (1, 0, 0, -1, -1, 0)
+                                    svg.transform.matrix (1, 0, 0, 1, -1, 0)
                                     svg.children [
                                         Svg.g [
                                             // TODO: Seq<a'> Seq<b'> must have same length, check!
@@ -260,7 +262,7 @@ module Views =
                                                     svg.id (string "s0")
                                                     svg.cx 0
                                                     svg.cx 0
-                                                    svg.r 299
+                                                    svg.r 299 // TODO: ugly
                                                     svg.stroke "#bbbbbb"
                                                     svg.strokeWidth 2
                                                     svg.fill "#0"
@@ -309,6 +311,27 @@ module Views =
                                         ]
                                     ]
                                 ]
+                                (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
+                                ||> Seq.map2 (fun n a -> (n, a))
+                                |> Seq.indexed
+                                |> Seq.map (fun (i, (n, a)) ->
+                                    Svg.g [
+                                        svg.id "gText"
+                                        svg.children [
+                                            Svg.text [
+                                                svg.x 255
+                                                svg.y 225
+                                                svg.text n
+                                                svg.transform.rotate a
+                                                svg.textAnchor.middle
+                                                svg.fill "#ffffff"
+                                                svg.stroke "#000000"
+                                                svg.strokeWidth 1
+                                            ]
+                                    ]
+                                ])
+                                |> List.ofSeq
+                                |> Fable.React.Helpers.ofList
                             ]
                         ]
                     ]
@@ -518,14 +541,19 @@ module Views =
             ]
         ]
 
-    let showGameResult (model: Model) (dispatch: Msg -> unit) =
+    let showGameResult (phase: string) (dispatch: Msg -> unit) =
         Bulma.box [
             prop.children [
                 Html.p [ prop.textf "Finished" ]
                 Bulma.button.a [
                     color.isInfo
-                    prop.text "Close"
-                    prop.onClick (fun _ -> dispatch CloseShowResults)
+                    match phase with
+                    | "LegOver" ->
+                        prop.text "Close"
+                        prop.onClick (fun _ -> dispatch CloseShowResults)
+                    | _ ->
+                        prop.text "New Game"
+                        prop.onClick (fun _ -> dispatch EndGame)
                 ]
             ]
         ]
@@ -554,8 +582,8 @@ module Views =
                                     match model.State with
                                     | CreateGame -> createForm model dispatch
                                     | RunGame -> playGame model dispatch
-                                    | ShowResult -> showGameResult model dispatch
-                                    | FinishGame -> showGameResult model dispatch
+                                    | ShowResult -> showGameResult "LegOver" dispatch
+                                    | FinishGame -> showGameResult "GameOver" dispatch
                                 ]
                             ]
                             Bulma.column [
