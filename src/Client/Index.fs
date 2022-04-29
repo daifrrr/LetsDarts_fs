@@ -319,14 +319,17 @@ module Views =
                                         svg.id "gText"
                                         svg.children [
                                             Svg.text [
-                                                svg.x 255
-                                                svg.y 225
+                                                svg.id $"t{n}"
+                                                svg.x 0
+                                                svg.y -270 // TODO: ugly
                                                 svg.text n
-                                                svg.transform.rotate a
+                                                svg.fontSize 32.
+                                                match a with
+                                                | a when a > 90. && 270. > a  ->
+                                                    svg.transform.rotate 0.
+                                                | _ -> svg.transform.rotate a
                                                 svg.textAnchor.middle
                                                 svg.fill "#ffffff"
-                                                svg.stroke "#000000"
-                                                svg.strokeWidth 1
                                             ]
                                     ]
                                 ])
