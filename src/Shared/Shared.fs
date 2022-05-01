@@ -53,6 +53,13 @@ type Game =
               { Player.Default with Name = "Player2" } ] }
 
     static member getPlayers(g: Game) = g.Players
+    static member getCurrentPlayerIndex (players: Player list) : int =
+        let throwCounter =
+            Player.getLegs players
+            |> List.map (fun l -> l.Head.Records.Length)
+            |> List.reduce (fun acc l -> acc + l)
+
+        ((%) ((/) throwCounter 3) players.Length)
 
 module Route =
     let builder typeName methodName =

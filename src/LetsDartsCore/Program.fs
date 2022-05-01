@@ -2,19 +2,9 @@
 
 open System
 open System.Text.RegularExpressions
-open FSharp.Control.Websockets
 open Shared
-open Shared.Helpers
 
 module Game =
-    let getCurrentPlayerIndex (players: Player list) : int =
-        let throwCounter =
-            Player.getLegs players
-            |> List.map (fun l -> l.Head.Records.Length)
-            |> List.reduce (fun acc l -> acc + l)
-
-        ((%) ((/) throwCounter 3) players.Length)
-
     let parseThrow (throw: string) : (char * int) option =
         let r =
             Regex(@"^(?<character>[dst]{1})(?<number>\d{1,2})$", RegexOptions.IgnoreCase)
@@ -81,7 +71,7 @@ module Game =
 
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer = game.Players[(Game.getPlayers game |> getCurrentPlayerIndex)]
+        let currentPlayer = game.Players[(Game.getPlayers game |> Game.getCurrentPlayerIndex)]
 
         let currentPlayerLeg = Player.getCurrentLeg currentPlayer
 
