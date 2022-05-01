@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Server.Tests.fs" />
+    <Compile Include="LetsDartsCore.Tests.fs" />
     <Content Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Server\Server.fsproj" />
-    <ProjectReference Include="..\Shared\Shared.Tests.fsproj" />
+    <ProjectReference Include="..\..\src\LetsDartsCore\LetsDartsCore.fsproj" />
+    <ProjectReference Include="..\Server\Server.Tests.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

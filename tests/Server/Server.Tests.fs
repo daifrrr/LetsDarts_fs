@@ -5,23 +5,14 @@ open Expecto
 open Shared
 open Server
 
-// let server = testList "Server" [
-//     testCase "Adding valid Todo" <| fun _ ->
-//         let validTodo = Todo.create "TODO"
-//         let expectedResult = Ok ()
+let server = testList "Server" [
+     testCase "Server Dummy Test" <| fun _ ->
+         let expected = true
+         let actual = true
+         Expect.equal actual expected "Should be true"
+ ]
 
-//         let result = Router.Storage.addTodo validTodo
+let all = testList "All" [ Shared.Tests.shared; server ]
 
-//         Expect.equal result expectedResult "Result should be ok"
-//         Expect.contains Router.Storage.todos validTodo "Storage should contain new todo"
-// ]
-
-// let all =
-//     testList "All"
-//         [
-//             Shared.Tests.shared
-//             server
-//         ]
-
-// [<EntryPoint>]
-// let main _ = runTestsWithCLIArgs [] [||] all
+[<EntryPoint>]
+let main _ = runTestsWithCLIArgs [] [||] all
