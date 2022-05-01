@@ -1,4 +1,9 @@
-use:hover, circle:hover
+use:hover, circle:hover, rect:hover, text:hover
 {
-    fill: rgb(116, 116, 153);
+    fill: #58a6ff;
+}
+
+text:hover
+{
+    pointer-events: none;
 }

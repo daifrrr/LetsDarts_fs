@@ -131,6 +131,11 @@ open Feliz
 open Feliz.Bulma
 
 module Views =
+    let black = "#282a38"
+    let white = "#fde1d0"
+    let red = "#d95652"
+    let green = "#528b6e"
+    let background = "#38394d"
     let navBrand =
         Bulma.navbarBrand.div [
             Bulma.navbarItem.a [
@@ -148,13 +153,13 @@ module Views =
     let sections (fieldValue: int, angle: float) (color: string * string) =
         Svg.g [
             svg.id (string $"f{fieldValue}")
-            svg.transform.rotate -angle
+            svg.transform.rotate angle
             svg.children [
                 Svg.use' [
                     svg.id (string $"s{fieldValue}")
                     svg.href "#single"
-                    svg.height 400
-                    svg.width 400
+                    svg.height 500
+                    svg.width 500
                     svg.y 0
                     svg.x 0
                     svg.fill (fst color)
@@ -205,22 +210,22 @@ module Views =
                                     svg.children [
                                         Svg.path [
                                             svg.id "sSLICE"
-                                            svg.stroke "#bbbbbb"
-                                            svg.strokeWidth 2
+                                            svg.stroke background
+                                            svg.strokeWidth 1
                                             svg.d
                                                 "M 0 0 L 39.108616 246.922085 A 250 250 0 0 0 -39.108616 246.922085 L 0 0 Z"
                                         ]
                                         Svg.path [
                                             svg.id "dSLICE"
-                                            svg.stroke "#bbbbbb"
-                                            svg.strokeWidth 2
+                                            svg.stroke background
+                                            svg.strokeWidth 1
                                             svg.d
                                                 "M 31.286893 197.537668 L 39.108616 246.922085 A 250 250 0 0 1 -39.108616 246.922085 L -31.286893 197.537668 A 200 200 0 0 0 31.286893 197.537668 Z"
                                         ]
                                         Svg.path [
                                             svg.id "tSLICE"
-                                            svg.stroke "#bbbbbb"
-                                            svg.strokeWidth 2
+                                            svg.stroke background
+                                            svg.strokeWidth 1
                                             svg.d
                                                 "M 15.643447 98.768834 L 23.465169 148.153251 A 150 150 0 0 1 -23.465169 148.153251 L -15.643447 98.768834 A 100 100 0 0 0 15.643447 98.768834 Z"
                                         ]
@@ -252,30 +257,21 @@ module Views =
                                 ]
                                 Svg.g [
                                     svg.id "gTransform"
-                                    svg.transform.matrix (1, 0, 0, 1, -1, 0)
+                                    svg.transform.matrix (1, 0, 0, -1, -1, 0)
                                     svg.children [
                                         Svg.g [
                                             // TODO: Seq<a'> Seq<b'> must have same length, check!
                                             svg.id "dartboard"
                                             svg.children [
-                                                Svg.circle [
+                                                Svg.rect [
                                                     svg.id (string "s0")
-                                                    svg.cx 0
-                                                    svg.cx 0
-                                                    svg.r 299 // TODO: ugly
-                                                    svg.stroke "#bbbbbb"
-                                                    svg.strokeWidth 2
-                                                    svg.fill "#0"
-                                                    svg.onClick Events.handleClick
-                                                ]
-                                                Svg.circle [
-                                                    svg.id (string "d25")
-                                                    svg.cx 0
-                                                    svg.cx 0
-                                                    svg.r 25
-                                                    svg.stroke "#bbbbbb"
-                                                    svg.strokeWidth 2
-                                                    svg.fill "#ff0000"
+                                                    svg.x -300
+                                                    svg.y -300
+                                                    svg.width 600
+                                                    svg.height 600
+                                                    svg.stroke background
+                                                    svg.strokeWidth 1
+                                                    svg.fill background
                                                     svg.onClick Events.handleClick
                                                 ]
                                                 (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
@@ -283,18 +279,18 @@ module Views =
                                                 |> Seq.indexed
                                                 |> Seq.map (fun (i, (n, a)) ->
                                                     match i % 2 = 0 with
-                                                    | true -> sections (n, a) ("#0", "#ff0000")
-                                                    | _ -> sections (n, a) ("#ffffff", "#00ff00"))
+                                                    | true -> sections (n, a) (black, red)
+                                                    | _ -> sections (n, a) (white, green))
                                                 |> List.ofSeq
                                                 |> Fable.React.Helpers.ofList
                                                 Svg.circle [
                                                     svg.id (string "s25")
                                                     svg.cx 0
                                                     svg.cx 0
-                                                    svg.r 50
-                                                    svg.stroke "#bbbbbb"
-                                                    svg.strokeWidth 2
-                                                    svg.fill "#00ff00"
+                                                    svg.r 60
+                                                    svg.stroke background
+                                                    svg.strokeWidth 1
+                                                    svg.fill green
                                                     svg.onClick Events.handleClick
                                                 ]
                                                 Svg.circle [
@@ -302,15 +298,16 @@ module Views =
                                                     svg.cx 0
                                                     svg.cx 0
                                                     svg.r 25
-                                                    svg.stroke "#bbbbbb"
-                                                    svg.strokeWidth 2
-                                                    svg.fill "#ff0000"
+                                                    svg.stroke background
+                                                    svg.strokeWidth 1
+                                                    svg.fill red
                                                     svg.onClick Events.handleClick
                                                 ]
                                             ]
                                         ]
                                     ]
                                 ]
+//                                let getCoords
                                 (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
                                 ||> Seq.map2 (fun n a -> (n, a))
                                 |> Seq.indexed
@@ -321,18 +318,21 @@ module Views =
                                             Svg.text [
                                                 svg.id $"t{n}"
                                                 svg.x 0
-                                                svg.y -270 // TODO: ugly
+                                                svg.y 0 // TODO: ugly
                                                 svg.text n
-                                                svg.fontSize 32.
-                                                match a with
-                                                | a when a > 90. && 270. > a  ->
-                                                    svg.transform.rotate 0.
-                                                | _ -> svg.transform.rotate a
                                                 svg.textAnchor.middle
-                                                svg.fill "#ffffff"
-                                            ]
-                                    ]
-                                ])
+                                                svg.fontSize 32
+                                                svg.custom ("font-family", "sans-serif")
+                                                match a with
+                                                | a when a > 90. && 270. > a ->
+                                                    svg.custom ("transform", $"rotate({-360. + a}, 0, 0) translate(0, -277) scale(-1, -1)")
+                                                | _ ->
+                                                    svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
+                                                svg.textAnchor.middle
+                                                svg.fill white
+                                                ]
+                                        ]
+                                    ])
                                 |> List.ofSeq
                                 |> Fable.React.Helpers.ofList
                             ]
