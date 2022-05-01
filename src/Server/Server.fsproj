@@ -6,13 +6,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="paket.references" />
-    <Content Include="LetsDartsCore\LetsDartsCore.fsproj" />
-    <Compile Include="LetsDartsCore\Program.fs" />
     <Compile Include="Router.fs" />
     <Compile Include="Server.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />
+    <ProjectReference Include="..\LetsDartsCore\LetsDartsCore.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
