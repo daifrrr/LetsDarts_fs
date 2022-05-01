@@ -1,6 +1,8 @@
 namespace Index
 
+open Client.Components
 open Elmish
+open Elmish.ReactNative
 open Fable.Remoting.Client
 open Shared
 
@@ -57,7 +59,7 @@ module State =
                 State = CreateGame
                 Game = Game.Default },
             Cmd.none
-        | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
+        | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleOut = b } }, Cmd.none
         | SwitchDoubleIn b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
         | AddPlayer p ->
             { model with
@@ -65,7 +67,9 @@ module State =
                     { model.Game with
                         Players =
                             model.Game.Players
-                            @ [ { p with Name = $"Player%d{model.Game.Players.Length + 1}" } ] } },
+                            @ [ { p with
+                                    Name = $"Player%d{model.Game.Players.Length + 1}"
+                                    Legs = [ { Leg.Default with CurrentScore = model.Game.Mode } ] } ] } },
             Cmd.none
         | ChangePlayername (index, name) ->
             let newPlayerList =
@@ -136,6 +140,7 @@ module Views =
     let red = "#d95652"
     let green = "#528b6e"
     let background = "#38394d"
+
     let navBrand =
         Bulma.navbarBrand.div [
             Bulma.navbarItem.a [
@@ -153,7 +158,7 @@ module Views =
     let sections (fieldValue: int, angle: float) (color: string * string) =
         Svg.g [
             svg.id (string $"f{fieldValue}")
-            svg.transform.rotate angle
+            svg.transform.rotate -angle
             svg.children [
                 Svg.use' [
                     svg.id (string $"s{fieldValue}")
@@ -307,7 +312,7 @@ module Views =
                                         ]
                                     ]
                                 ]
-//                                let getCoords
+                                //                                let getCoords
                                 (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
                                 ||> Seq.map2 (fun n a -> (n, a))
                                 |> Seq.indexed
@@ -325,12 +330,14 @@ module Views =
                                                 svg.custom ("font-family", "sans-serif")
                                                 match a with
                                                 | a when a > 90. && 270. > a ->
-                                                    svg.custom ("transform", $"rotate({-360. + a}, 0, 0) translate(0, -277) scale(-1, -1)")
-                                                | _ ->
-                                                    svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
+                                                    svg.custom (
+                                                        "transform",
+                                                        $"rotate({-360. + a}, 0, 0) translate(0, -277) scale(-1, -1)"
+                                                    )
+                                                | _ -> svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
                                                 svg.textAnchor.middle
                                                 svg.fill white
-                                                ]
+                                            ]
                                         ]
                                     ])
                                 |> List.ofSeq
@@ -435,67 +442,6 @@ module Views =
             ]
         ]
 
-    let player (p: Player) (dispatch: Msg -> unit) =
-        let filledList =
-            match (Player.getCurrentLeg p).Records with
-            | [] -> [ " "; " "; " " ]
-            | r ->
-                match r.Length % 3 with
-                | 0 ->
-                    r
-                    |> List.take 3
-                    |> List.map (fun (c, n) -> $"%c{c}%d{n}")
-                | c ->
-                    (List.replicate ((-) 3 c) " "
-                     @ (r
-                        |> List.take c
-                        |> List.map (fun (c, n) -> $"%c{c}%d{n}")))
-                    |> List.rev
-
-        Bulma.container [
-            prop.children [
-                Bulma.columns [
-                    Bulma.column [
-                        column.is3
-                        prop.children [
-                            Bulma.text.span (sprintf "\u2300")
-                        ]
-                    ]
-                    Bulma.column [
-                        column.is6
-                        text.hasTextCentered
-                        prop.children [ Bulma.text.span p.Name ]
-                    ]
-                    Bulma.column [
-                        column.is3
-                        prop.children [
-                            Bulma.text.span p.Legs.Head.CurrentScore
-                        ]
-                    ]
-                ]
-                Bulma.columns [
-                    filledList
-                    |> List.map (fun s ->
-                        Bulma.column [
-                            column.is4
-                            prop.children [
-                                Bulma.tag [
-                                    prop.style [
-                                        style.width (length.percent 100)
-                                        style.marginBottom 5
-                                    ]
-                                    tag.isLarge
-                                    tag.isRounded
-                                    color.hasBackgroundGreyLight
-                                    prop.text $"%s{s}"
-                                ]
-                            ]
-                        ])
-                    |> Fable.React.Helpers.ofList
-                ]
-            ]
-        ]
-
     let playGame (model: Model) (dispatch: Msg -> unit) =
         let currentLeg =
             Player.getLegs model.Game.Players
@@ -529,9 +475,7 @@ module Views =
                                 prop.text $"D/O: {model.Game.DoubleIn}"
                             ]
                         ]
-                        model.Game.Players
-                        |> List.map (fun p -> player p dispatch)
-                        |> Fable.React.Helpers.ofList
+                        Player.renderPlayers model.Game.Players
                         Bulma.column [
                             Bulma.button.a [
                                 color.isInfo

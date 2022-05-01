@@ -7,3 +7,9 @@ text:hover
 {
     pointer-events: none;
 }
+
+.player-active
+{
+    background-color: #282938;
+    color: white;
+}
