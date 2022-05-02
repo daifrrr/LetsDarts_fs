@@ -67,6 +67,7 @@ module Game =
             | true, (DoubleOutFail, l) -> endRecordResetLastThrows l
             | true, (GameOver, l) -> prependThrow l t
             | _, (GameOn, l) -> prependThrow l t
+            // TODO: no doubleIN; noDoubleOut
             | _ -> failwith "ruleset validation failed"
 
 

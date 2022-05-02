@@ -51,7 +51,8 @@ module State =
         match msg with
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         | ChangeGameState (s, g) -> { model with State = s; Game = g }, Cmd.none
-        | GetThrow t -> model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
+        | GetThrow t -> Browser.Dom.console.log(Game.getCurrentPlayerIndex model.Game.Players)
+                        model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
         | GotThrow (s, g) -> { model with State = s; Game = g }, Cmd.none
         | CloseShowResults -> { model with State = RunGame }, Cmd.none
         | EndGame ->
@@ -122,7 +123,6 @@ module Events =
         let evm = ev |> unbox<Browser.Types.MouseEvent>
 
         let id = evm.target |> unbox<Browser.Types.Element>
-
         Browser.Dom.console.log (id.getAttribute "id")
         mapEvent.Trigger(GetThrow(id.getAttribute "id"))
 
@@ -327,7 +327,7 @@ module Views =
                                                 svg.text n
                                                 svg.textAnchor.middle
                                                 svg.fontSize 32
-                                                svg.custom ("font-family", "sans-serif")
+                                                svg.custom ("fontFamily", "sans-serif")
                                                 match a with
                                                 | a when a > 90. && 270. > a ->
                                                     svg.custom (
