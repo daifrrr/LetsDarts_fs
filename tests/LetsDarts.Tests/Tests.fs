@@ -1,7 +1,8 @@
 module Tests
 
-open System
+
 open Xunit
+open FsUnit.Xunit
 open LetsDartsCore
 open Shared
 
@@ -10,7 +11,8 @@ let ``Current Player of Game.Default Should Be Player with Index 0`` () =
     let expected = 0
     let actual = Game.getCurrentPlayerIndex Game.Default.Players
 
-    Assert.Equal(expected, actual)
+    actual |> should equal expected
+
 
 [<Fact>]
 let ``Current Player Should Be Player with Index 1 When Player With Index 0 Had First Record``() =
@@ -72,11 +74,31 @@ let ``Test DoubleIn List is filled with zero throws`` () =
         Leg.Default with CurrentScore = 461; Records = ['s', 0; 's', 0; 's', 0; 's', 0; 's', 0]
     }
     let _, a = expected
-    let actual = Game.validateDoubleIn { a with CurrentScore = 501 } ('d', 40)
-    Assert.Equal(expected, actual)
+    let actual = ({ a with CurrentScore = 501 }, ('d', 40)) ||>Game.validateDoubleIn
+    actual |> should equal expected
 
 [<Fact>]
 let ``Test DoubleIn Player Throws Not a Double`` () =
     let expected = DoubleInFail, Leg.Default
     let actual = Game.validateDoubleIn Leg.Default ('s', 2)
-    Assert.Equal(expected, actual)
+    actual |> should equal expected
+
+[<Fact>]
+let ``Test DoubleOut Success`` () =
+    let expected = GameOver, { Leg.Default with CurrentScore = 0 }
+    let actual = ({Leg.Default with CurrentScore = 20}, ('d', 20))
+                 ||> Game.validateDoubleOut
+    actual |> should equal expected
+
+[<Fact>]
+let ``Test DoubleOut Fail`` () =
+    let expected = DoubleOutFail, { Leg.Default with CurrentScore = 40 }
+    let actual = (expected |> snd, ('s', 40))
+                 ||> Game.validateDoubleOut
+    actual |> should equal expected
+
+let ``Test DoubleOut`` () =
+    let expected = GameOn, { Leg.Default with CurrentScore = 40 }
+    let actual = ({ Leg.Default with CurrentScore = 20 }, ('s', 20))
+                 ||> Game.validateDoubleOut
+    actual |> should equal expected
