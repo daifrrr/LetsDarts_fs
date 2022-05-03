@@ -4,6 +4,7 @@ storage: none
 
 nuget Expecto.VisualStudio.TestAdapter 10.0.2
 nuget Fable.Remoting.Giraffe
+nuget FsUnit.xUnit 5.0.0
 nuget Microsoft.NET.Test.Sdk
 nuget Saturn prerelease
 nuget Expecto
