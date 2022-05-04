@@ -94,6 +94,7 @@ type IGameApi =
       sendThrow: string -> Async<State * Game>
       undo: unit -> Async<Game> }
 
+[<AutoOpen>]
 module Constants =
     let DARTNUMBERS =
         seq {
@@ -118,3 +119,10 @@ module Constants =
             12
             5
         }
+    [<AutoOpen>]
+    module Colors =
+        let BLACK = "#282a38"
+        let WHITE = "#fde1d0"
+        let RED = "#d95652"
+        let GREEN = "#528b6e"
+        let BACKGROUND = "#38394d"
