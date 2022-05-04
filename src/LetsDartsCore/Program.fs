@@ -66,9 +66,17 @@ module Game =
             // TODO: no doubleIN; noDoubleOut
             | _ -> failwith "ruleset validation failed"
 
+    let getCurrentPlayerIndex (players: Player list) : int =
+        let throwCounter =
+            Player.getLegsPerPlayer players
+            |> List.map (fun l -> l.Head.Records.Length)
+            |> List.reduce (fun acc l -> acc + l)
+
+        ((%) ((/) throwCounter 3) players.Length)
+
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer = game.Players[(Game.getPlayers game |> Game.getCurrentPlayerIndex)]
+        let currentPlayer = game.Players[(Game.getPlayers game |> getCurrentPlayerIndex)]
 
         let currentPlayerLeg = Player.getCurrentLeg currentPlayer
 
@@ -94,7 +102,7 @@ module Game =
         let nextStep =
             match currentPoints with
             | 0 ->
-                match Player.getLegs newPlayers
+                match Player.getLegsPerPlayer newPlayers
                       |> List.concat with
                 | l when l.Length < ((-)((*) game.Legs 2) 1)  ->
                     printfn $"{l}"
