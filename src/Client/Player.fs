@@ -6,7 +6,7 @@ open Shared
 
 module Player =
     let renderPlayers (p: Player list) =
-            let currentPlayer = Game.getCurrentPlayerIndex p
+            let currentPlayer = 0
             let filledList =
                 p |>
                 List.map (fun p ->
@@ -17,12 +17,12 @@ module Player =
                         | 0 ->
                             r
                             |> List.take 3
-                            |> List.map (fun (c, n) -> $"%c{c}%d{n}")
+                            |> List.map (fun s -> $"%s{s |> Shot.ToString}")
                         | c ->
                             (List.replicate ((-) 3 c) " "
                              @ (r
                                 |> List.take c
-                                |> List.map (fun (c, n) -> $"%c{c}%d{n}")))
+                                |> List.map (fun s -> $"%s{s |> Shot.ToString}")))
                             |> List.rev
                 )
             p

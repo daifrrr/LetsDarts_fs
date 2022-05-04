@@ -8,8 +8,8 @@ open Elmish.Debug
 open Elmish.HMR
 #endif
 
-Program.mkProgram Index.State.init Index.State.update Index.Views.view
-|> Program.withSubscription Index.Events.mapEventSubscription
+Program.mkProgram Client.State.init Client.State.update Client.Views.view
+|> Program.withSubscription Client.Events.Sub.mapEventSubscription
 #if DEBUG
 |> Program.withConsoleTrace
 #endif
