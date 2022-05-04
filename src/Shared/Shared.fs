@@ -24,6 +24,8 @@ type Shot(factor: Factor, value: int) =
                          | Single -> 1 * this.Value
                          | Double -> 2 * this.Value
                          | Triple -> 3 * this.Value
+
+    static member ZERO = Shot(Single, 0)
     static member ToString (r:Shot): string =
         match r.Factor with
         | Single -> $"{r.Value}"
@@ -43,7 +45,13 @@ type Leg =
       Records: Shot list }
 
     static member Default =
-        { CurrentScore = 501; Records = [] }
+        { CurrentScore = 0; Records = [] }
+
+    static member calcCurrentScore(l:Leg):int =
+        match l.Records with
+        | [] -> 0
+        | s -> (s, 0) ||> List.foldBack(fun s acc -> s.Result + acc)
+
 
 type Player =
     { Name: string
@@ -52,9 +60,10 @@ type Player =
         { Name = "Player"
           Legs = [ Leg.Default ] }
 
-    static member getLeg(p: Player) = p.Legs
-    static member getLegs(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
+    static member getLegForPlayer(p: Player) = p.Legs
+    static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
+    static member getLegs(pl: Player list) = pl |> List.map (fun pl -> pl.Legs) |> List.concat
 
 type Game =
     { Id: Guid
@@ -75,29 +84,15 @@ type Game =
               { Player.Default with Name = "Player2" } ] }
 
     static member getPlayers(g: Game) = g.Players
-    static member getCurrentPlayerIndex (players: Player list) : int =
-        let throwCounter =
-            Player.getLegs players
-            |> List.map (fun l -> l.Head.Records.Length)
-            |> List.reduce (fun acc l -> acc + l)
-
-        ((%) ((/) throwCounter 3) players.Length)
 
 module Route =
     let builder typeName methodName =
-        sprintf "/api/%s/%s" typeName methodName
+        $"/api/%s{typeName}/%s{methodName}"
 
 type IGameApi =
     { initGame: Game -> Async<State * Game>
       sendThrow: string -> Async<State * Game>
       undo: unit -> Async<Game> }
-
-module DartGame =
-    let DefaultLeg = Leg.Default
-
-    let DefaultPlayer = Player.Default
-
-    let DefaultGame = Game.Default
 
 module Constants =
     let DARTNUMBERS =
