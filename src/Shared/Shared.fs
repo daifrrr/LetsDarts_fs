@@ -16,9 +16,31 @@ type RuleSet =
     | DoubleInSuccess
     | DoubleOutFail
 
+type Factor = | Single | Double | Triple
+type Shot(factor: Factor, value: int) =
+    member this.Factor = factor
+    member this.Value = value
+    member this.Result = match factor with
+                         | Single -> 1 * this.Value
+                         | Double -> 2 * this.Value
+                         | Triple -> 3 * this.Value
+    static member ToString (r:Shot): string =
+        match r.Factor with
+        | Single -> $"{r.Value}"
+        | Double -> $"D{r.Value}"
+        | Triple -> $"T{r.Value}"
+
+    override x.GetHashCode() =
+        hash (factor, value)
+    override x.Equals(s) =
+        match s with
+        | :? Shot as p -> (factor, value) = (p.Factor, p.Value)
+        | _ -> false
+
+
 type Leg =
     { CurrentScore: int
-      Records: (char * int) list }
+      Records: Shot list }
 
     static member Default =
         { CurrentScore = 501; Records = [] }
