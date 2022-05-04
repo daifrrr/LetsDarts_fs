@@ -5,22 +5,18 @@ open System.Text.RegularExpressions
 open Shared
 
 module Game =
-    let parseThrow (throw: string) : (char * int) option =
+    let parseThrow (throw: string) : Shot option =
         let r =
             Regex(@"^(?<character>[dst]{1})(?<number>\d{1,2})$", RegexOptions.IgnoreCase)
 
         let m = r.Match(throw.ToLower())
 
         match (m.Success, Char.TryParse m.Groups["character"].Value, Int32.TryParse m.Groups["number"].Value) with
-        | true, (true, c), (true, n) -> Some(c, n)
+        | true, (true, c), (true, n) -> match c with
+                                        | 's' -> Some(Shot(Single, n))
+                                        | 'd' -> Some(Shot(Double, n))
+                                        | _ -> Some(Shot(Triple, n))
         | _, (_, _), (_, _) -> None
-
-    let thrownPoints t =
-        match t with
-        | c, n when c = 's' -> (c, 1 * n)
-        | c, n when c = 'd' -> (c, 2 * n)
-        | c, n when c = 't' -> (c, 3 * n)
-        | _ -> ('s', 0)
 
     let prependThrow l t = { l with Records = [ t ] @ l.Records }
 
@@ -35,35 +31,35 @@ module Game =
         let resetScore =
             l.Records
             |> List.take numberOfToDeleteFromRecord
-            |> List.fold (fun s t -> s + snd (thrownPoints t)) 0
+            |> List.fold (fun s t -> s + t.Result) 0
 
         { l with
             CurrentScore = ((+) l.CurrentScore resetScore)
-            Records = List.replicate 3 ('s', 0) @ oldRecord }
+            Records = List.replicate 3 (Shot(Single, 0)) @ oldRecord }
 
-    let validateDoubleIn l (c, n) =
-        match l, (c, n) with
-        | l, (c, n) when c = 'd' && l.Records |> List.isEmpty ->
-            (DoubleInSuccess, { l with CurrentScore = ((-) l.CurrentScore n) })
-        | l, (c, n) when
-            c = 'd'
-            && l.Records |> List.forall (fun e -> e = ('s', 0))
+    let validateDoubleIn l (r:Shot) =
+        match l, r with
+        | l, r when r.Factor = Double && l.Records |> List.isEmpty ->
+            (DoubleInSuccess, { l with CurrentScore = ((-) l.CurrentScore r.Result) })
+        | l, r when
+            r.Factor = Double
+            && l.Records |> List.forall (fun e -> e = (Shot(Single, 0)))
             ->
-            (DoubleInSuccess, { l with CurrentScore = ((-) l.CurrentScore n) })
-        | _, (_, _) -> (DoubleInFail, l)
+            (DoubleInSuccess, { l with CurrentScore = ((-) l.CurrentScore r.Result) })
+        | _, r -> (DoubleInFail, l)
 
-    let validateDoubleOut l (c, n) =
-        match l, (c, n) with
-        | l, (c, n) when c = 'd' && ((-) l.CurrentScore n) = 0 -> (GameOver, { l with CurrentScore = 0 })
-        | l, (_, n) when ((-) l.CurrentScore n) < 2 -> (DoubleOutFail, l)
-        | _ -> (GameOn, { l with CurrentScore = ((-) l.CurrentScore n) })
+    let validateDoubleOut l (r:Shot) =
+        match l, r with
+        | l, r when r.Factor = Double && ((-) l.CurrentScore r.Result) = 0 -> (GameOver, { l with CurrentScore = 0 })
+        | l, r when ((-) l.CurrentScore r.Result) < 2 -> (DoubleOutFail, l)
+        | _ -> (GameOn, { l with CurrentScore = ((-) l.CurrentScore r.Result) })
 
-    let applyGameLogic l t (dblI, dblO) =
-        match (dblI, validateDoubleIn l (thrownPoints t)) with
+    let applyGameLogic l (t:Shot) (dblI, dblO) =
+        match (dblI, validateDoubleIn l t) with
         | true, (DoubleInSuccess, l) -> prependThrow l t
-        | true, (DoubleInFail, l) -> prependThrow l ('s', 0)
+        | true, (DoubleInFail, l) -> prependThrow l (Shot(Single, 0))
         | _ ->
-            match (dblO, validateDoubleOut l (thrownPoints t)) with
+            match (dblO, validateDoubleOut l t) with
             | true, (DoubleOutFail, l) -> endRecordResetLastThrows l
             | true, (GameOver, l) -> prependThrow l t
             | _, (GameOn, l) -> prependThrow l t
@@ -83,7 +79,7 @@ module Game =
 
         let currentPoints =
             state.Records
-            |> List.fold (fun m t -> m - snd (thrownPoints t)) game.Mode
+            |> List.fold (fun m t -> m - t.Result) game.Mode
 
         let players = Game.getPlayers game
 
