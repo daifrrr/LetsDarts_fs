@@ -1,6 +1,6 @@
 ﻿module Shared.Helpers
 
-open System
+
 
 /// Log levels.
 let Error = 0
@@ -37,4 +37,3 @@ let logUsing (logger: ILogger) = logger.Log
 
 /// Logs a message using the default logger.
 let log level message = logUsing DefaultLogger level message
-
