@@ -7,12 +7,19 @@
     <ItemGroup>
         <None Include="index.html" />
         <None Include="paket.references" />
-        <Compile Include="Components\Player.fs" />
+        <Compile Include="Types.fs" />
+        <Compile Include="Events.fs" />
+        <Compile Include="Form.fs" />
+        <Compile Include="Player.fs" />
+        <Compile Include="Dartboard.fs" />
         <Compile Include="Index.fs" />
         <Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Shared\Shared.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="public\style.scss" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
