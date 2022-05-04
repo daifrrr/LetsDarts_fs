@@ -1,15 +1,26 @@
-use:hover, circle:hover, rect:hover, text:hover
-{
-    fill: #58a6ff;
+:root {
+  --backgroundColor: #010304 ;
 }
 
-text:hover
-{
-    pointer-events: none;
+body {
+  background-color: var(--backgroundColor);
 }
 
-.player-active
-{
-    background-color: #282938;
-    color: white;
+div.ente {
+  color: blue;
 }
+
+use:hover, circle:hover, rect:hover, text:hover {
+  fill: #58a6ff;
+}
+
+text:hover {
+  pointer-events: none;
+}
+
+.player-active {
+  background-color: #282938;
+  color: white;
+}
+
+/*# sourceMappingURL=style.css.map */
