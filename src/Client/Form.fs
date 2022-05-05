@@ -23,7 +23,7 @@ module Form =
                                         Html.option 301
                                         Html.option 501
                                     ]
-                                    prop.onChange (Client.Types.ChangeMode >> dispatch)
+                                    prop.onChange (ChangeMode >> dispatch)
                                 ]
                             ]
                             Bulma.column [
