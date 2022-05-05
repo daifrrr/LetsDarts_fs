@@ -194,3 +194,28 @@ module TypesTests =
 
         let actual = Game.Default |> Game.getPlayers
         actual |> should equal expected
+
+    [<Fact>]
+    let ``Test Game add new Leg to Game.Players`` () =
+        let expected = 2
+        let actual = Game.Default |> Game.addNewLeg
+        let actualCurrentLeg = actual |> Game.getCurrentLeg
+        for p in actual.Players do
+            p.Legs.Length |> should equal expected
+        actualCurrentLeg |> should equal expected
+        let actual2 = actual |> Game.addNewLeg
+        let actualCurrentLeg2 = actual2 |> Game.getCurrentLeg
+        for p in actual2.Players do
+            p.Legs.Length |> should equal ((+) expected 1)
+        actualCurrentLeg2 |> should equal ((+) expected 1)
+
+    [<Fact>]
+    let ``Test Game add new Leg to Game.Players with loop`` () =
+        let rec addLegToGame counter (g: Game) =
+            (g |> Game.getCurrentLeg) |> should equal counter
+            match counter with
+            | 19 -> 0
+            | n -> for p in g.Players do
+                       p.Legs.Length |> should equal n
+                   addLegToGame ((+) counter 1) (g |> Game.addNewLeg)
+        addLegToGame 1 Game.Default
