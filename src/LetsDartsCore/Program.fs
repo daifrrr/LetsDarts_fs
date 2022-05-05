@@ -5,19 +5,6 @@ open System.Text.RegularExpressions
 open Shared
 
 module Game =
-    let parseThrow (throw: string) : Shot option =
-        let r =
-            Regex(@"^(?<character>[dst]{1})(?<number>\d{1,2})$", RegexOptions.IgnoreCase)
-
-        let m = r.Match(throw.ToLower())
-
-        match (m.Success, Char.TryParse m.Groups["character"].Value, Int32.TryParse m.Groups["number"].Value) with
-        | true, (true, c), (true, n) -> match c with
-                                        | 's' -> Some(Shot(Single, n))
-                                        | 'd' -> Some(Shot(Double, n))
-                                        | _ -> Some(Shot(Triple, n))
-        | _, (_, _), (_, _) -> None
-
     let prependThrow l t = { l with Records = [ t ] @ l.Records }
 
     let endRecordResetLastThrows l =
