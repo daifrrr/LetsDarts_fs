@@ -56,9 +56,9 @@ module GameLogic =
         let expected1 = Some(Shot(Single, 12))
         let expected2 = Some(Shot(Double, 12))
         let expected3 = Some(Shot(Triple, 12))
-        let actual1 = Game.parseThrow "s12"
-        let actual2 = Game.parseThrow "d12"
-        let actual3 = Game.parseThrow "t12"
+        let actual1 = Parser.parseThrow "s12"
+        let actual2 = Parser.parseThrow "d12"
+        let actual3 = Parser.parseThrow "t12"
         actual1 |> should equal expected1
         actual1.Value.Result |> should equal 12
         actual2 |> should equal expected2
@@ -66,10 +66,10 @@ module GameLogic =
         actual3 |> should equal expected3
         actual3.Value.Result |> should equal 36
         let expected4 = None
-        let actual4 = Game.parseThrow "s123"
+        let actual4 = Parser.parseThrow "s123"
         actual4 |> should equal expected4
         let expected5 = None
-        let actual5 = Game.parseThrow "v12"
+        let actual5 = Parser.parseThrow "v12"
         actual5 |> should equal expected5
 
     [<Fact(Skip = "skip for now")>]
