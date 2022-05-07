@@ -2,9 +2,9 @@ source https://api.nuget.org/v3/index.json
 framework: net6.0
 storage: none
 
-nuget Expecto.VisualStudio.TestAdapter 10.0.2
+nuget Expecto.VisualStudio.TestAdapter
 nuget Fable.Remoting.Giraffe
-nuget FsUnit.xUnit 5.0.0
+nuget FsUnit.xUnit
 nuget Microsoft.NET.Test.Sdk
 nuget Saturn prerelease
 nuget Expecto
