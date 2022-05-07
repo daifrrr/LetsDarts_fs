@@ -5,30 +5,18 @@ open Feliz.Bulma
 open Shared
 
 module Player =
-    let renderPlayers (p: Player list) =
-            let currentPlayer = 0
+    let renderPlayers (g: Game) =
+            let p = g |> Game.getPlayers
+            let currentPlayerIndex = g |> Game.getCurrentPlayerIndex
             let filledList =
                 p |>
                 List.map (fun p ->
-                    match (Player.getCurrentLeg p).Records with
-                    | [] -> [ " "; " "; " " ]
-                    | r ->
-                        match r.Length % 3 with
-                        | 0 ->
-                            r
-                            |> List.take 3
-                            |> List.map (fun s -> $"%s{s |> Shot.ToString}")
-                        | c ->
-                            (List.replicate ((-) 3 c) " "
-                             @ (r
-                                |> List.take c
-                                |> List.map (fun s -> $"%s{s |> Shot.ToString}")))
-                            |> List.rev
+                    (p |> Player.getCurrentLeg).Records |> List.rev |> List.chunkBySize 3
                 )
             p
             |> List.mapi (fun i p ->
                 Bulma.container [
-                    match i = currentPlayer with
+                    match i = currentPlayerIndex with
                     | true -> prop.className "player-active"
                     | _ -> prop.className "player-inactive"
                     prop.children [

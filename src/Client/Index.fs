@@ -123,7 +123,7 @@ module Views =
                                 prop.text $"D/O: {model.Game.DoubleIn}"
                             ]
                         ]
-                        Player.renderPlayers model.Game.Players
+                        Player.renderPlayers model.Game
                         Bulma.column [
                             Bulma.button.a [
                                 color.isInfo
@@ -176,6 +176,7 @@ module Views =
                                 prop.children [
                                     match model.State with
                                     | CreateGame -> createForm model dispatch
+                                    // | SortPlayers ->
                                     | RunGame -> playGame model dispatch
                                     | ShowResult -> showGameResult "LegOver" dispatch
                                     | FinishGame -> showGameResult "GameOver" dispatch
