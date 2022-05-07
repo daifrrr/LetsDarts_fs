@@ -51,7 +51,8 @@ type Leg =
     { CurrentScore: int
       Records: Shot list }
 
-    static member Default = { CurrentScore = 0; Records = [] }
+    static member Default =
+        { CurrentScore = 0; Records = [] }
 
     static member calcCurrentScore(s: Shot list) : int =
         match s with
@@ -71,6 +72,7 @@ type Player =
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
+
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
 
@@ -104,16 +106,38 @@ type Game =
                 players
                 |> List.map (fun p -> { p with Legs = [ Leg.Default ] @ p.Legs }) }
 
-    static member getCurrentLegNumber(g: Game): int =
-        let allLegsSum = (0, g.Players)
-                         ||> List.fold (fun acc p -> acc + p.Legs.Length)
+    static member getCurrentLegNumber(g: Game) : int =
+        let allLegsSum =
+            (0, g.Players)
+            ||> List.fold (fun acc p -> acc + p.Legs.Length)
+
         ((/) allLegsSum g.Players.Length)
 
     static member isFinished(g: Game) =
-        g |> Game.getPlayers
+        g
+        |> Game.getPlayers
         |> Player.getLegsPerPlayer
         |> List.map (fun r -> r |> List.sumBy (fun r -> r.CurrentScore))
         |> List.contains (g.Mode * g.Legs)
+
+    static member getCurrentPlayerIndex(g: Game) : int =
+        let throwCounter =
+            g
+            |> Game.getPlayers
+            |> Player.getLegsPerPlayer
+            |> List.map (fun l -> l.Head.Records.Length)
+            |> List.reduce (fun acc l -> acc + l)
+
+        let currentLeg = Game.getCurrentLegNumber g
+        let roundCounter = ((/) throwCounter 3)
+        ((%) ((-) ((+) roundCounter currentLeg) 1) g.Players.Length)
+
+    static member getCurrentPlayer(g: Game) : Player =
+        (g |> Game.getPlayers)[g |> Game.getCurrentPlayerIndex]
+
+
+
+
 
 module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
