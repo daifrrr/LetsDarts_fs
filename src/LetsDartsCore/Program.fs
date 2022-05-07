@@ -39,35 +39,23 @@ module Game =
     let applyGameLogic l (s: Shot) g =
         let newLeg = prependThrow l s
 
-        match (g.Mode, newLeg |> Leg.calcCurrentScore) ||> (-) with
+        match (g.Mode, newLeg.Records |> Leg.calcCurrentScore) ||> (-) with
         | 0 when g.DoubleOut ->
             match validateDoubleOut s with
-            | GameOver -> { newLeg with CurrentScore = newLeg |> Leg.calcCurrentScore }
+            | GameOver -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
             | _ -> replaceLast_1_to_3_ShotsWithShotZERO l
-        | 0 when g.DoubleOut |> not -> { newLeg with CurrentScore = newLeg |> Leg.calcCurrentScore }
+        | 0 when g.DoubleOut |> not -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
         | sc when 0 > sc && g.DoubleOut |> not -> replaceLast_1_to_3_ShotsWithShotZERO l
         | sc when 2 > sc && g.DoubleOut -> replaceLast_1_to_3_ShotsWithShotZERO l
         | sc when (g.Mode - s.Result) = sc && g.DoubleIn ->
             match validateDoubleIn s with
-            | DoubleInSuccess -> { newLeg with CurrentScore = newLeg |> Leg.calcCurrentScore }
+            | DoubleInSuccess -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
             | _ -> prependThrow l Shot.ZERO
-        | _ -> { newLeg with CurrentScore = newLeg |> Leg.calcCurrentScore }
-
-    let getThrowCounter players =
-        Player.getLegsPerPlayer players
-        |> List.map (fun l -> l.Head.Records.Length)
-        |> List.reduce (fun acc l -> acc + l)
-
-    let getCurrentPlayerIndex (players: Player list) : int =
-        ((%) ((/) (players |> getThrowCounter) 3) players.Length)
-
+        | _ -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer =
-            game.Players[(Game.getPlayers game |> getCurrentPlayerIndex)]
-
-        let currentPlayerLeg =
-            Player.getCurrentLeg currentPlayer
+        let currentPlayer = Game.getCurrentPlayer game
+        let currentPlayerLeg = currentPlayer |> Player.getCurrentLeg
 
         let currentThrow =
             match (throw |> parseThrow) with
@@ -77,41 +65,29 @@ module Game =
         let modifiedLeg =
             applyGameLogic currentPlayerLeg currentThrow game
 
-        (GameOn, game)
-        //        let currentPoints =
-//            modifiedLeg.Records
-//            |> List.fold (fun m s -> m - s.Result) game.Mode
-
-//        let players = Game.getPlayers game
-
-//        let newPlayers =
-//            players
-//            |> List.map (fun p ->
-//                match p = currentPlayer with
-//                | true -> { p with Legs = [ modifiedLeg ] @ p.Legs.Tail }
-//                | _ -> p)
+        let newPlayers =
+            game |> Game.getPlayers
+            |> List.map (fun p ->
+                match p = currentPlayer with
+                | true -> { p with Legs = [ modifiedLeg ] @ p.Legs.Tail }
+                | _ -> p)
 
 
-//        let nextStep =
-//            match currentPoints with
-//            | 0 ->
-//                match Player.getLegsPerPlayer newPlayers |> List.concat with
-//                | l when l.Length < ((-) ((*) game.Legs 2) 1) ->
-//                    printfn $"{l}"
-//                    LegOver
-//                | _ -> GameOver
-//            | _ -> GameOn
-//
-//        match nextStep with
-//        | LegOver ->
-//            (nextStep,
-//             { game with
-//                 Players =
-//                     newPlayers
-//                     |> List.map (fun p ->
-//                         { p with
-//                             Legs =
-//                                 [ { Leg.Default with CurrentScore = game.Mode } ]
-//                                 @ p.Legs }) })
-//        | GameOn -> (nextStep, { game with Players = newPlayers })
-//        | _ -> (nextStep, { game with Players = newPlayers })
+        let nextStep =
+            match currentPlayerLeg.Records |> Leg.calcCurrentScore with
+            | 0 -> if game |> Game.isFinished then GameOver else LegOver
+            | _ -> GameOn
+
+        match nextStep with
+        | LegOver ->
+            (nextStep,
+             { game with
+                 Players =
+                     newPlayers
+                     |> List.map (fun p ->
+                         { p with
+                             Legs =
+                                 [ { Leg.Default with CurrentScore = game.Mode } ]
+                                 @ p.Legs }) })
+        | GameOn -> (nextStep, { game with Players = newPlayers })
+        | _ -> (nextStep, { game with Players = newPlayers })
