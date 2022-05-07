@@ -94,7 +94,7 @@ module TypesTests =
         let expected = 0
 
         let actual =
-            Leg.Default |> Leg.calcCurrentScore
+            Leg.Default.Records |> Leg.calcCurrentScore
 
         actual |> should equal expected
 
@@ -103,7 +103,7 @@ module TypesTests =
         let expected = 55
 
         let actual =
-            { Leg.Default with Records = [ Shot(Single, 1); Shot(Triple, 18) ] }
+            [ Shot(Single, 1); Shot(Triple, 18) ]
             |> Leg.calcCurrentScore
 
         actual |> should equal expected
@@ -199,23 +199,74 @@ module TypesTests =
     let ``Test Game add new Leg to Game.Players`` () =
         let expected = 2
         let actual = Game.Default |> Game.addNewLeg
-        let actualCurrentLeg = actual |> Game.getCurrentLeg
+
+        let actualCurrentLeg =
+            actual |> Game.getCurrentLegNumber
+
         for p in actual.Players do
             p.Legs.Length |> should equal expected
+
         actualCurrentLeg |> should equal expected
         let actual2 = actual |> Game.addNewLeg
-        let actualCurrentLeg2 = actual2 |> Game.getCurrentLeg
+
+        let actualCurrentLeg2 =
+            actual2 |> Game.getCurrentLegNumber
+
         for p in actual2.Players do
             p.Legs.Length |> should equal ((+) expected 1)
+
         actualCurrentLeg2 |> should equal ((+) expected 1)
 
     [<Fact>]
     let ``Test Game add new Leg to Game.Players with loop`` () =
         let rec addLegToGame counter (g: Game) =
-            (g |> Game.getCurrentLeg) |> should equal counter
+            (g |> Game.getCurrentLegNumber)
+            |> should equal counter
+
             match counter with
             | 19 -> 0
-            | n -> for p in g.Players do
-                       p.Legs.Length |> should equal n
-                   addLegToGame ((+) counter 1) (g |> Game.addNewLeg)
+            | n ->
+                for p in g.Players do
+                    p.Legs.Length |> should equal n
+
+                addLegToGame ((+) counter 1) (g |> Game.addNewLeg)
+
         addLegToGame 1 Game.Default
+
+    [<Fact>]
+    let ``Test Game is Finished Success`` () =
+        let testPlayers =
+            [ { Player.Default with
+                  Name = "Player1"
+                  Legs =
+                      [ { Leg.Default with CurrentScore = 501 }
+                        { Leg.Default with CurrentScore = 501 }
+                        { Leg.Default with CurrentScore = 501 } ] }
+              { Player.Default with
+                  Name = "Player1"
+                  Legs =
+                      [ { Leg.Default with CurrentScore = 123 }
+                        { Leg.Default with CurrentScore = 456 }
+                        { Leg.Default with CurrentScore = 789 } ] } ]
+
+        let actual = { Game.Default with Players = testPlayers} |> Game.isFinished
+        actual |> should be True
+
+    [<Fact>]
+    let ``Test Game is Finished Fail`` () =
+        let testPlayers =
+            [ { Player.Default with
+                  Name = "Player1"
+                  Legs =
+                      [ { Leg.Default with CurrentScore = 499 }
+                        { Leg.Default with CurrentScore = 501 }
+                        { Leg.Default with CurrentScore = 501 } ] }
+              { Player.Default with
+                  Name = "Player1"
+                  Legs =
+                      [ { Leg.Default with CurrentScore = 123 }
+                        { Leg.Default with CurrentScore = 456 }
+                        { Leg.Default with CurrentScore = 789 } ] } ]
+
+        let actual = { Game.Default with Players = testPlayers} |> Game.isFinished
+        actual |> should be False
