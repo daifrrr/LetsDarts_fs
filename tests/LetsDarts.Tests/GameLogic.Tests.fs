@@ -157,21 +157,20 @@ module GameLogic =
 
         let rec appendLeg g (el: string list) =
             let expected = el.Head
-
             let actual =
                 (g |> Game.getCurrentPlayer).Name
 
             actual |> should equal expected
 
             match el with
-            | [] -> 0
+            | l when l.Length = 1 -> 0
             | _ ->
                 appendLeg
                     ({ g with Players = g |> Game.getPlayers }
                      |> Game.addNewLeg)
-                    expectedList.Tail
+                    el.Tail
 
-        appendLeg testGame |> ignore
+        0 |> should equal (appendLeg testGame expectedList)
 
 
     [<Fact>]
