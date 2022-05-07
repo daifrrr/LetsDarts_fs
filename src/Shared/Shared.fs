@@ -53,8 +53,8 @@ type Leg =
 
     static member Default = { CurrentScore = 0; Records = [] }
 
-    static member calcCurrentScore(l: Leg) : int =
-        match l.Records with
+    static member calcCurrentScore(s: Shot list) : int =
+        match s with
         | [] -> 0
         | s ->
             (s, 0)
@@ -71,9 +71,10 @@ type Player =
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
-
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
+
+
 
 type Game =
     { Id: Guid
@@ -103,10 +104,16 @@ type Game =
                 players
                 |> List.map (fun p -> { p with Legs = [ Leg.Default ] @ p.Legs }) }
 
-    static member getCurrentLeg(g: Game): int =
+    static member getCurrentLegNumber(g: Game): int =
         let allLegsSum = (0, g.Players)
                          ||> List.fold (fun acc p -> acc + p.Legs.Length)
         ((/) allLegsSum g.Players.Length)
+
+    static member isFinished(g: Game) =
+        g |> Game.getPlayers
+        |> Player.getLegsPerPlayer
+        |> List.map (fun r -> r |> List.sumBy (fun r -> r.CurrentScore))
+        |> List.contains (g.Mode * g.Legs)
 
 module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
