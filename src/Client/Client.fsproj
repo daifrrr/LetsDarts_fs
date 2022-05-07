@@ -19,7 +19,8 @@
         <ProjectReference Include="..\Shared\Shared.fsproj" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="public\style.scss" />
+      <Content Include="public\style.sass" />
+      <Content Include="public\variables.sass" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
