@@ -41,15 +41,6 @@ module TypesTests =
         |> should equal expectedString
 
     [<Fact>]
-    let ``Test Hash of Shot should be equal hash(shot.Factor, shot.Value)`` () =
-        let expected = hash (Double, 12)
-
-        let ShotHash =
-            Shot(Double, 12).GetHashCode()
-
-        ShotHash |> should equal expected
-
-    [<Fact>]
     let ``Test Shot Equality`` () =
         Shot(Single, 20).Equals(Some("Anything"))
         |> should be False
@@ -68,16 +59,13 @@ module TypesTests =
 
     [<Fact>]
     let ``Test ToString = First Char of Factor + Value`` () =
-        Shot(Single, 3)
-        |> Shot.ToString
+        Shot(Single, 3) |> ToString
         |> should equal "3"
 
-        Shot(Double, 2)
-        |> Shot.ToString
+        Shot(Double, 2) |> ToString
         |> should equal "D2"
 
-        Shot(Triple, 1)
-        |> Shot.ToString
+        Shot(Triple, 1) |> ToString
         |> should equal "T1"
 
 
