@@ -74,7 +74,7 @@ module Game =
 
 
         let nextStep =
-            match currentPlayerLeg.Records |> Leg.calcCurrentScore with
+            match ((-) game.Mode (modifiedLeg.Records |> Leg.calcCurrentScore)) with
             | 0 -> if game |> Game.isFinished then GameOver else LegOver
             | _ -> GameOn
 
