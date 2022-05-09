@@ -43,9 +43,7 @@ module State =
                     { model.Game with
                         Players =
                             model.Game.Players
-                            @ [ { p with
-                                    Name = $"Player%d{model.Game.Players.Length + 1}"
-                                    Legs = [ { Leg.Default with CurrentScore = model.Game.Mode } ] } ] } },
+                            @ [ { p with Name = $"Player%d{model.Game.Players.Length + 1}" } ] } },
             Cmd.none
         | ChangePlayername (index, name) ->
             let newPlayerList =
@@ -61,16 +59,7 @@ module State =
             Browser.Dom.console.log m
 
             { model with
-                Game =
-                    { model.Game with
-                        Mode = m |> int
-                        Players =
-                            model.Game.Players
-                            |> List.map (fun p ->
-                                { p with
-                                    Legs =
-                                        [ { CurrentScore = m |> int
-                                            Records = [] } ] }) } },
+                Game = { model.Game with Mode = m |> int } },
             Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
         | Undo -> model, Cmd.OfAsync.perform gameApi.undo () UndoDone
@@ -184,9 +173,7 @@ module Views =
                             ]
                             Bulma.column [
                                 column.is8
-                                prop.children [
-                                    dartBoard dispatch
-                                ]
+                                prop.children [ dartBoard dispatch ]
                             ]
                         ]
                     ]
