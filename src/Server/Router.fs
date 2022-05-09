@@ -45,7 +45,6 @@ let gameApi =
                     Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
                 DartsGameHistory.AddGame(newGame)
-                printfn $"{newGame}"
 
                 match nextStep with
                 | GameOn -> return RunGame, newGame
