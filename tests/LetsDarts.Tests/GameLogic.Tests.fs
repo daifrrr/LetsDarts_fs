@@ -8,172 +8,6 @@ open Shared
 
 module GameLogic =
     [<Fact>]
-    let ``Current Player has Index 0 at the Start of a new Game`` () =
-        let expected = "Player1"
-
-        let actual =
-            Game.getCurrentPlayer Game.Default
-
-        actual.Name |> should equal expected
-
-    [<Fact>]
-    let ``Current Player has Index 1 after Player with Index0 threw 3 Shots`` () =
-        let expected = "Player2"
-
-        let testPlayers =
-            [ { Name = "Player1"
-                Legs = [ { Leg.Default with Records = [ Shot.ZERO; Shot.ZERO; Shot.ZERO ] } ] }
-              { Name = "Player2"
-                Legs = [ Leg.Default ] } ]
-
-        let actual =
-            { Game.Default with Players = testPlayers }
-            |> Game.getCurrentPlayer
-
-        actual.Name |> should equal expected
-
-    [<Fact>]
-    let ``CurrentPlayer has Index 1 in the 2nd Leg at the Start of a new Leg`` () =
-        let expected = "Player2"
-
-        let actual =
-            Game.Default
-            |> Game.addNewLeg
-            |> Game.getCurrentPlayer
-
-        actual.Name |> should equal expected
-
-    [<Fact>]
-    let ``CurrentPlayer has Index 0 in the 3rd Leg at the Start of a new Leg`` () =
-        let expected = "Player1"
-
-        let actual =
-            Game.Default
-            |> Game.addNewLeg
-            |> Game.addNewLeg
-            |> Game.getCurrentPlayer
-
-        actual.Name |> should equal expected
-
-    [<Fact>]
-    let ``Player 1 starts in an Odd number Leg - Player 2 start in an Even number Leg`` () =
-        let rec appendLeg counter g =
-            let expected =
-                $"Player{UsefulMaths.PingPong 1 2 counter}"
-
-            let actual = g |> Game.getCurrentPlayer
-            actual.Name |> should equal expected
-
-            match counter with
-            | 100. -> 0
-            | n -> appendLeg ((+) n 1.) (g |> Game.addNewLeg)
-
-        appendLeg 1. Game.Default
-
-    [<Fact>]
-    let ``Test Current Player with 8 Players in a Game`` () =
-        let testPlayers =
-            [ { Player.Default with Name = "Player1" }
-              { Player.Default with Name = "Player2" }
-              { Player.Default with Name = "Player3" }
-              { Player.Default with Name = "Player4" }
-              { Player.Default with Name = "Player5" }
-              { Player.Default with Name = "Player6" }
-              { Player.Default with Name = "Player7" }
-              { Player.Default with Name = "Player8" } ]
-
-        let testGame =
-            { Game.Default with Players = testPlayers }
-
-        let rec simulateGame counter g =
-            let expected =
-                $"Player{((%) counter g.Players.Length) + 1}"
-
-            let testPlayer = g |> Game.getCurrentPlayer
-
-            let randomRecord =
-                List.replicate 3 Shot.ZERO
-                @ (testPlayer |> Player.getCurrentLeg).Records
-
-            let newPlayer =
-                { testPlayer with
-                    Legs =
-                        [ { Leg.Default with
-                              CurrentScore = randomRecord |> Leg.calcCurrentScore
-                              Records = randomRecord } ] }
-
-            let newGame =
-                { g with
-                    Players =
-                        g.Players
-                        |> List.map (fun p ->
-                            if p.Name = newPlayer.Name then
-                                newPlayer
-                            else
-                                p) }
-
-            testPlayer.Name |> should equal expected
-
-            ((%) testPlayer.Legs.Head.Records.Length 3)
-            |> should equal 0
-
-            match counter with
-            | 100 -> newGame
-            | n -> simulateGame ((+) n 1) newGame
-
-        let expected =
-            (simulateGame 0 testGame |> Game.getPlayers, 0)
-            ||> List.foldBack (fun p acc -> p.Legs.Head.CurrentScore + acc)
-
-        0 |> should equal expected
-
-
-    [<Fact>]
-    let ``Current Player iterates over all Players in the Game always when new Leg starts``
-        ()
-        =
-        let testPlayers =
-            [ { Player.Default with Name = "Player1" }
-              { Player.Default with Name = "Player2" }
-              { Player.Default with Name = "Player3" }
-              { Player.Default with Name = "Player4" }
-              { Player.Default with Name = "Player5" }
-              { Player.Default with Name = "Player6" }
-              { Player.Default with Name = "Player7" }
-              { Player.Default with Name = "Player8" } ]
-
-        let testGame =
-            { Game.Default with Players = testPlayers }
-
-        let expectedList =
-            [ "Player1"
-              "Player2"
-              "Player3"
-              "Player4"
-              "Player5"
-              "Player6"
-              "Player7"
-              "Player8" ]
-
-        let rec appendLeg g (el: string list) =
-            let expected = el.Head
-            let actual =
-                (g |> Game.getCurrentPlayer).Name
-
-            actual |> should equal expected
-
-            match el with
-            | l when l.Length = 1 -> 0
-            | _ ->
-                appendLeg
-                    ({ g with Players = g |> Game.getPlayers }
-                     |> Game.addNewLeg)
-                    el.Tail
-
-        0 |> should equal (appendLeg testGame expectedList)
-
-
-    [<Fact>]
     let ``Parsing Throw Tuple from String`` () =
         let expected1 = Some(Shot(Single, 12))
         let expected2 = Some(Shot(Double, 12))
@@ -509,5 +343,13 @@ module GameLogic =
                           Shot(Triple, 20)
                           Shot(Triple, 20)
                           Shot(Triple, 20) ] }
+
+        actual |> should equal expected
+
+    [<Fact (Skip = "for now")>]
+    let ``Test calcNewGame`` () =
+        let expected = Game.Default
+        let actual = ("s12", Game.Default) ||> Game.calcNewGame
+
 
         actual |> should equal expected
