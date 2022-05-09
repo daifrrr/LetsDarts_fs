@@ -21,38 +21,39 @@ type Factor =
     | Double
     | Triple
 
-type Shot(factor: Factor, value: int) =
-    member this.Factor = factor
-    member this.Value = value
-
-    member this.Result =
+[<AutoOpen>]
+type Shot =
+    { Factor: Factor
+      Value: int
+      Result: int }
+    static member Shot(factor, value) =
         match factor with
-        | Single -> 1 * this.Value
-        | Double -> 2 * this.Value
-        | Triple -> 3 * this.Value
+        | Triple ->
+            { Factor = Triple
+              Value = value
+              Result = 3 * value }
+        | Double ->
+            { Factor = Double
+              Value = value
+              Result = 2 * value }
+        | _ ->
+            { Factor = Single
+              Value = value
+              Result = 1 * value }
 
-    static member ZERO = Shot(Single, 0)
+    static member ZERO = Shot.Shot(Single, 0)
 
     static member ToString(r: Shot) : string =
         match r.Factor with
-        | Single -> $"{r.Value}"
-        | Double -> $"D{r.Value}"
         | Triple -> $"T{r.Value}"
-
-    override x.GetHashCode() = hash (factor, value)
-
-    override x.Equals(s) =
-        match s with
-        | :? Shot as p -> (factor, value) = (p.Factor, p.Value)
-        | _ -> false
-
+        | Double -> $"D{r.Value}"
+        | Single -> $"{r.Value}"
 
 type Leg =
     { CurrentScore: int
       Records: Shot list }
 
-    static member Default =
-        { CurrentScore = 0; Records = [] }
+    static member Default = { CurrentScore = 0; Records = [] }
 
     static member calcCurrentScore(s: Shot list) : int =
         match s with
@@ -60,7 +61,6 @@ type Leg =
         | s ->
             (s, 0)
             ||> List.foldBack (fun s acc -> s.Result + acc)
-
 
 type Player =
     { Name: string
