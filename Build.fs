@@ -11,6 +11,7 @@ let sharedPath = Path.getFullName "src/Shared"
 let serverPath = Path.getFullName "src/Server"
 let clientPath = Path.getFullName "src/Client"
 let letsDartsCorePath = Path.getFullName "src/LetsDartsCore"
+let letsDartsCoreTestPath = Path.getFullName "tests/LetsDartsCore.Tests"
 let deployPath = Path.getFullName "deploy"
 
 Target.create "Clean" (fun _ ->
@@ -50,7 +51,7 @@ Target.create "Run" (fun _ ->
     |> runParallel)
 
 Target.create "RunTests" (fun _ ->
-//    run dotnet "build" sharedTestsPath
+    run dotnet "test" letsDartsCoreTestPath
 
     [ (*"server", dotnet "watch run" serverTestsPath
       "client", dotnet "fable watch -o output -s --run yarn test:live" clientTestsPath
