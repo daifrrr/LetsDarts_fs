@@ -80,14 +80,6 @@ module Game =
 
         match nextStep with
         | LegOver ->
-            (nextStep,
-             { game with
-                 Players =
-                     newPlayers
-                     |> List.map (fun p ->
-                         { p with
-                             Legs =
-                                 [ { Leg.Default with CurrentScore = game.Mode } ]
-                                 @ p.Legs }) })
+            (nextStep, game |> Game.addNewLeg)
         | GameOn -> (nextStep, { game with Players = newPlayers })
         | _ -> (nextStep, { game with Players = newPlayers })
