@@ -3,6 +3,7 @@
 open FsUnit.Xunit
 open Shared
 open Xunit
+open Shared.Helpers
 
 
 
@@ -59,14 +60,11 @@ module TypesTests =
 
     [<Fact>]
     let ``Test ToString = First Char of Factor + Value`` () =
-        Shot(Single, 3) |> ToString
-        |> should equal "3"
+        Shot(Single, 3) |> ToString |> should equal "3"
 
-        Shot(Double, 2) |> ToString
-        |> should equal "D2"
+        Shot(Double, 2) |> ToString |> should equal "D2"
 
-        Shot(Triple, 1) |> ToString
-        |> should equal "T1"
+        Shot(Triple, 1) |> ToString |> should equal "T1"
 
 
     [<Fact>]
@@ -237,7 +235,10 @@ module TypesTests =
                         { Leg.Default with CurrentScore = 456 }
                         { Leg.Default with CurrentScore = 789 } ] } ]
 
-        let actual = { Game.Default with Players = testPlayers} |> Game.isFinished
+        let actual =
+            { Game.Default with Players = testPlayers }
+            |> Game.isFinished
+
         actual |> should be True
 
     [<Fact>]
@@ -258,7 +259,6 @@ module TypesTests =
 
         let actual = { Game.Default with Players = testPlayers} |> Game.isFinished
         actual |> should be False
-
 
     [<Fact>]
     let ``Current Player has Index 0 at the Start of a new Game`` () =
@@ -382,9 +382,7 @@ module TypesTests =
 
 
     [<Fact>]
-    let ``Current Player iterates over all Players in the Game always when new Leg starts``
-        ()
-        =
+    let ``Current Player iterates over all Players in the Game always when new Leg starts`` () =
         let testPlayers =
             [ { Player.Default with Name = "Player1" }
               { Player.Default with Name = "Player2" }
@@ -410,6 +408,7 @@ module TypesTests =
 
         let rec appendLeg g (el: string list) =
             let expected = el.Head
+
             let actual =
                 (g |> Game.getCurrentPlayer).Name
 
@@ -423,4 +422,5 @@ module TypesTests =
                      |> Game.addNewLeg)
                     el.Tail
 
-        0 |> should equal (appendLeg testGame expectedList)
+        0
+        |> should equal (appendLeg testGame expectedList)

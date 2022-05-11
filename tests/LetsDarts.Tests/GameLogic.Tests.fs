@@ -1,6 +1,5 @@
 namespace LetsDartsCore.Tests
 
-open System
 open Xunit
 open FsUnit.Xunit
 open LetsDartsCore
@@ -349,7 +348,69 @@ module GameLogic =
     [<Fact (Skip = "for now")>]
     let ``Test calcNewGame`` () =
         let expected = Game.Default
-        let actual = ("s12", Game.Default) ||> Game.calcNewGame
+        let testGame =
+            { Game.Default with
+                Mode = 501
+                Legs = 2
+                DoubleIn = false
+                DoubleOut = true
+                Players =
+                    [ { Name = "David"
+                        Legs =
+                          [
+                            { CurrentScore = 501
+                              Records =
+                                [
+                                  { Factor = Double
+                                    Value = 12
+                                    Result = 24 }
+                                  { Factor = Triple
+                                    Value = 19
+                                    Result = 57 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 } ] } ] }
+                      { Name = "Kai"
+                        Legs =
+                          [ { CurrentScore = 360
+                              Records =
+                                [ { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 }
+                                  { Factor = Triple
+                                    Value = 20
+                                    Result = 60 } ] } ] } ] }
+        let actual = ("D12", testGame) ||> Game.calcNewGame
 
 
         actual |> should equal expected
