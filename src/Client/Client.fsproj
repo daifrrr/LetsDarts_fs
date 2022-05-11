@@ -10,7 +10,7 @@
         <Compile Include="Types.fs" />
         <Compile Include="Events.fs" />
         <Compile Include="Form.fs" />
-        <Compile Include="Player.fs" />
+        <Compile Include="Players.fs" />
         <Compile Include="Dartboard.fs" />
         <Compile Include="Index.fs" />
         <Compile Include="App.fs" />
@@ -20,7 +20,7 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="public\style.sass" />
-      <Content Include="public\variables.sass" />
+      <Folder Include="public\bulma_customize" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

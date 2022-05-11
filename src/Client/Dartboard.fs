@@ -97,111 +97,107 @@ module Dartboard =
         ]
 
     let dartBoard (dispatch: Client.Types.Msg -> unit) =
-        Bulma.box [
+        Bulma.container [
+            prop.className "dartboardContainer"
             prop.children [
-                Bulma.container [
-                    prop.className "dartboardContainer"
-                    prop.children [
-                        Svg.svg [
-                            svg.id "svg"
-                            svg.viewBox (-300, -300, 600, 600)
-                            unbox ("version", "1.0")
-                            unbox ("xmlns:rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-                            unbox ("xmlns", "http://www.w3.org/2000/svg")
-                            unbox ("xmlns:cc", "http://creativecommons.org/ns#")
-                            unbox ("xmlnsXlink", "http://www.w3.org/1999/xlink") // Error when xmlns:xlink
-                            unbox ("xmlns:dc", "http://purl.org/dc/elements/1.1/")
-                            unbox ("xmlns:svg", "http://www.w3.org/2000/svg")
+                Svg.svg [
+                    svg.id "svg"
+                    svg.viewBox (-300, -300, 600, 600)
+                    unbox ("version", "1.0")
+                    unbox ("xmlns:rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                    unbox ("xmlns", "http://www.w3.org/2000/svg")
+                    unbox ("xmlns:cc", "http://creativecommons.org/ns#")
+                    unbox ("xmlnsXlink", "http://www.w3.org/1999/xlink") // Error when xmlns:xlink
+                    unbox ("xmlns:dc", "http://purl.org/dc/elements/1.1/")
+                    unbox ("xmlns:svg", "http://www.w3.org/2000/svg")
+                    svg.children [
+                        defs ()
+                        Svg.g [
+                            svg.id "gTransform"
+                            svg.transform.matrix (1, 0, 0, -1, -1, 0)
                             svg.children [
-                                defs()
                                 Svg.g [
-                                    svg.id "gTransform"
-                                    svg.transform.matrix (1, 0, 0, -1, -1, 0)
+                                    // TODO: Seq<a'> Seq<b'> must have same length, check!
+                                    svg.id "dartboard"
                                     svg.children [
-                                        Svg.g [
-                                            // TODO: Seq<a'> Seq<b'> must have same length, check!
-                                            svg.id "dartboard"
-                                            svg.children [
-                                                // dartboard background
-                                                Svg.rect [
-                                                    svg.id (string "s0")
-                                                    svg.x -300
-                                                    svg.y -300
-                                                    svg.width 600
-                                                    svg.height 600
-                                                    svg.stroke BACKGROUND
-                                                    svg.strokeWidth 1
-                                                    svg.fill BACKGROUND
-                                                    svg.onClick handleClick
-                                                ]
-                                                // dartboard background
-                                                (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
-                                                ||> Seq.map2 (fun n a -> (n, a))
-                                                |> Seq.indexed
-                                                |> Seq.map (fun (i, (n, a)) ->
-                                                    match i % 2 = 0 with
-                                                    | true -> sections (n, a) (BLACK, RED)
-                                                    | _ -> sections (n, a) (WHITE, GREEN))
-                                                |> List.ofSeq
-                                                |> Fable.React.Helpers.ofList
-                                                // dartboard bull
-                                                Svg.circle [
-                                                    svg.id (string "s25")
-                                                    svg.cx 0
-                                                    svg.cx 0
-                                                    svg.r 60
-                                                    svg.stroke BACKGROUND
-                                                    svg.strokeWidth 1
-                                                    svg.fill GREEN
-                                                    svg.onClick handleClick
-                                                ]
-                                                // dartboard bull's eye
-                                                Svg.circle [
-                                                    svg.id (string "d25")
-                                                    svg.cx 0
-                                                    svg.cx 0
-                                                    svg.r 25
-                                                    svg.stroke BACKGROUND
-                                                    svg.strokeWidth 1
-                                                    svg.fill RED
-                                                    svg.onClick handleClick
-                                                ]
-                                            ]
+                                        // dartboard background
+                                        Svg.rect [
+                                            svg.id (string "s0")
+                                            svg.x -300
+                                            svg.y -300
+                                            svg.width 600
+                                            svg.height 600
+                                            svg.stroke BACKGROUND
+                                            svg.strokeWidth 1
+                                            svg.fill BACKGROUND
+                                            svg.onClick handleClick
+                                        ]
+                                        // dartboard background
+                                        (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
+                                        ||> Seq.map2 (fun n a -> (n, a))
+                                        |> Seq.indexed
+                                        |> Seq.map (fun (i, (n, a)) ->
+                                            match i % 2 = 0 with
+                                            | true -> sections (n, a) (BLACK, RED)
+                                            | _ -> sections (n, a) (WHITE, GREEN))
+                                        |> List.ofSeq
+                                        |> Fable.React.Helpers.ofList
+                                        // dartboard bull
+                                        Svg.circle [
+                                            svg.id (string "s25")
+                                            svg.cx 0
+                                            svg.cx 0
+                                            svg.r 60
+                                            svg.stroke BACKGROUND
+                                            svg.strokeWidth 1
+                                            svg.fill GREEN
+                                            svg.onClick handleClick
+                                        ]
+                                        // dartboard bull's eye
+                                        Svg.circle [
+                                            svg.id (string "d25")
+                                            svg.cx 0
+                                            svg.cx 0
+                                            svg.r 25
+                                            svg.stroke BACKGROUND
+                                            svg.strokeWidth 1
+                                            svg.fill RED
+                                            svg.onClick handleClick
                                         ]
                                     ]
                                 ]
-                                // dartboard number ring
-                                (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
-                                ||> Seq.map2 (fun n a -> (n, a))
-                                |> Seq.indexed
-                                |> Seq.map (fun (i, (n, a)) ->
-                                    Svg.g [
-                                        svg.id "gText"
-                                        svg.children [
-                                            Svg.text [
-                                                svg.id $"t{n}"
-                                                svg.x 0
-                                                svg.y 0
-                                                svg.text n
-                                                svg.textAnchor.middle
-                                                svg.fontSize 32
-                                                svg.custom ("fontFamily", "sans-serif")
-                                                match a with
-                                                | a when a > 90. && 270. > a ->
-                                                    svg.custom (
-                                                        "transform",
-                                                        $"rotate({-360. + a}, 0, 0) translate(0, -277) scale(-1, -1)"
-                                                    )
-                                                | _ -> svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
-                                                svg.textAnchor.middle
-                                                svg.fill WHITE
-                                            ]
-                                        ]
-                                    ])
-                                |> List.ofSeq
-                                |> Fable.React.Helpers.ofList
                             ]
                         ]
+                        // dartboard number ring
+                        (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
+                        ||> Seq.map2 (fun n a -> (n, a))
+                        |> Seq.indexed
+                        |> Seq.map (fun (i, (n, a)) ->
+                            Svg.g [
+                                svg.id "gText"
+                                svg.children [
+                                    Svg.text [
+                                        svg.id $"t{n}"
+                                        svg.x 0
+                                        svg.y 0
+                                        svg.text n
+                                        svg.textAnchor.middle
+                                        svg.fontSize 32
+                                        svg.custom ("fontFamily", "sans-serif")
+                                        match a with
+                                        | a when a > 90. && 270. > a ->
+                                            svg.custom (
+                                                "transform",
+                                                $"rotate({-360. + a}, 0, 0) translate(0, -277) scale(-1, -1)"
+                                            )
+                                        | _ -> svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
+                                        svg.textAnchor.middle
+                                        svg.fill WHITE
+                                    ]
+                                ]
+                            ])
+                        |> List.ofSeq
+                        |> Fable.React.Helpers.ofList
                     ]
                 ]
             ]

@@ -12,10 +12,25 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
+        let styleGame =
+            { Game.Default with
+                Mode = 501
+                Legs = 3
+                DoubleIn = false
+                DoubleOut = true
+                Players =
+                    [ { Name = "Kai"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "David"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "Frieda"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "Philipp"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
+
 
         let model =
-            { State = CreateGame
-              Game = Game.Default }
+            { State = RunGame; Game = styleGame }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -58,9 +73,7 @@ module State =
         | ChangeMode m ->
             Browser.Dom.console.log m
 
-            { model with
-                Game = { model.Game with Mode = m |> int } },
-            Cmd.none
+            { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
         | Undo -> model, Cmd.OfAsync.perform gameApi.undo () UndoDone
         | UndoDone g -> { model with Game = g }, Cmd.none
@@ -69,19 +82,6 @@ open Feliz
 open Feliz.Bulma
 
 module Views =
-    let navBrand =
-        Bulma.navbarBrand.div [
-            Bulma.navbarItem.a [
-                prop.href "https://safe-stack.github.io/"
-                navbarItem.isActive
-                prop.children [
-                    Html.img [
-                        prop.src "/favicon.png"
-                        prop.alt "Logo"
-                    ]
-                ]
-            ]
-        ]
 
 
     let playGame (model: Model) (dispatch: Msg -> unit) =
@@ -92,35 +92,12 @@ module Views =
 
         Bulma.container [
             prop.children [
-                Bulma.box [
-                    prop.children [
-                        Bulma.columns [
-                            Bulma.column [
-                                text.hasTextCentered
-                                prop.text $"Mode: %d{model.Game.Mode}"
-                            ]
-                            Bulma.column [
-                                text.hasTextCentered
-                                prop.text $"Legs: %d{currentLeg} / %d{model.Game.Legs}"
-                            ]
-                            Bulma.column [
-                                text.hasTextCentered
-                                prop.text $"D/I: {model.Game.DoubleIn}"
-                            ]
-                            Bulma.column [
-                                text.hasTextCentered
-                                prop.text $"D/O: {model.Game.DoubleIn}"
-                            ]
-                        ]
-                        Player.renderPlayers model.Game
-                        Bulma.column [
-                            Bulma.button.a [
-                                color.isInfo
-                                prop.text "Return"
-                                prop.onClick (fun _ -> dispatch Undo)
-                            ]
-                        ]
-                    ]
+                (*              Bulma.box [ prop.children [ Bulma.columns [ Bulma.column [ text.hasTextCentered prop.text $"Mode: %d{model.Game.Mode}" ] Bulma.column [ text.hasTextCentered prop.text $"Legs: %d{currentLeg} / %d{model.Game.Legs}" ] Bulma.column [ text.hasTextCentered prop.text $"D/I: {model.Game.DoubleIn}" ] Bulma.column [ text.hasTextCentered prop.text $"D/O: {model.Game.DoubleIn}" ] ]*)
+                Players.renderPlayers model.Game
+                Bulma.button.a [
+                    prop.className "btn-undo"
+                    prop.text "Undo Last Dart"
+                    prop.onClick (fun _ -> dispatch Undo)
                 ]
             ]
         ]
@@ -144,24 +121,15 @@ module Views =
 
     let view (model: Model) (dispatch: Msg -> unit) =
         Bulma.hero [
-            hero.isFullHeight
-            color.isPrimary
-            prop.style [
-                style.backgroundSize "cover"
-                style.backgroundImageUrl "https://unsplash.it/1200/900?random"
-                style.backgroundPosition "no-repeat center center fixed"
-            ]
+            hero.isFullHeightWithNavbar
             prop.children [
-                Bulma.heroHead [
-                    Bulma.navbar [
-                        Bulma.container [ navBrand ]
-                    ]
+                Bulma.navbarBrand.div [
                 ]
                 Bulma.heroBody [
                     Bulma.container [
                         Bulma.columns [
                             Bulma.column [
-                                column.is4
+                                column.is6
                                 prop.children [
                                     match model.State with
                                     | CreateGame -> createForm model dispatch
@@ -172,7 +140,7 @@ module Views =
                                 ]
                             ]
                             Bulma.column [
-                                column.is8
+                                column.is6
                                 prop.children [ dartBoard dispatch ]
                             ]
                         ]
