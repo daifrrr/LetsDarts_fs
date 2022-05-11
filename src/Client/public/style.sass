@@ -1,16 +1,57 @@
-﻿@import "variables"
+﻿@charset "UTF-8"
+@import "./bulma_customize/bulma.sass"
+// COLORS
+$app-black: #282a38
+$app-white: #fde1d0
+$red: #d95652
+$green: #528b6e
+$hover: #58a6ff
+$background: #38394d
+$dartscount: #282938
+$names-grey: #a4a4af
+$menu-gradient: linear-gradient(90deg, rgba(40,41,56,1) 0%, rgba(31,33,50,1) 100%)
 
-\:root
-    --backgroundColor: #010304
-body
-    background-color: var(--backgroundColor)
+html, body
+    margin: 0
+    font-size: 16px
+    background-color: $background
+    height: 100%
+    overflow: hidden
 
-use:hover, circle:hover, rect:hover, text:hover
-    fill: #58a6ff
+svg
+    use:hover, circle:hover, rect:hover, text:hover
+        fill: $hover
 
-text:hover
-    pointer-events: none
+.box
+    background-color: $background
 
-.player-active
-    background-color: #282938
-    color: white
+.button
+    border: none
+    .btn-undo
+        background-color: $red
+        color: $white
+
+.navbar-brand
+    min-height: 2rem
+
+.hero-body
+    padding: 1rem
+
+.players
+    background-color: $background
+    h1, h2, h3, h4, h5, h6
+        color: $names-grey
+
+    .player
+        div
+            padding-top: 1rem
+            padding-bottom: 1rem
+        .active
+            background-color: $dartscount
+            border-radius: 0.5em
+            h1, h2, h3, h4, h5, h6
+                color: $white
+
+div.dev
+    border: 1px solid white
+    color: $white
