@@ -12,7 +12,7 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-//        let styleGame =
+        //        let styleGame =
 //            { Game.Default with
 //                Mode = 501
 //                Legs = 13
@@ -30,7 +30,8 @@ module State =
 
 
         let model =
-            { State = CreateGame; Game = Game.Default }
+            { State = CreateGame
+              Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -92,12 +93,20 @@ module Views =
 
         Bulma.container [
             prop.children [
-                (*              Bulma.box [ prop.children [ Bulma.columns [ Bulma.column [ text.hasTextCentered prop.text $"Mode: %d{model.Game.Mode}" ] Bulma.column [ text.hasTextCentered prop.text $"Legs: %d{currentLeg} / %d{model.Game.Legs}" ] Bulma.column [ text.hasTextCentered prop.text $"D/I: {model.Game.DoubleIn}" ] Bulma.column [ text.hasTextCentered prop.text $"D/O: {model.Game.DoubleIn}" ] ]*)
-                Players.renderPlayers model.Game
-                Bulma.button.a [
-                    prop.className "btn-undo"
-                    prop.text "Undo Last Dart"
-                    prop.onClick (fun _ -> dispatch Undo)
+                Bulma.columns [
+                    Bulma.column [
+                        (*              Bulma.box [ prop.children [ Bulma.columns [ Bulma.column [ text.hasTextCentered prop.text $"Mode: %d{model.Game.Mode}" ] Bulma.column [ text.hasTextCentered prop.text $"Legs: %d{currentLeg} / %d{model.Game.Legs}" ] Bulma.column [ text.hasTextCentered prop.text $"D/I: {model.Game.DoubleIn}" ] Bulma.column [ text.hasTextCentered prop.text $"D/O: {model.Game.DoubleIn}" ] ]*)
+                        Players.renderPlayers model.Game
+                        Bulma.button.a [
+                            prop.className "btn-undo"
+                            prop.text "Undo Last Dart"
+                            prop.onClick (fun _ -> dispatch Undo)
+                        ]
+                    ]
+                    Bulma.column [
+                        column.is6
+                        prop.children [ dartBoard dispatch ]
+                    ]
                 ]
             ]
         ]
@@ -123,26 +132,16 @@ module Views =
         Bulma.hero [
             hero.isFullHeightWithNavbar
             prop.children [
-                Bulma.navbarBrand.div [
-                ]
+                Bulma.navbarBrand.div []
                 Bulma.heroBody [
                     Bulma.container [
-                        Bulma.columns [
-                            Bulma.column [
-                                column.is6
-                                prop.children [
-                                    match model.State with
-                                    | CreateGame -> createForm model dispatch
-                                    // | SortPlayers ->
-                                    | RunGame -> playGame model dispatch
-                                    | ShowResult -> showGameResult "LegOver" dispatch
-                                    | FinishGame -> showGameResult "GameOver" dispatch
-                                ]
-                            ]
-                            Bulma.column [
-                                column.is6
-                                prop.children [ dartBoard dispatch ]
-                            ]
+                        prop.children [
+                            match model.State with
+                            | CreateGame -> createForm model dispatch
+                            // | SortPlayers ->
+                            | RunGame -> playGame model dispatch
+                            | ShowResult -> showGameResult "LegOver" dispatch
+                            | FinishGame -> showGameResult "GameOver" dispatch
                         ]
                     ]
                 ]

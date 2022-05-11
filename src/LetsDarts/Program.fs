@@ -39,7 +39,9 @@ module Game =
     let applyGameLogic l (s: Shot) g =
         let newLeg = prependThrow l s
 
-        match (g.Mode, newLeg.Records |> Leg.calcCurrentScore) ||> (-) with
+        match (g.Mode, newLeg.Records |> Leg.calcCurrentScore)
+              ||> (-)
+            with
         | 0 when g.DoubleOut ->
             match validateDoubleOut s with
             | GameOver -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
@@ -54,8 +56,11 @@ module Game =
         | _ -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer = Game.getCurrentPlayer game
-        let currentPlayerLeg = currentPlayer |> Player.getCurrentLeg
+        let currentPlayer =
+            Game.getCurrentPlayer game
+
+        let currentPlayerLeg =
+            currentPlayer |> Player.getCurrentLeg
 
         let currentThrow =
             match (throw |> parseThrow) with
@@ -66,7 +71,8 @@ module Game =
             applyGameLogic currentPlayerLeg currentThrow game
 
         let newPlayers =
-            game |> Game.getPlayers
+            game
+            |> Game.getPlayers
             |> List.map (fun p ->
                 match p = currentPlayer with
                 | true -> { p with Legs = [ modifiedLeg ] @ p.Legs.Tail }
@@ -75,11 +81,18 @@ module Game =
 
         let nextStep =
             match ((-) game.Mode (modifiedLeg.Records |> Leg.calcCurrentScore)) with
-            | 0 -> if game |> Game.isFinished then GameOver else LegOver
+            | 0 ->
+                if { game with Players = newPlayers }
+                   |> Game.isFinished then
+                    GameOver
+                else
+                    LegOver
             | _ -> GameOn
 
         match nextStep with
         | LegOver ->
-            (nextStep, game |> Game.addNewLeg)
+            (nextStep,
+             { game with Players = newPlayers }
+             |> Game.addNewLeg)
         | GameOn -> (nextStep, { game with Players = newPlayers })
         | _ -> (nextStep, { game with Players = newPlayers })
