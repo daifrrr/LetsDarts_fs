@@ -17,19 +17,24 @@ html, body
     background-color: $background
     height: 100%
     overflow: hidden
+    color: $white
+
+.label,.content h1, .content h2, .content h3, .content h4, .content h5, .content h6
+    color: $white
+    line-height: 1.5
+    font-weight: 400
 
 svg
     use:hover, circle:hover, rect:hover, text:hover
         fill: $hover
 
-.box
-    background-color: $background
-
 .button
+    margin-top: 1rem
     border: none
-    .btn-undo
+    color: $white
+    &.btn-undo
         background-color: $red
-        color: $white
+        width: 100%
 
 .navbar-brand
     min-height: 2rem
@@ -37,21 +42,29 @@ svg
 .hero-body
     padding: 1rem
 
-.players
-    background-color: $background
-    h1, h2, h3, h4, h5, h6
-        color: $names-grey
+.plys
+    h1
+        font-size: 5em
+        font-weight: 700
 
-    .player
-        div
-            padding-top: 1rem
-            padding-bottom: 1rem
-        .active
-            background-color: $dartscount
-            border-radius: 0.5em
-            h1, h2, h3, h4, h5, h6
-                color: $white
+    .legs
+        justify-content: flex-start
+        align-content: flex-start
+        gap: 0.25em
+        flex-flow: row wrap
+        padding: 2em 0.25em 2em 0.25em
+        .emptyLeg
+            align-content: space-between
+            flex-basis: 17%
+            flex-grow: 0
+            flex-shrink: 5
+            background: $dartscount
+            width: 0.5em
+            height: 0.5em
+            border-radius: 3px
 
-div.dev
+
+
+.container.dev
     border: 1px solid white
     color: $white

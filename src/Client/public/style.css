@@ -10355,22 +10355,27 @@ html, body {
   background-color: #38394d;
   height: 100%;
   overflow: hidden;
+  color: hsl(0deg, 0%, 100%);
+}
+
+.label, .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+  color: hsl(0deg, 0%, 100%);
+  line-height: 1.5;
+  font-weight: 400;
 }
 
 svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   fill: #58a6ff;
 }
 
-.box {
-  background-color: #38394d;
-}
-
 .button {
+  margin-top: 1rem;
   border: none;
-}
-.button .btn-undo {
-  background-color: #d95652;
   color: hsl(0deg, 0%, 100%);
+}
+.button.btn-undo {
+  background-color: #d95652;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -10381,25 +10386,29 @@ svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   padding: 1rem;
 }
 
-.players {
-  background-color: #38394d;
+.plys h1 {
+  font-size: 5em;
+  font-weight: 700;
 }
-.players h1, .players h2, .players h3, .players h4, .players h5, .players h6 {
-  color: #a4a4af;
+.plys .legs {
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 0.25em;
+  flex-flow: row wrap;
+  padding: 2em 0.25em 2em 0.25em;
 }
-.players .player div {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-.players .player .active {
-  background-color: #282938;
-  border-radius: 0.5em;
-}
-.players .player .active h1, .players .player .active h2, .players .player .active h3, .players .player .active h4, .players .player .active h5, .players .player .active h6 {
-  color: hsl(0deg, 0%, 100%);
+.plys .legs .emptyLeg {
+  align-content: space-between;
+  flex-basis: 17%;
+  flex-grow: 0;
+  flex-shrink: 5;
+  background: #282938;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 3px;
 }
 
-div.dev {
+.container.dev {
   border: 1px solid white;
   color: hsl(0deg, 0%, 100%);
 }

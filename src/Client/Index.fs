@@ -12,25 +12,25 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let styleGame =
-            { Game.Default with
-                Mode = 501
-                Legs = 3
-                DoubleIn = false
-                DoubleOut = true
-                Players =
-                    [ { Name = "Kai"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "David"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Frieda"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Philipp"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
+//        let styleGame =
+//            { Game.Default with
+//                Mode = 501
+//                Legs = 13
+//                DoubleIn = false
+//                DoubleOut = true
+//                Players =
+//                    [ { Name = "Kai"
+//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+//                      { Name = "David"
+//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+//                      { Name = "Frieda"
+//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+//                      { Name = "Philipp"
+//                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
 
 
         let model =
-            { State = RunGame; Game = styleGame }
+            { State = CreateGame; Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -105,7 +105,7 @@ module Views =
     let showGameResult (phase: string) (dispatch: Msg -> unit) =
         Bulma.box [
             prop.children [
-                Html.p [ prop.textf "Finished" ]
+                Html.p [ prop.text $"%s{phase}" ]
                 Bulma.button.a [
                     color.isInfo
                     match phase with
