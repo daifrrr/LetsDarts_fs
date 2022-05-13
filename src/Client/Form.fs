@@ -15,7 +15,7 @@ module Form =
                     Bulma.column [
                         Bulma.label "Mode"
                         Bulma.select [
-                            prop.value (string model.Game.Mode)
+                            prop.value (model.Game.Mode |> string)
                             text.hasTextCentered
                             prop.children [
                                 Html.option 301

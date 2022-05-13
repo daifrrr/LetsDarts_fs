@@ -10386,29 +10386,98 @@ svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   padding: 1rem;
 }
 
+.record-items {
+  margin-top: 0.25em;
+  justify-content: space-between;
+  font-size: 4em;
+}
+.record-items .record-item {
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+  border-radius: 30px;
+  text-align: center;
+  line-height: 1em;
+  font-weight: 700;
+  flex-grow: 0;
+  flex-basis: 27.5%;
+  padding: 0;
+  background-color: #282938;
+}
+.record-items .record-item span {
+  margin: 0 0 10px;
+}
+
+.plys {
+  margin: 2em 0;
+  padding: 0.5em 0;
+  text-align: center;
+}
 .plys h1 {
-  font-size: 5em;
+  font-size: 4em;
   font-weight: 700;
 }
-.plys .legs {
-  justify-content: flex-start;
+.plys h2 {
+  font-size: 2em;
+}
+.plys h3 {
+  font-size: 1.5em;
+}
+.plys .ply > * :not(.ply-name) {
+  margin-top: 1em;
+}
+.plys .ply .ply-name {
+  color: #a4a4af;
+}
+.plys .ply .ply-previous .ply-prevshots, .plys .ply .ply-previous .ply-prevshot {
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+}
+.plys .ply .ply-previous .ply-prevshot {
+  color: #a4a4af;
+}
+.plys .ply .ply-score {
+  margin: 0.25em 0 0.25em;
+}
+.plys .ply .ply-legs {
+  margin: 0.5em 0 0.5em;
+  justify-content: center;
   align-content: flex-start;
   gap: 0.25em;
   flex-flow: row wrap;
-  padding: 2em 0.25em 2em 0.25em;
 }
-.plys .legs .emptyLeg {
-  align-content: space-between;
+.plys .ply .ply-legs .filled, .plys .ply .ply-legs .empty {
   flex-basis: 17%;
   flex-grow: 0;
-  flex-shrink: 5;
-  background: #282938;
   width: 0.5em;
   height: 0.5em;
   border-radius: 3px;
 }
+.plys .ply .ply-legs .filled {
+  background-color: #a4a4af;
+}
+.plys .ply .ply-legs .empty {
+  background-color: #282938;
+}
+.plys .ply-active {
+  background-color: #282938;
+}
+.plys .ply-active .ply-name {
+  color: hsl(0deg, 0%, 100%);
+}
+.plys .ply-active .ply-legs {
+  margin: 0.5em 0 0.5em;
+}
+.plys .ply-active .ply-legs .filled {
+  background-color: #a4a4af;
+}
+.plys .ply-active .ply-legs .empty {
+  background-color: #38394d;
+}
 
 .container.dev {
+  font-family: monospace;
   border: 1px solid white;
   color: hsl(0deg, 0%, 100%);
 }

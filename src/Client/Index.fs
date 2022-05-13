@@ -1,8 +1,10 @@
 namespace Client
 
+open Client
 open Client.Components
 open Elmish
 open Fable.Remoting.Client
+open Feliz.Bulma
 open Shared
 
 module State =
@@ -12,26 +14,26 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        //        let styleGame =
-//            { Game.Default with
-//                Mode = 501
-//                Legs = 13
-//                DoubleIn = false
-//                DoubleOut = true
-//                Players =
-//                    [ { Name = "Kai"
-//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-//                      { Name = "David"
-//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-//                      { Name = "Frieda"
-//                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-//                      { Name = "Philipp"
-//                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
+        let styleGame =
+            { Game.Default with
+                Mode = 501
+                Legs = 3
+                DoubleIn = false
+                DoubleOut = true
+                Players =
+                    [ { Name = "Kai"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "David"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "Frieda"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] }
+                      { Name = "Philipp"
+                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
 
 
         let model =
             { State = CreateGame
-              Game = Game.Default }
+              Game = styleGame }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -71,36 +73,34 @@ module State =
                         p)
 
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
-        | ChangeMode m ->
-            Browser.Dom.console.log m
-
-            { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
+        | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
         | Undo -> model, Cmd.OfAsync.perform gameApi.undo () UndoDone
         | UndoDone g -> { model with Game = g }, Cmd.none
 
 open Feliz
-open Feliz.Bulma
 
 module Views =
 
+    let sortPlayers (model: Model) (dispatch: Msg -> unit) =
+        Bulma.button.a [
+            color.isInfo
+            prop.text "Start"
+        ]
 
     let playGame (model: Model) (dispatch: Msg -> unit) =
-        let currentLeg =
-            Player.getLegsPerPlayer model.Game.Players
-            |> List.item 0
-            |> List.length
-
         Bulma.container [
-            prop.children [
-                Bulma.columns [
+            Bulma.columns [
+                prop.children [
                     Bulma.column [
-                        (*              Bulma.box [ prop.children [ Bulma.columns [ Bulma.column [ text.hasTextCentered prop.text $"Mode: %d{model.Game.Mode}" ] Bulma.column [ text.hasTextCentered prop.text $"Legs: %d{currentLeg} / %d{model.Game.Legs}" ] Bulma.column [ text.hasTextCentered prop.text $"D/I: {model.Game.DoubleIn}" ] Bulma.column [ text.hasTextCentered prop.text $"D/O: {model.Game.DoubleIn}" ] ]*)
-                        Players.renderPlayers model.Game
-                        Bulma.button.a [
-                            prop.className "btn-undo"
-                            prop.text "Undo Last Dart"
-                            prop.onClick (fun _ -> dispatch Undo)
+                        column.is6
+                        prop.children [
+                            Players.renderPlayers model.Game
+                            Bulma.button.a [
+                                prop.className "btn-undo"
+                                prop.text "Undo Last Dart"
+                                prop.onClick (fun _ -> dispatch Undo)
+                            ]
                         ]
                     ]
                     Bulma.column [
@@ -134,16 +134,15 @@ module Views =
             prop.children [
                 Bulma.navbarBrand.div []
                 Bulma.heroBody [
-                    Bulma.container [
-                        prop.children [
-                            match model.State with
-                            | CreateGame -> createForm model dispatch
-                            // | SortPlayers ->
-                            | RunGame -> playGame model dispatch
-                            | ShowResult -> showGameResult "LegOver" dispatch
-                            | FinishGame -> showGameResult "GameOver" dispatch
-                        ]
+                    prop.children [
+                        match model.State with
+                        | CreateGame -> createForm model dispatch
+                        //                        | SortPlayers -> sortPlayers model dispatch
+                        | RunGame -> playGame model dispatch
+                        | ShowResult -> showGameResult "LegOver" dispatch
+                        | FinishGame -> showGameResult "GameOver" dispatch
                     ]
                 ]
-            ]
+                //                Bulma.footer [ prop.children [] ]
+                ]
         ]

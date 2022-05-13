@@ -10,7 +10,7 @@ $background: #38394d
 $dartscount: #282938
 $names-grey: #a4a4af
 $menu-gradient: linear-gradient(90deg, rgba(40,41,56,1) 0%, rgba(31,33,50,1) 100%)
-
+// OVERRIDES
 html, body
     margin: 0
     font-size: 16px
@@ -41,30 +41,85 @@ svg
 
 .hero-body
     padding: 1rem
-
-.plys
-    h1
-        font-size: 5em
+// OVERRIDES END
+// RECORDS
+.record-items
+    margin-top: 0.25em
+    justify-content: space-between
+    font-size: 4em
+    .record-item
+        display: inline-flex
+        justify-content: center
+        align-items: baseline
+        border-radius: 30px
+        text-align: center
+        line-height: 1em
         font-weight: 700
+        flex-grow: 0
+        flex-basis: 27.5%
+        padding: 0
+        background-color: $dartscount
+        span
+            margin: 0 0 10px
 
-    .legs
-        justify-content: flex-start
-        align-content: flex-start
-        gap: 0.25em
-        flex-flow: row wrap
-        padding: 2em 0.25em 2em 0.25em
-        .emptyLeg
-            align-content: space-between
-            flex-basis: 17%
-            flex-grow: 0
-            flex-shrink: 5
-            background: $dartscount
-            width: 0.5em
-            height: 0.5em
-            border-radius: 3px
+// ENDRECORDS
+// PLAYER DARTBOARD SCREEN
+.plys
+    margin: 2em 0
+    padding: 0.5em 0
+    text-align: center
+    h1
+        font-size: 4em
+        font-weight: 700
+    h2
+        font-size: 2em
+    h3
+        font-size: 1.5em
+    .ply
+        & > * :not(.ply-name)
+            margin-top: 1em
+        .ply-name
+            color: $names-grey
+        .ply-previous
+            .ply-prevshots, .ply-prevshot
+                justify-content: space-evenly
+                margin: 0
+                padding: 0
+            .ply-prevshot
+                color: $names-grey
+        .ply-score
+            margin: 0.25em 0 0.25em
+        .ply-avg
+        .ply-legs
+            margin: 0.5em 0 0.5em
+            justify-content: center
+            align-content: flex-start
+            gap: 0.25em
+            flex-flow: row wrap
+            .filled, .empty
+                flex-basis: 17%
+                flex-grow: 0
+                width: 0.5em
+                height: 0.5em
+                border-radius: 3px
+            .filled
+                background-color: $names-grey
+            .empty
+                background-color: $dartscount
+    .ply-active
+        background-color: $dartscount
+        .ply-name
+            color: $white
+        .ply-legs
+            margin: 0.5em 0 0.5em
+            .filled
+                background-color: $names-grey
+            .empty
+                background-color: $background
 
 
 
 .container.dev
+    font-family: monospace
     border: 1px solid white
     color: $white

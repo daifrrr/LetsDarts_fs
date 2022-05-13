@@ -3,13 +3,13 @@ module Client.Types
 
 open Shared
 
-type Model = { State: State; Game: Game }
+type Model = { State: GameState; Game: Game }
 
 type Msg =
     | SubmitGameSettings
-    | ChangeGameState of State * Game
+    | ChangeGameState of GameState * Game
     | GetThrow of string
-    | GotThrow of State * Game
+    | GotThrow of GameState * Game
     | CloseShowResults
     | EndGame
     | SwitchDoubleOut of bool
