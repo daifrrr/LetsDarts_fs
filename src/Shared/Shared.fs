@@ -2,8 +2,9 @@ namespace Shared
 
 open System
 
-type State =
+type GameState =
     | CreateGame
+//    | SortPlayers
     | RunGame
     | ShowResult
     | FinishGame
@@ -72,10 +73,10 @@ type Player =
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
-
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
-
+    static member getLegsWon(p:Player)(mode: int) =
+        p.Legs |> List.where (fun l -> l.CurrentScore = mode) |> List.length
 
 
 type Game =
@@ -143,8 +144,8 @@ module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
 type IGameApi =
-    { initGame: Game -> Async<State * Game>
-      sendThrow: string -> Async<State * Game>
+    { initGame: Game -> Async<GameState * Game>
+      sendThrow: string -> Async<GameState * Game>
       undo: unit -> Async<Game> }
 
 [<AutoOpen>]

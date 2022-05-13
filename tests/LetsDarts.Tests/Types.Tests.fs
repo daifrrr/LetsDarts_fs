@@ -5,9 +5,6 @@ open Shared
 open Xunit
 open Shared.Helpers
 
-
-
-
 module TypesTests =
     let staticGuid = System.Guid.NewGuid()
 
@@ -156,6 +153,40 @@ module TypesTests =
         actual |> should equal expected
 
     [<Fact>]
+    let ``Test Player get count of Legs won 0`` () =
+        let expected = 0
+
+        let testPlayer =
+            { Player.Default with Legs = [ Leg.Default ] }
+
+
+
+        let actual =
+            (testPlayer, 301) ||> Player.getLegsWon
+
+        actual |> should equal expected
+
+    [<Fact>]
+    let ``Test Player get count of Legs won 4`` () =
+        let expected = 4
+
+        let testPlayer =
+            { Player.Default with
+                Legs =
+                    [ { Leg.Default with CurrentScore = 301 }
+                      { Leg.Default with CurrentScore = 301 }
+                      { Leg.Default with CurrentScore = 301 }
+                      { Leg.Default with CurrentScore = 301 } ] }
+
+
+
+        let actual =
+            (testPlayer, 301) ||> Player.getLegsWon
+
+        actual |> should equal expected
+
+
+    [<Fact>]
     let ``Test Game Default`` () =
         let expected =
             { Id = staticGuid
@@ -257,7 +288,10 @@ module TypesTests =
                         { Leg.Default with CurrentScore = 456 }
                         { Leg.Default with CurrentScore = 789 } ] } ]
 
-        let actual = { Game.Default with Players = testPlayers} |> Game.isFinished
+        let actual =
+            { Game.Default with Players = testPlayers }
+            |> Game.isFinished
+
         actual |> should be False
 
     [<Fact>]
