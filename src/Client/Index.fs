@@ -33,7 +33,7 @@ module State =
 
         let model =
             { State = CreateGame
-              Game = styleGame }
+              Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -44,6 +44,7 @@ module State =
     let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
         match msg with
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
+        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game ChangeGameState
         | ChangeGameState (s, g) -> { model with State = s; Game = g }, Cmd.none
         | GetThrow t -> model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
         | GotThrow (s, g) -> { model with State = s; Game = g }, Cmd.none
@@ -83,9 +84,10 @@ open Feliz
 module Views =
 
     let sortPlayers (model: Model) (dispatch: Msg -> unit) =
-        Bulma.button.a [
-            color.isInfo
+        Bulma.button.span [
+            prop.className "btn-game-start"
             prop.text "Start"
+            prop.onClick (fun _ -> dispatch SubmitGameSettings)
         ]
 
     let playGame (model: Model) (dispatch: Msg -> unit) =
@@ -137,7 +139,7 @@ module Views =
                     prop.children [
                         match model.State with
                         | CreateGame -> createForm model dispatch
-                        //                        | SortPlayers -> sortPlayers model dispatch
+                        | ChangePlayerOrder -> sortPlayers model dispatch
                         | RunGame -> playGame model dispatch
                         | ShowResult -> showGameResult "LegOver" dispatch
                         | FinishGame -> showGameResult "GameOver" dispatch

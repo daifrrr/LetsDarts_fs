@@ -1,5 +1,6 @@
 ﻿@charset "UTF-8"
 @import "./bulma_customize/bulma.sass"
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap')
 // COLORS
 $app-black: #282a38
 $app-white: #fde1d0
@@ -11,13 +12,17 @@ $dartscount: #282938
 $names-grey: #a4a4af
 $menu-gradient: linear-gradient(90deg, rgba(40,41,56,1) 0%, rgba(31,33,50,1) 100%)
 // OVERRIDES
+body, button, input, optgroup, select, textarea
+    font-family: 'League Spartan', sans-serif !important
+
 html, body
     margin: 0
+    padding: 0
     font-size: 16px
+    font-family: 'League Spartan', sans-serif !important
     background-color: $background
-    height: 100%
+    height: 100vh
     overflow: hidden
-    color: $white
 
 .label,.content h1, .content h2, .content h3, .content h4, .content h5, .content h6
     color: $white
@@ -29,40 +34,57 @@ svg
         fill: $hover
 
 .button
-    margin-top: 1rem
+    padding: 0
+    margin-top: 2rem
     border: none
+    border-radius: 1rem
     color: $white
+    &:hover
+        color: $white
     &.btn-undo
         background-color: $red
-        width: 100%
+        width: 95%
+
+.input, .srt
+    margin-top: 2rem
+    border: none
+    border-radius: 1rem
+
 
 .navbar-brand
     min-height: 2rem
-
-.hero-body
-    padding: 1rem
 // OVERRIDES END
-// RECORDS
-.record-items
-    margin-top: 0.25em
-    justify-content: space-between
-    font-size: 4em
-    .record-item
-        display: inline-flex
-        justify-content: center
-        align-items: baseline
-        border-radius: 30px
-        text-align: center
-        line-height: 1em
-        font-weight: 700
-        flex-grow: 0
-        flex-basis: 27.5%
-        padding: 0
-        background-color: $dartscount
-        span
-            margin: 0 0 10px
-
-// ENDRECORDS
+// SETTINGS FORM
+.frm
+    display: inline-flex
+    flex-direction: column
+    padding: 0 15%
+    .frm-players
+        display: flex
+        flex-direction: column
+        align-content: space-evenly
+        .frm-player
+            margin: 0.5rem 0 0.5rem
+            text-align: center
+//SETTINGS FORM END
+// ADD PLAYER BUTTON
+.btn-player-plus
+    height: unset !important
+    line-height: 0
+    flex-grow: 0
+    flex-shrink: 1
+    font-size: 3rem
+    background: none
+    border: none
+    padding: 0
+    cursor: pointer
+    &:hover
+        color: $white
+// ADD PLAYER BUTTON END
+// START GAME BUTTON
+.btn-game-start
+    background-color: $green
+// START GAME BUTTON END
 // PLAYER DARTBOARD SCREEN
 .plys
     margin: 2em 0
@@ -90,6 +112,7 @@ svg
         .ply-score
             margin: 0.25em 0 0.25em
         .ply-avg
+
         .ply-legs
             margin: 0.5em 0 0.5em
             justify-content: center
@@ -106,6 +129,25 @@ svg
                 background-color: $names-grey
             .empty
                 background-color: $dartscount
+
+            .record-items
+                margin-top: 0.25em
+                justify-content: space-between
+                font-size: 4em
+                .record-item
+                    display: inline-flex
+                    justify-content: center
+                    align-items: baseline
+                    border-radius: 30px
+                    text-align: center
+                    line-height: 1em
+                    font-weight: 700
+                    flex-grow: 0
+                    flex-basis: 27.5%
+                    padding: 0
+                    background-color: $dartscount
+                    span
+                        margin: 0 0 10px
     .ply-active
         background-color: $dartscount
         .ply-name

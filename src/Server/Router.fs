@@ -20,7 +20,8 @@ type DartsGameHistory() =
     member _.AddGame(game: Game) = history.Insert(0, game)
 
     member _.GetOneBeforeLastRemoveLastGame() : Game option =
-        let OneBeforeLast = List.ofSeq history |> List.tryItem 1
+        let OneBeforeLast =
+            List.ofSeq history |> List.tryItem 1
 
         history.RemoveAt(0)
         OneBeforeLast
@@ -36,22 +37,26 @@ let gameApi =
                 DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
 
-                return (RunGame, game)
+                return (ChangePlayerOrder, game)
             }
+      sortPlayers = fun game -> async {
+            DartsGameHistory.AddGame game
+            return (RunGame, game)
+      }
       sendThrow =
-        fun str ->
-            async {
-                let nextStep, newGame =
-                    Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
+          fun str ->
+              async {
+                  let nextStep, newGame =
+                      Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
-                DartsGameHistory.AddGame(newGame)
+                  DartsGameHistory.AddGame(newGame)
 
-                match nextStep with
-                | GameOn -> return RunGame, newGame
-                | LegOver -> return ShowResult, newGame
-                | GameOver -> return FinishGame, newGame
-                | _ -> return RunGame, newGame
-            }
+                  match nextStep with
+                  | GameOn -> return RunGame, newGame
+                  | LegOver -> return ShowResult, newGame
+                  | GameOver -> return FinishGame, newGame
+                  | _ -> return RunGame, newGame
+              }
       undo =
         fun _ ->
             async {

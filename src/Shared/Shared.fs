@@ -2,14 +2,14 @@ namespace Shared
 
 open System
 
-type GameState =
+type AppState =
     | CreateGame
-//    | SortPlayers
+    | ChangePlayerOrder
     | RunGame
     | ShowResult
     | FinishGame
 
-type RuleSet =
+type GameState =
     | GameOn
     | GameOver
     | LegOver
@@ -72,11 +72,17 @@ type Player =
 
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
+    static member getLegsWon(p:Player)(mode: int): int =
+        p.Legs |> List.where (fun l -> l.CurrentScore = mode) |> List.length
+    static member getAverage(p: Player): float =
+        match (p |> Player.getCurrentLeg).Records |> List.map(fun s -> s.Result |> float ) with
+        | [] -> 0.0
+        | ss -> (ss |> List.average) * 3.0
+
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
-    static member getLegsWon(p:Player)(mode: int) =
-        p.Legs |> List.where (fun l -> l.CurrentScore = mode) |> List.length
+
 
 
 type Game =
@@ -144,8 +150,9 @@ module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
 type IGameApi =
-    { initGame: Game -> Async<GameState * Game>
-      sendThrow: string -> Async<GameState * Game>
+    { initGame: Game -> Async<AppState * Game>
+      sortPlayers: Game -> Async<AppState * Game>
+      sendThrow: string -> Async<AppState * Game>
       undo: unit -> Async<Game> }
 
 [<AutoOpen>]

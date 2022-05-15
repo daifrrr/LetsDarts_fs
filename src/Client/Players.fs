@@ -8,12 +8,33 @@ open Shared
 module Players =
 
     let protectedHTMLSpace = ({ __html = "&nbsp;" } |> DOMAttr.DangerouslySetInnerHTML)
+    let currentRecord = ref (List.replicate 3 "")
 
-    let currentRecord (p: Player) =
-        (p |> Player.getCurrentLeg).Records
-        |> List.chunkBySize 3
-        |> List.head
+//    let lastChunk (p: Player) =
+//        let lc = (p |> Player.getCurrentLeg).Records
+//                            |> List.chunkBySize 3
+//                            |> List.head
+//        lc
+//
+//    let currentRecord (p: Player) =
+//        let doNotShow = p |> lastChunk
+//        doNotShow
 
+    let filledList p =
+            match (Player.getCurrentLeg p).Records with
+            | [] -> [ "-"; "-"; "-" ]
+            | r ->
+                match r.Length % 3 with
+                | 0 ->
+                    r
+                    |> List.take 3
+                    |> List.map (fun s -> s |> ToString)
+                | c ->
+                    (List.replicate ((-) 3 c) "-"
+                     @ (r
+                        |> List.take c
+                        |> List.map (fun s -> s |> ToString)))
+                    |> List.rev
 
 
 
@@ -105,7 +126,7 @@ module Players =
                                     ]
                                     Html.h3 [
                                         prop.className "ply-avg"
-                                        prop.text $"26,1"
+                                        prop.text $"%.2f{p |> Player.getAverage}"
                                     ]
                                     legsWon p (g.Mode, g.Legs)
                                 ]
@@ -116,11 +137,15 @@ module Players =
                 Bulma.columns [
                     prop.className "record-items"
                     prop.children [
-                        List.replicate 3 protectedHTMLSpace
+                        g
+                        |> Game.getCurrentPlayer
+                        |> filledList
                         |> List.map (fun s ->
                         Bulma.column [
                             prop.className "record-item"
-                            prop.dangerouslySetInnerHTML "&nbsp;"
+                            match s with
+                            | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+                            | _ -> prop.text s
                         ])
                         |> Fable.React.Helpers.ofList
                     ]
