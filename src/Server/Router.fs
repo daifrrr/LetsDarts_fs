@@ -31,18 +31,19 @@ type DartsGameHistory() =
 let DartsGameHistory = DartsGameHistory()
 
 let gameApi =
-    { initGame =
+    { sortPlayers =
+        fun game -> async {
+                DartsGameHistory.AddGame game
+                printfn $"%A{DartsGameHistory.GetInfo()}"
+                return ChangePlayerOrder, game
+            }
+      initGame =
         fun game ->
             async {
                 DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
-
-                return (ChangePlayerOrder, game)
+                return RunGame, game
             }
-      sortPlayers = fun game -> async {
-            DartsGameHistory.AddGame game
-            return (RunGame, game)
-      }
       sendThrow =
           fun str ->
               async {
@@ -68,5 +69,5 @@ let gameApi =
                         | Some g -> g
                         | None -> Game.Default
 
-                return oldGame
+                return RunGame, oldGame
             } }

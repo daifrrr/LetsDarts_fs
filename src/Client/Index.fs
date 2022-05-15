@@ -1,10 +1,7 @@
 namespace Client
 
-open Client
-open Client.Components
 open Elmish
 open Fable.Remoting.Client
-open Feliz.Bulma
 open Shared
 
 module State =
@@ -43,11 +40,19 @@ module State =
 
     let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
         match msg with
-        | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
-        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game ChangeGameState
-        | ChangeGameState (s, g) -> { model with State = s; Game = g }, Cmd.none
-        | GetThrow t -> model, Cmd.OfAsync.perform gameApi.sendThrow t GotThrow
-        | GotThrow (s, g) -> { model with State = s; Game = g }, Cmd.none
+        // SERVER INTERACTION
+        // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
+        // |>|> incoming: server response           ( Form: Passive Construct )
+        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
+        | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
+        | GameSettingsSubmitted (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | SendShot t -> model, Cmd.OfAsync.perform gameApi.sendThrow t ShotReceived
+        | ShotReceived (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | UndoLastAction -> model, Cmd.OfAsync.perform gameApi.undo () LastActionUndone
+        | LastActionUndone (s, g) -> { model with State = s; Game = g }, Cmd.none
+        // SETUP SETTINGS
+        // |>|> no server interaction is happening ``[ for now ]``
         | CloseShowResults -> { model with State = RunGame }, Cmd.none
         | EndGame ->
             { model with
@@ -76,18 +81,32 @@ module State =
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
         | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
-        | Undo -> model, Cmd.OfAsync.perform gameApi.undo () UndoDone
-        | UndoDone g -> { model with Game = g }, Cmd.none
 
 open Feliz
+open Feliz.Bulma
+open Client.Components
 
 module Views =
-
     let sortPlayers (model: Model) (dispatch: Msg -> unit) =
-        Bulma.button.span [
-            prop.className "btn-game-start"
-            prop.text "Start"
-            prop.onClick (fun _ -> dispatch SubmitGameSettings)
+        Bulma.container [
+            Bulma.columns [
+                prop.className "srt"
+                prop.children [
+                    model.Game
+                    |> Game.getPlayers
+                    |> List.mapi (fun i p ->
+                        Bulma.column [
+                            prop.text p.Name
+                        ]
+                    )
+                    |> Fable.React.Helpers.ofList
+                    Bulma.button.span [
+                        prop.className "btn-game-start"
+                        prop.text "Start"
+                        prop.onClick (fun _ -> dispatch SubmitGameSettings)
+                    ]
+                ]
+            ]
         ]
 
     let playGame (model: Model) (dispatch: Msg -> unit) =
@@ -101,7 +120,7 @@ module Views =
                             Bulma.button.a [
                                 prop.className "btn-undo"
                                 prop.text "Undo Last Dart"
-                                prop.onClick (fun _ -> dispatch Undo)
+                                prop.onClick (fun _ -> dispatch UndoLastAction)
                             ]
                         ]
                     ]
@@ -114,7 +133,7 @@ module Views =
         ]
 
     let showGameResult (phase: string) (dispatch: Msg -> unit) =
-        Bulma.box [
+        Bulma.container [
             prop.children [
                 Html.p [ prop.text $"%s{phase}" ]
                 Bulma.button.a [
