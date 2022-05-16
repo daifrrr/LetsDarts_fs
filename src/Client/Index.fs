@@ -151,11 +151,10 @@ module Views =
 
     let view (model: Model) (dispatch: Msg -> unit) =
         Bulma.hero [
-            hero.isFullHeightWithNavbar
-            prop.children [
-                Bulma.navbarBrand.div []
-                Bulma.heroBody [
-                    prop.children [
+                hero.isFullHeight
+                prop.children [
+                    Bulma.heroHead []
+                    Bulma.heroBody [
                         match model.State with
                         | CreateGame -> createForm model dispatch
                         | ChangePlayerOrder -> sortPlayers model dispatch
@@ -163,7 +162,6 @@ module Views =
                         | ShowResult -> showGameResult "LegOver" dispatch
                         | FinishGame -> showGameResult "GameOver" dispatch
                     ]
-                ]
-                //                Bulma.footer [ prop.children [] ]
+                    Bulma.heroFoot []
                 ]
         ]

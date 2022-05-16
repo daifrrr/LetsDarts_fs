@@ -10350,176 +10350,43 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   padding: 3rem 1.5rem 6rem;
 }
 
-body, button, input, optgroup, select, textarea {
+body, button, input, optgroup, select, textarea, label {
+  color: hsl(0deg, 0%, 100%) !important;
   font-family: "League Spartan", sans-serif !important;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-  font-family: "League Spartan", sans-serif !important;
-  background-color: #38394d;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.label, .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
-  color: hsl(0deg, 0%, 100%);
-  line-height: 1.5;
-  font-weight: 400;
 }
 
 svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   fill: #58a6ff;
 }
 
-.button {
-  padding: 0;
-  margin-top: 2rem;
-  border: none;
-  border-radius: 1rem;
+.hero {
   color: hsl(0deg, 0%, 100%);
-}
-.button:hover {
-  color: hsl(0deg, 0%, 100%);
-}
-.button.btn-undo {
-  background-color: #d95652;
-  width: 95%;
+  background: #38394d;
 }
 
-.input, .srt {
-  margin-top: 2rem;
-  border: none;
-  border-radius: 1rem;
+.navbar {
+  max-height: 10%;
 }
 
-.navbar-brand {
-  min-height: 2rem;
+.footer {
+  max-height: 10%;
 }
 
-.frm {
-  display: inline-flex;
-  flex-direction: column;
-  padding: 0 15%;
+.hero-body {
+  justify-content: center;
+  flex-flow: column wrap;
+  row-gap: 2rem;
 }
-.frm .frm-players {
+.hero-body .columns:not(.frm-players) {
   display: flex;
-  flex-direction: column;
-  align-content: space-evenly;
-}
-.frm .frm-players .frm-player {
-  margin: 0.5rem 0 0.5rem;
-  text-align: center;
-}
-
-.btn-player-plus {
-  height: unset !important;
-  line-height: 0;
-  flex-grow: 0;
-  flex-shrink: 1;
-  font-size: 3rem;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-.btn-player-plus:hover {
-  color: hsl(0deg, 0%, 100%);
-}
-
-.btn-game-start {
-  background-color: #528b6e;
-}
-
-.plys {
-  margin: 2em 0;
-  padding: 0.5em 0;
-  text-align: center;
-}
-.plys h1 {
-  font-size: 4em;
-  font-weight: 700;
-}
-.plys h2 {
-  font-size: 2em;
-}
-.plys h3 {
-  font-size: 1.5em;
-}
-.plys .ply > * :not(.ply-name) {
-  margin-top: 1em;
-}
-.plys .ply .ply-name {
-  color: #a4a4af;
-}
-.plys .ply .ply-previous .ply-prevshots, .plys .ply .ply-previous .ply-prevshot {
-  justify-content: space-evenly;
-  margin: 0;
-  padding: 0;
-}
-.plys .ply .ply-previous .ply-prevshot {
-  color: #a4a4af;
-}
-.plys .ply .ply-score {
-  margin: 0.25em 0 0.25em;
-}
-.plys .ply .ply-legs {
-  margin: 0.5em 0 0.5em;
   justify-content: center;
-  align-content: flex-start;
-  gap: 0.25em;
-  flex-flow: row wrap;
+  width: 100%;
 }
-.plys .ply .ply-legs .filled, .plys .ply .ply-legs .empty {
-  flex-basis: 17%;
-  flex-grow: 0;
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 3px;
+.hero-body .frm-players {
+  width: 100%;
 }
-.plys .ply .ply-legs .filled {
-  background-color: #a4a4af;
-}
-.plys .ply .ply-legs .empty {
-  background-color: #282938;
-}
-.plys .ply .ply-legs .record-items {
-  margin-top: 0.25em;
-  justify-content: space-between;
-  font-size: 4em;
-}
-.plys .ply .ply-legs .record-items .record-item {
-  display: inline-flex;
-  justify-content: center;
-  align-items: baseline;
-  border-radius: 30px;
-  text-align: center;
-  line-height: 1em;
-  font-weight: 700;
-  flex-grow: 0;
-  flex-basis: 27.5%;
-  padding: 0;
-  background-color: #282938;
-}
-.plys .ply .ply-legs .record-items .record-item span {
-  margin: 0 0 10px;
-}
-.plys .ply-active {
-  background-color: #282938;
-}
-.plys .ply-active .ply-name {
-  color: hsl(0deg, 0%, 100%);
-}
-.plys .ply-active .ply-legs {
-  margin: 0.5em 0 0.5em;
-}
-.plys .ply-active .ply-legs .filled {
-  background-color: #a4a4af;
-}
-.plys .ply-active .ply-legs .empty {
-  background-color: #38394d;
+.hero-body .frm-players input {
+  margin: 0.25em 0;
 }
 
 .container.dev {
