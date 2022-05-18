@@ -69,6 +69,7 @@ module State =
                             model.Game.Players
                             @ [ { p with Name = $"Player%d{model.Game.Players.Length + 1}" } ] } },
             Cmd.none
+        | MovePlayerPosition pl -> { model with Game = { model.Game with Players = pl } }, Cmd.none
         | ChangePlayername (index, name) ->
             let newPlayerList =
                 model.Game.Players
@@ -88,23 +89,49 @@ open Client.Components
 
 module Views =
     let sortPlayers (model: Model) (dispatch: Msg -> unit) =
-        Bulma.container [
-            Bulma.columns [
-                prop.className "srt"
-                prop.children [
-                    model.Game
-                    |> Game.getPlayers
-                    |> List.mapi (fun i p ->
-                        Bulma.column [
-                            prop.text p.Name
+
+        let rec moveDownAt (list: Player list)(index: int): Player list  =
+            match list, index with
+            | _, -1 -> list
+            | h1::h2::t, 0  -> h2::h1::t
+            | h::t, index  -> h::moveDownAt t (index - 1)
+            | [], _ -> list
+        let moveUpAt (list: Player list)(index: int): Player list =
+            moveDownAt list (index - 1)
+        let up = model.Game |> Game.getPlayers |> moveUpAt
+        let down = model.Game |> Game.getPlayers |> moveDownAt
+
+        Bulma.columns [
+            prop.className "srt"
+            prop.children [
+                model.Game
+                |> Game.getPlayers
+                |> List.mapi (fun i p ->
+                    Bulma.column [
+                        Html.div [
+                            prop.className "srt-player"
+                            prop.custom ("index", i)
+                            prop.children [
+                                Bulma.button.a [
+                                    prop.className "left"
+                                    prop.text (sprintf "\u142F")
+                                    prop.onClick (fun _ -> dispatch (MovePlayerPosition(i |> down)))
+                                ]
+                                Bulma.text.span p.Name
+                                Bulma.button.a [
+                                    prop.className "right"
+                                    prop.text (sprintf "\u1431")
+                                    prop.onClick (fun _ -> dispatch (MovePlayerPosition(i |> up)))
+                                ]
+                            ]
                         ]
-                    )
-                    |> Fable.React.Helpers.ofList
-                    Bulma.button.span [
-                        prop.className "btn-game-start"
-                        prop.text "Start"
-                        prop.onClick (fun _ -> dispatch SubmitGameSettings)
                     ]
+                )
+                |> Fable.React.Helpers.ofList
+                Bulma.button.span [
+                    prop.className "btn-game-start"
+                    prop.text "Start"
+                    prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]
             ]
         ]
