@@ -10377,16 +10377,46 @@ svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   flex-flow: column wrap;
   row-gap: 2rem;
 }
-.hero-body .columns:not(.frm-players) {
+.hero-body .columns {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 .hero-body .frm-players {
+  flex-direction: column;
   width: 100%;
 }
 .hero-body .frm-players input {
   margin: 0.25em 0;
+}
+.hero-body .srt {
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+.hero-body .srt .columns, .hero-body .srt .srt-player {
+  color: hsl(0deg, 0%, 4%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 3rem;
+  margin: 0;
+  font-size: 2.5rem;
+  background-color: hsl(0deg, 0%, 100%);
+  border-radius: 1.5rem;
+}
+.hero-body .srt .columns .button, .hero-body .srt .srt-player .button {
+  border-width: 0;
+  font-weight: 700;
+}
+.hero-body .srt .columns .left, .hero-body .srt .srt-player .left {
+  justify-self: flex-start;
+  border-radius: 1.5rem 0 0 1.5rem;
+  padding: 2rem;
+}
+.hero-body .srt .columns .right, .hero-body .srt .srt-player .right {
+  justify-self: flex-end;
+  border-radius: 0 1.5rem 1.5rem 0;
+  padding: 2rem;
 }
 
 .container.dev {

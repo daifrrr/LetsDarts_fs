@@ -32,14 +32,41 @@ svg
     justify-content: center
     flex-flow: column wrap
     row-gap: 2rem
-    .columns:not(.frm-players)
+    .columns
         display: flex
         justify-content: center
         width: 100%
     .frm-players
+        flex-direction: column
         width: 100%
         input
             margin: 0.25em 0
+    .srt
+        flex-direction: column
+        flex: 0 0 auto
+
+        .columns, .srt-player
+            color: $black
+            display: flex
+            justify-content: space-between
+            align-items: center
+            column-gap: 3rem
+            margin: 0
+            font-size: 2.5rem
+            background-color: $white
+            border-radius: 1.5rem
+            .button
+                border-width: 0
+                font-weight: 700
+            .left
+                justify-self: flex-start
+                border-radius: 1.5rem 0 0 1.5rem
+                padding: 2rem
+            .right
+                justify-self: flex-end
+                border-radius:  0 1.5rem 1.5rem 0
+                padding: 2rem
+
 // OVERRIDES END
 // SETTINGS FORM
 //.frm
