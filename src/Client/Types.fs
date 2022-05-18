@@ -19,6 +19,7 @@ type Msg =
     | SwitchDoubleOut of bool
     | SwitchDoubleIn of bool
     | AddPlayer of Player
+    | MovePlayerPosition of Player list
     | ChangePlayername of int * string
     | ChangeMode of string
     | ChangeCountOfLegs of string
