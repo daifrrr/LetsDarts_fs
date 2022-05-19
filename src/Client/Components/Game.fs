@@ -1,40 +1,33 @@
 ﻿namespace Client.Components
 
-open Fable.React.Props
+open Client.Types
 open Feliz
 open Feliz.Bulma
 open Shared
 
-module Players =
+module internal Players =
+    let protectedHTMLSpace =
+        ({ Fable.React.Props.__html = "&nbsp;" }
+         |> Fable.React.Props.DangerouslySetInnerHTML)
 
-    let protectedHTMLSpace = ({ __html = "&nbsp;" } |> DOMAttr.DangerouslySetInnerHTML)
-    let currentRecord = ref (List.replicate 3 "")
-
-//    let lastChunk (p: Player) =
-//        let lc = (p |> Player.getCurrentLeg).Records
-//                            |> List.chunkBySize 3
-//                            |> List.head
-//        lc
-//
-//    let currentRecord (p: Player) =
-//        let doNotShow = p |> lastChunk
-//        doNotShow
+    let currentRecord =
+        ref (List.replicate 3 "")
 
     let filledList p =
-            match (Player.getCurrentLeg p).Records with
-            | [] -> [ "-"; "-"; "-" ]
-            | r ->
-                match r.Length % 3 with
-                | 0 ->
-                    r
-                    |> List.take 3
-                    |> List.map (fun s -> s |> ToString)
-                | c ->
-                    (List.replicate ((-) 3 c) "-"
-                     @ (r
-                        |> List.take c
-                        |> List.map (fun s -> s |> ToString)))
-                    |> List.rev
+        match (Player.getCurrentLeg p).Records with
+        | [] -> [ "-"; "-"; "-" ]
+        | r ->
+            match r.Length % 3 with
+            | 0 ->
+                r
+                |> List.take 3
+                |> List.map (fun s -> s |> ToString)
+            | c ->
+                (List.replicate ((-) 3 c) "-"
+                 @ (r
+                    |> List.take c
+                    |> List.map (fun s -> s |> ToString)))
+                |> List.rev
 
 
 
@@ -79,12 +72,14 @@ module Players =
         ]
 
 
-    let legsWon (p: Player) (mode: int, legs:int) =
-        let wonLegs = (p, mode) ||> Player.getLegsWon
+    let legsWon (p: Player) (mode: int, legs: int) =
+        let wonLegs =
+            (p, mode) ||> Player.getLegsWon
+
         Bulma.columns [
             prop.className "ply-legs"
             prop.children [
-                [ 1 .. legs ]
+                [ 1..legs ]
                 |> List.map (fun i ->
                     Bulma.column [
                         match i <= wonLegs with
@@ -141,13 +136,38 @@ module Players =
                         |> Game.getCurrentPlayer
                         |> filledList
                         |> List.map (fun s ->
-                        Bulma.column [
-                            prop.className "record-item"
-                            match s with
-                            | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
-                            | _ -> prop.text s
-                        ])
+                            Bulma.column [
+                                prop.className "record-item"
+                                match s with
+                                | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+                                | _ -> prop.text s
+                            ])
                         |> Fable.React.Helpers.ofList
+                    ]
+                ]
+            ]
+        ]
+
+[<RequireQualifiedAccess>]
+module Play =
+    let Game (model: Model) (dispatch: Msg -> unit) =
+        Bulma.container [
+            Bulma.columns [
+                prop.children [
+                    Bulma.column [
+                        column.is6
+                        prop.children [
+                            Players.renderPlayers model.Game
+                            Bulma.button.a [
+                                prop.className "btn-undo"
+                                prop.text "Undo Last Dart"
+                                prop.onClick (fun _ -> dispatch UndoLastAction)
+                            ]
+                        ]
+                    ]
+                    Bulma.column [
+                        column.is6
+                        prop.children [ Dartboard dispatch ]
                     ]
                 ]
             ]

@@ -7,45 +7,7 @@ open Shared
 
 [<AutoOpen>]
 module Dartboard =
-    let sections (fieldValue: int, angle: float) (color: string * string) =
-        Svg.g [
-            svg.id (string $"f{fieldValue}")
-            svg.transform.rotate -angle
-            svg.children [
-                Svg.use' [
-                    svg.id (string $"s{fieldValue}")
-                    svg.href "#single"
-                    svg.height 500
-                    svg.width 500
-                    svg.y 0
-                    svg.x 0
-                    svg.fill (fst color)
-                    svg.onClick handleClick
-                ]
-                Svg.use' [
-                    svg.id (string $"d{fieldValue}")
-                    svg.href "#double"
-                    svg.height 500
-                    svg.width 500
-                    svg.y 0
-                    svg.x 0
-                    svg.fill (snd color)
-                    svg.onClick handleClick
-                ]
-                Svg.use' [
-                    svg.id (string $"t{fieldValue}")
-                    svg.href "#triple"
-                    svg.height 500
-                    svg.width 500
-                    svg.y 0
-                    svg.x 0
-                    svg.fill (snd color)
-                    svg.onClick handleClick
-                ]
-            ]
-        ]
-
-    let defs _ =
+    let internal defs _ =
         Svg.defs [
             svg.id "defs"
             svg.children [
@@ -96,7 +58,47 @@ module Dartboard =
             ]
         ]
 
-    let dartBoard (dispatch: Client.Types.Msg -> unit) =
+    let internal sections (fieldValue: int, angle: float) (color: string * string) =
+        Svg.g [
+            svg.id (string $"f{fieldValue}")
+            svg.transform.rotate -angle
+            svg.children [
+                Svg.use' [
+                    svg.id (string $"s{fieldValue}")
+                    svg.href "#single"
+                    svg.height 500
+                    svg.width 500
+                    svg.y 0
+                    svg.x 0
+                    svg.fill (fst color)
+                    svg.onClick handleClick
+                ]
+                Svg.use' [
+                    svg.id (string $"d{fieldValue}")
+                    svg.href "#double"
+                    svg.height 500
+                    svg.width 500
+                    svg.y 0
+                    svg.x 0
+                    svg.fill (snd color)
+                    svg.onClick handleClick
+                ]
+                Svg.use' [
+                    svg.id (string $"t{fieldValue}")
+                    svg.href "#triple"
+                    svg.height 500
+                    svg.width 500
+                    svg.y 0
+                    svg.x 0
+                    svg.fill (snd color)
+                    svg.onClick handleClick
+                ]
+            ]
+        ]
+
+
+
+    let Dartboard (dispatch: Client.Types.Msg -> unit) =
         Bulma.container [
             prop.className "dartboardContainer"
             prop.children [

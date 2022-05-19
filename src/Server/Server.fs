@@ -13,7 +13,8 @@ let webApp =
     |> Remoting.buildHttpHandler
 
 
-let app = application {
+let app =
+    application {
         url "http://*:8085"
         use_router webApp
         memory_cache

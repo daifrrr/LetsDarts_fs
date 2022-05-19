@@ -1,5 +1,6 @@
 namespace Client
 
+open Client.Components
 open Elmish
 open Fable.Remoting.Client
 open Shared
@@ -28,9 +29,7 @@ module State =
                         Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
 
 
-        let model =
-            { State = CreateGame
-              Game = Game.Default }
+        let model = { State = Create; Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -53,10 +52,10 @@ module State =
         | LastActionUndone (s, g) -> { model with State = s; Game = g }, Cmd.none
         // SETUP SETTINGS
         // |>|> no server interaction is happening ``[ for now ]``
-        | CloseShowResults -> { model with State = RunGame }, Cmd.none
+        | CloseShowResults -> { model with State = Run }, Cmd.none
         | EndGame ->
             { model with
-                State = CreateGame
+                State = Create
                 Game = Game.Default },
             Cmd.none
         | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleOut = b } }, Cmd.none
@@ -85,110 +84,23 @@ module State =
 
 open Feliz
 open Feliz.Bulma
-open Client.Components
 
 module Views =
-    let sortPlayers (model: Model) (dispatch: Msg -> unit) =
-
-        let rec moveDownAt (list: Player list)(index: int): Player list  =
-            match list, index with
-            | _, -1 -> list
-            | h1::h2::t, 0  -> h2::h1::t
-            | h::t, index  -> h::moveDownAt t (index - 1)
-            | [], _ -> list
-        let moveUpAt (list: Player list)(index: int): Player list =
-            moveDownAt list (index - 1)
-        let up = model.Game |> Game.getPlayers |> moveUpAt
-        let down = model.Game |> Game.getPlayers |> moveDownAt
-
-        Bulma.columns [
-            prop.className "srt"
-            prop.children [
-                model.Game
-                |> Game.getPlayers
-                |> List.mapi (fun i p ->
-                    Bulma.column [
-                        Html.div [
-                            prop.className "srt-player"
-                            prop.custom ("index", i)
-                            prop.children [
-                                Bulma.button.a [
-                                    prop.className "left"
-                                    prop.text (sprintf "\u142F")
-                                    prop.onClick (fun _ -> dispatch (MovePlayerPosition(i |> down)))
-                                ]
-                                Bulma.text.span p.Name
-                                Bulma.button.a [
-                                    prop.className "right"
-                                    prop.text (sprintf "\u1431")
-                                    prop.onClick (fun _ -> dispatch (MovePlayerPosition(i |> up)))
-                                ]
-                            ]
-                        ]
-                    ]
-                )
-                |> Fable.React.Helpers.ofList
-                Bulma.button.span [
-                    prop.className "btn-game-start"
-                    prop.text "Start"
-                    prop.onClick (fun _ -> dispatch SubmitGameSettings)
-                ]
-            ]
-        ]
-
-    let playGame (model: Model) (dispatch: Msg -> unit) =
-        Bulma.container [
-            Bulma.columns [
-                prop.children [
-                    Bulma.column [
-                        column.is6
-                        prop.children [
-                            Players.renderPlayers model.Game
-                            Bulma.button.a [
-                                prop.className "btn-undo"
-                                prop.text "Undo Last Dart"
-                                prop.onClick (fun _ -> dispatch UndoLastAction)
-                            ]
-                        ]
-                    ]
-                    Bulma.column [
-                        column.is6
-                        prop.children [ dartBoard dispatch ]
-                    ]
-                ]
-            ]
-        ]
-
-    let showGameResult (phase: string) (dispatch: Msg -> unit) =
-        Bulma.container [
-            prop.children [
-                Html.p [ prop.text $"%s{phase}" ]
-                Bulma.button.a [
-                    color.isInfo
-                    match phase with
-                    | "LegOver" ->
-                        prop.text "Close"
-                        prop.onClick (fun _ -> dispatch CloseShowResults)
-                    | _ ->
-                        prop.text "New Game"
-                        prop.onClick (fun _ -> dispatch EndGame)
-                ]
-            ]
-        ]
-
     let view (model: Model) (dispatch: Msg -> unit) =
         Bulma.hero [
-                hero.isFullHeight
-                prop.children [
+            hero.isFullHeight
+            prop.children [
+                Bulma.container [
                     Bulma.heroHead []
                     Bulma.heroBody [
                         match model.State with
-                        | CreateGame -> createForm model dispatch
-                        | ChangePlayerOrder -> sortPlayers model dispatch
-                        | RunGame -> playGame model dispatch
-                        | ShowResult -> showGameResult "LegOver" dispatch
-                        | FinishGame -> showGameResult "GameOver" dispatch
+                        | Create -> Create.Form model dispatch
+                        | Order -> Sort.Form model dispatch
+                        | Run -> Play.Game model dispatch
+                        | Show -> Result.Show model dispatch
+                        | End -> Result.Show model dispatch
                     ]
                     Bulma.heroFoot []
                 ]
+            ]
         ]

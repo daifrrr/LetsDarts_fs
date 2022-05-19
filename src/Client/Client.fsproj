@@ -6,21 +6,17 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="index.html" />
-        <None Include="paket.references" />
+        <None Include="public\style.sass" />
         <Compile Include="Types.fs" />
         <Compile Include="Events.fs" />
-        <Compile Include="Form.fs" />
-        <Compile Include="Players.fs" />
-        <Compile Include="Dartboard.fs" />
+        <Compile Include="Components\Create.fs" />
+        <Compile Include="Components\Sort.fs" />
+        <Compile Include="Components\Dartboard.fs" />
+        <Compile Include="Components\Game.fs" />
+        <Compile Include="Components\Result.fs" />
         <Compile Include="Index.fs" />
         <Compile Include="App.fs" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\Shared\Shared.fsproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="public\style.sass" />
-      <Folder Include="public\bulma_customize" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

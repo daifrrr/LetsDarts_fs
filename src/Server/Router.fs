@@ -20,8 +20,7 @@ type DartsGameHistory() =
     member _.AddGame(game: Game) = history.Insert(0, game)
 
     member _.GetOneBeforeLastRemoveLastGame() : Game option =
-        let OneBeforeLast =
-            List.ofSeq history |> List.tryItem 1
+        let OneBeforeLast = List.ofSeq history |> List.tryItem 1
 
         history.RemoveAt(0)
         OneBeforeLast
@@ -32,32 +31,33 @@ let DartsGameHistory = DartsGameHistory()
 
 let gameApi =
     { sortPlayers =
-        fun game -> async {
+        fun game ->
+            async {
                 DartsGameHistory.AddGame game
                 printfn $"%A{DartsGameHistory.GetInfo()}"
-                return ChangePlayerOrder, game
+                return Order, game
             }
       initGame =
         fun game ->
             async {
                 DartsGameHistory.ClearGameHistory()
                 DartsGameHistory.AddGame game
-                return RunGame, game
+                return Run, game
             }
       sendThrow =
-          fun str ->
-              async {
-                  let nextStep, newGame =
-                      Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
+        fun str ->
+            async {
+                let nextStep, newGame =
+                    Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
 
-                  DartsGameHistory.AddGame(newGame)
+                DartsGameHistory.AddGame(newGame)
 
-                  match nextStep with
-                  | GameOn -> return RunGame, newGame
-                  | LegOver -> return ShowResult, newGame
-                  | GameOver -> return FinishGame, newGame
-                  | _ -> return RunGame, newGame
-              }
+                match nextStep with
+                | GameOn -> return Run, newGame
+                | LegOver -> return Show, newGame
+                | GameOver -> return End, newGame
+                | _ -> return Run, newGame
+            }
       undo =
         fun _ ->
             async {
@@ -69,5 +69,5 @@ let gameApi =
                         | Some g -> g
                         | None -> Game.Default
 
-                return RunGame, oldGame
+                return Run, oldGame
             } }

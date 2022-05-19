@@ -16,13 +16,15 @@ module Sub =
             mapEvent.Publish.Add(msgSender)
 
         Cmd.ofSub sub
+
     let addPlayer _ =
         mapEvent.Trigger(Client.Types.Msg.AddPlayer Player.Default)
+
     let handleClick (ev: Browser.Types.Event) =
         let evm = ev |> unbox<Browser.Types.MouseEvent>
 
         let id = evm.target |> unbox<Browser.Types.Element>
         mapEvent.Trigger(Client.Types.Msg.SendShot(id.getAttribute "id"))
+
     let handleInput index name =
         mapEvent.Trigger(Client.Types.Msg.ChangePlayername(index, name))
-

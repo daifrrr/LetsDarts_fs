@@ -23,4 +23,3 @@ type Msg =
     | ChangePlayername of int * string
     | ChangeMode of string
     | ChangeCountOfLegs of string
-

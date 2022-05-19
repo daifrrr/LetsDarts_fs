@@ -10364,11 +10364,13 @@ svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   background: #38394d;
 }
 
-.navbar {
+.hero-head {
+  height: 3em;
   max-height: 10%;
 }
 
-.footer {
+.head-foot {
+  height: 3em;
   max-height: 10%;
 }
 
@@ -10380,11 +10382,9 @@ svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
 .hero-body .columns {
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 .hero-body .frm-players {
   flex-direction: column;
-  width: 100%;
 }
 .hero-body .frm-players input {
   margin: 0.25em 0;

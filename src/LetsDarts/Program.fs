@@ -12,8 +12,7 @@ module Game =
                 | 0 -> 3
                 | n -> n
 
-            let oldRecord =
-                l.Records |> List.skip numberOfToDeleteFromRecord
+            let oldRecord = l.Records |> List.skip numberOfToDeleteFromRecord
 
             let resetScore =
                 l.Records
@@ -56,19 +55,16 @@ module Game =
         | _ -> { newLeg with CurrentScore = newLeg.Records |> Leg.calcCurrentScore }
 
     let calcNewGame (throw: string) (game: Game) =
-        let currentPlayer =
-            Game.getCurrentPlayer game
+        let currentPlayer = Game.getCurrentPlayer game
 
-        let currentPlayerLeg =
-            currentPlayer |> Player.getCurrentLeg
+        let currentPlayerLeg = currentPlayer |> Player.getCurrentLeg
 
         let currentThrow =
             match (throw |> parseThrow) with
             | Some s -> s
             | None -> failwithf $"Could not {throw} parse throw"
 
-        let modifiedLeg =
-            applyGameLogic currentPlayerLeg currentThrow game
+        let modifiedLeg = applyGameLogic currentPlayerLeg currentThrow game
 
         let newPlayers =
             game
