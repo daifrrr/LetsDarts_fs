@@ -1,5 +1,5 @@
 ﻿@charset "UTF-8"
-@import "./bulma_customize/bulma.sass"
+//@import "./bulma_customize/bulma.sass"
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap')
 // COLORS
 $app-black: #282a38
@@ -11,171 +11,48 @@ $background: #38394d
 $dartscount: #282938
 $names-grey: #a4a4af
 $menu-gradient: linear-gradient(90deg, rgba(40,41,56,1) 0%, rgba(31,33,50,1) 100%)
+$white: #fff
+$black: #000
 // OVERRIDES
 body, button, input, optgroup, select, textarea, label
     color: $white !important
     font-family: 'League Spartan', sans-serif !important
+    width: 100%
 
 svg
     use:hover, circle:hover, rect:hover, text:hover
         fill: $hover
 
-.hero
-    color: $white
-    background: $background
-.hero-head
-    height: 3em
-    max-height: 10%
-.head-foot
-    height: 3em
-    max-height: 10%
+*
+    margin: 0
+    padding: 0
+    box-sizing: border-box
 
-.hero-body
+.all
+    height: 100vh
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 1rem
+    background-color: $background
+    padding: 0 1rem
+
+header
+    height: 2rem
+footer
+    height: 2rem
+main
+    display: flex
+    flex-direction: column
     justify-content: center
-    flex-flow: column wrap
-    row-gap: 2rem
-    .columns
+    align-items: center
+    height: calc(100% - 4rem)
+    width: 100%
+    .container
         display: flex
-        justify-content: center
-    .frm-players
         flex-direction: column
-        input
-            margin: 0.25em 0
-    .srt
-        flex-direction: column
-        flex: 0 0 auto
-
-        .columns, .srt-player
-            color: $black
+        & > *
             display: flex
-            justify-content: space-between
-            align-items: center
-            column-gap: 3rem
-            margin: 0
-            font-size: 2.5rem
-            background-color: $white
-            border-radius: 1.5rem
-            .button
-                border-width: 0
-                font-weight: 700
-            .left
-                justify-self: flex-start
-                border-radius: 1.5rem 0 0 1.5rem
-                padding: 2rem
-            .right
-                justify-self: flex-end
-                border-radius:  0 1.5rem 1.5rem 0
-                padding: 2rem
-
-// OVERRIDES END
-// SETTINGS FORM
-//.frm
-//    display: inline-flex
-//    flex-direction: column
-//    padding: 0 15%
-//    .frm-players
-//        display: flex
-//        flex-direction: column
-//        align-content: space-evenly
-//        .frm-player
-//            margin: 0.5rem 0 0.5rem
-//            text-align: center
-////SETTINGS FORM END
-//// ADD PLAYER BUTTON
-//.btn-player-plus
-//    height: unset !important
-//    line-height: 0
-//    flex-grow: 0
-//    flex-shrink: 1
-//    font-size: 3rem
-//    background: none
-//    border: none
-//    padding: 0
-//    cursor: pointer
-//    &:hover
-//        color: $white
-//// ADD PLAYER BUTTON END
-//// START GAME BUTTON
-//.btn-game-start
-//    background-color: $green
-//// START GAME BUTTON END
-//// PLAYER DARTBOARD SCREEN
-//.plys
-//    margin: 2em 0
-//    padding: 0.5em 0
-//    text-align: center
-//    h1
-//        font-size: 4em
-//        font-weight: 700
-//    h2
-//        font-size: 2em
-//    h3
-//        font-size: 1.5em
-//    .ply
-//        & > * :not(.ply-name)
-//            margin-top: 1em
-//        .ply-name
-//            color: $names-grey
-//        .ply-previous
-//            .ply-prevshots, .ply-prevshot
-//                justify-content: space-evenly
-//                margin: 0
-//                padding: 0
-//            .ply-prevshot
-//                color: $names-grey
-//        .ply-score
-//            margin: 0.25em 0 0.25em
-//        .ply-avg
-//
-//        .ply-legs
-//            margin: 0.5em 0 0.5em
-//            justify-content: center
-//            align-content: flex-start
-//            gap: 0.25em
-//            flex-flow: row wrap
-//            .filled, .empty
-//                flex-basis: 17%
-//                flex-grow: 0
-//                width: 0.5em
-//                height: 0.5em
-//                border-radius: 3px
-//            .filled
-//                background-color: $names-grey
-//            .empty
-//                background-color: $dartscount
-//
-//            .record-items
-//                margin-top: 0.25em
-//                justify-content: space-between
-//                font-size: 4em
-//                .record-item
-//                    display: inline-flex
-//                    justify-content: center
-//                    align-items: baseline
-//                    border-radius: 30px
-//                    text-align: center
-//                    line-height: 1em
-//                    font-weight: 700
-//                    flex-grow: 0
-//                    flex-basis: 27.5%
-//                    padding: 0
-//                    background-color: $dartscount
-//                    span
-//                        margin: 0 0 10px
-//    .ply-active
-//        background-color: $dartscount
-//        .ply-name
-//            color: $white
-//        .ply-legs
-//            margin: 0.5em 0 0.5em
-//            .filled
-//                background-color: $names-grey
-//            .empty
-//                background-color: $background
 
 
 
-.container.dev
-    font-family: monospace
-    border: 1px solid white
-    color: $white

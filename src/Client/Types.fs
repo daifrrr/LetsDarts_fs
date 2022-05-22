@@ -14,8 +14,7 @@ type Msg =
     | ShotReceived of AppState * Game
     | UndoLastAction
     | LastActionUndone of AppState * Game
-    | CloseShowResults
-    | EndGame
+    | FinishRound of string
     | SwitchDoubleOut of bool
     | SwitchDoubleIn of bool
     | AddPlayer of Player

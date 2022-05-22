@@ -29,7 +29,8 @@ module State =
                         Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
 
 
-        let model = { State = Create; Game = Game.Default }
+        let model =
+            { State = Create; Game = Game.Default }
 
         // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
@@ -52,12 +53,9 @@ module State =
         | LastActionUndone (s, g) -> { model with State = s; Game = g }, Cmd.none
         // SETUP SETTINGS
         // |>|> no server interaction is happening ``[ for now ]``
-        | CloseShowResults -> { model with State = Run }, Cmd.none
-        | EndGame ->
-            { model with
-                State = Create
-                Game = Game.Default },
-            Cmd.none
+        | FinishRound s -> match s with
+                           | "Next Round" -> { model with State = Run }, Cmd.none
+                           | _ -> { model with State = Create }, Cmd.none
         | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleOut = b } }, Cmd.none
         | SwitchDoubleIn b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
         | AddPlayer p ->
@@ -83,16 +81,17 @@ module State =
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
 
 open Feliz
-open Feliz.Bulma
 
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
-        Bulma.hero [
-            hero.isFullHeight
-            prop.children [
-                Bulma.container [
-                    Bulma.heroHead []
-                    Bulma.heroBody [
+        Fable.React.Helpers.fragment [] [
+                Html.header [
+                    prop.className "header"
+                    prop.children []
+                ]
+                Html.main [
+                    prop.className "content"
+                    prop.children [
                         match model.State with
                         | Create -> Create.Form model dispatch
                         | Order -> Sort.Form model dispatch
@@ -100,7 +99,9 @@ module Views =
                         | Show -> Result.Show model dispatch
                         | End -> Result.Show model dispatch
                     ]
-                    Bulma.heroFoot []
                 ]
-            ]
+                Html.footer [
+                    prop.className "footer"
+                    prop.children []
+                ]
         ]

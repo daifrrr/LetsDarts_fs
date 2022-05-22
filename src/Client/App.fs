@@ -13,7 +13,7 @@ Program.mkProgram Client.State.init Client.State.update Client.Views.view
 #if DEBUG
 |> Program.withConsoleTrace
 #endif
-|> Program.withReactSynchronous "elmish-app"
+|> Program.withReactSynchronous "app"
 #if DEBUG
 |> Program.withDebugger
 #endif
