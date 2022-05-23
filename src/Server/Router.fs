@@ -18,6 +18,7 @@ type DartsGameHistory() =
         match history |> Seq.isEmpty |> not with
         | true -> history |> Seq.tryHead
         | _ -> None
+
     member _.AddGame(game: Game) = history.Insert(0, game)
     member _.ClearGameHistory() = history.Clear()
 
@@ -54,8 +55,8 @@ let gameApi =
       undo =
         fun _ ->
             async {
-                    match DartsGameHistory.GetBeforeCurrentGame() with
-                    | Some g -> return Run, Some g
-                    | None -> return Create, None
+                match DartsGameHistory.GetBeforeCurrentGame() with
+                | Some g -> return Run, Some g
+                | None -> return Create, None
             }
         }

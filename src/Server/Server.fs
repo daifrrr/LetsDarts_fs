@@ -3,7 +3,6 @@ module Server
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
 open Saturn
-
 open Shared
 
 let webApp =
@@ -24,6 +23,5 @@ let app =
 
 [<EntryPoint>]
 let main _ =
-    printfn "Working directory - %s" (System.IO.Directory.GetCurrentDirectory())
     run app
     0
