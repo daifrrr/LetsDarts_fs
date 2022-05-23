@@ -6,6 +6,10 @@ open Feliz
 open Feliz.Bulma
 open Shared
 
+
+// Html.div [prop.className "container-fluid create-layer"prop.children [
+// ]]
+
 [<RequireQualifiedAccess>]
 module Create =
     let Form (model: Model) (dispatch: Msg -> unit) =
@@ -13,45 +17,51 @@ module Create =
             prop.className "container-fluid create-layer"
             prop.children [
                 Html.div [
-                    prop.className "row"
+                    prop.className "row label-group"
                     prop.children [
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col ld-label-score"
                             prop.children [
-                                Html.label [
-                                    prop.text "Score"
+                                Html.div [
+                                    Html.label [
+                                        prop.text "Score"
+                                    ]
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col ld-label-sets"
                             prop.children [
-                                Html.label [
-                                    prop.text "Sets"
+                                Html.div [
+                                    Html.label [
+                                        prop.text "Sets"
+                                    ]
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col ld-label-legs"
                             prop.children [
-                                Html.label [
-                                    prop.text "Legs"
+                                Html.div [
+                                    Html.label [
+                                        prop.text "Legs"
+                                    ]
                                 ]
                             ]
                         ]
                     ]
                 ]
                 Html.div [
-                    prop.className "row"
+                    prop.className "input-group"
                     prop.children [
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col ld-input-score"
                             prop.children [
                                 Html.div [
-                                    column.is6
-                                    prop.className "ld-input-score"
+                                    prop.className ""
                                     prop.children [
                                         Html.select [
+                                            prop.className "ld-select"
                                             prop.value (model.Game.Mode |> string)
                                             prop.onChange (ChangeMode >> dispatch)
                                             prop.children [
@@ -63,21 +73,38 @@ module Create =
                                 ]
                             ]
                         ]
-                    ]
-                ]
-                Html.div [
-                    prop.className "col-4"
-                    prop.children [
                         Html.div [
-                            prop.className "ld-input-sets"
+                            prop.className "col ld-input-sets"
                             prop.children [
-                                Html.select [
-                                    prop.onChange (ChangeCountOfLegs >> dispatch)
+                                Html.div [
+                                    prop.className ""
                                     prop.children [
-                                        Html.option 1
-                                        Html.option 3
-                                        Html.option 5
-                                        Html.option 7
+                                        Html.select [
+                                            prop.className "ld-select"
+                                            prop.disabled true
+                                            prop.onChange (ChangeCountOfLegs >> dispatch)
+                                            prop.children [
+                                                [1;2;3;4;5;6;7;8;9;10] |> List.map (fun i -> Html.option i) |> Fable.React.Helpers.ofList
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        Html.div [
+                            prop.className "col ld-input-legs"
+                            prop.children[
+                                Html.div [
+                                    prop.className ""
+                                    prop.children [
+                                        Html.select [
+                                            prop.className "ld-select"
+                                            prop.value model.Game.Legs
+                                            prop.onChange (ChangeCountOfLegs >> dispatch)
+                                            prop.children [
+                                                [1;2;3;4;5;6;7;8;9;10] |> List.map (fun i -> Html.option i) |> Fable.React.Helpers.ofList
+                                            ]
+                                        ]
                                     ]
                                 ]
                             ]
@@ -85,31 +112,12 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "col-4"
-                    prop.children [
-                        Html.div [
-                            prop.className "ld-input-legs"
-                            prop.children [
-                                Html.select [
-                                    prop.value model.Game.Legs
-                                    prop.onChange (ChangeCountOfLegs >> dispatch)
-                                    prop.children [
-                                        Html.option 1
-                                        Html.option 3
-                                        Html.option 5
-                                        Html.option 7
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-                Html.div [
-                    prop.className "frm-players"
+                    prop.className "player-input-group"
                     prop.children [
                         model.Game.Players
                         |> List.mapi (fun i p ->
                             Html.div [
+                                prop.className "player-input"
                                 prop.children [
                                     Html.div [
                                         prop.className "is-full"
