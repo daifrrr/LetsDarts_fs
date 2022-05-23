@@ -2,7 +2,6 @@
 
 open Client.Types
 open Feliz
-open Feliz.Bulma
 open Shared
 
 module Sort =
@@ -22,24 +21,24 @@ module Sort =
         let down =
             model.Game |> Game.getPlayers |> moveDownAt
 
-        Bulma.columns [
+        Html.div [
             prop.className "srt"
             prop.children [
                 model.Game
                 |> Game.getPlayers
                 |> List.mapi (fun i p ->
-                    Bulma.column [
+                    Html.div [
                         Html.div [
                             prop.className "srt-player"
                             prop.custom ("index", i)
                             prop.children [
-                                Bulma.button.a [
+                                Html.button [
                                     prop.className "left"
                                     prop.text (sprintf "\u142F")
                                     prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
                                 ]
-                                Bulma.text.span p.Name
-                                Bulma.button.a [
+                                Html.span p.Name
+                                Html.button [
                                     prop.className "right"
                                     prop.text (sprintf "\u1431")
                                     prop.onClick (fun _ -> MovePlayerPosition(i |> up) |> dispatch)
@@ -48,7 +47,7 @@ module Sort =
                         ]
                     ])
                 |> Fable.React.Helpers.ofList
-                Bulma.button.span [
+                Html.button [
                     prop.className "btn-game-start"
                     prop.text "Start"
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
