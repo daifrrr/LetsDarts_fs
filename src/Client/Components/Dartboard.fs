@@ -2,7 +2,6 @@
 
 open Client.Events
 open Feliz
-open Feliz.Bulma
 open Shared
 
 [<AutoOpen>]
@@ -99,7 +98,7 @@ module Dartboard =
 
 
     let Dartboard (dispatch: Client.Types.Msg -> unit) =
-        Bulma.container [
+        Html.div [
             prop.className "dartboardContainer"
             prop.children [
                 Svg.svg [

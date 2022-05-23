@@ -2,7 +2,6 @@
 
 open Client.Types
 open Feliz
-open Feliz.Bulma
 open Shared
 
 module internal Players =
@@ -46,22 +45,19 @@ module internal Players =
             | _ -> r
 
 
-        Bulma.container [
-            text.hasTextCentered
+        Html.div [
             prop.className "ply-previous"
             prop.children [
                 Html.h3 [
                     prop.className "ply-prevscore"
                     prop.text $"%s{s}"
                 ]
-                Bulma.columns [
-                    columns.isCentered
+                Html.div [
                     prop.className "ply-prevshots"
                     prop.children [
                         shotList
                         |> List.map (fun shot ->
-                            Bulma.column [
-                                column.is3
+                            Html.div [
                                 prop.className "ply-prevshot"
                                 prop.children [ Html.span $"%s{shot}" ]
                             ])
@@ -76,12 +72,12 @@ module internal Players =
         let wonLegs =
             (p, mode) ||> Player.getLegsWon
 
-        Bulma.columns [
+        Html.div [
             prop.className "ply-legs"
             prop.children [
                 [ 1..legs ]
                 |> List.map (fun i ->
-                    Bulma.column [
+                    Html.div [
                         match i <= wonLegs with
                         | true -> prop.className "filled"
                         | _ -> prop.className "empty"
@@ -96,14 +92,14 @@ module internal Players =
         let currentPlayerIndex =
             g |> Game.getCurrentPlayerIndex
 
-        Bulma.container [
+        Html.div [
             prop.children [
-                Bulma.columns [
+                Html.div [
                     prop.className "plys"
                     prop.children [
                         p
                         |> List.mapi (fun i p ->
-                            Bulma.column [
+                            Html.div [
                                 match i = currentPlayerIndex with
                                 | true -> prop.className "ply ply-active"
                                 | _ -> prop.className "ply ply-not-active"
@@ -129,14 +125,14 @@ module internal Players =
                         |> Fable.React.Helpers.ofList
                     ]
                 ]
-                Bulma.columns [
+                Html.div [
                     prop.className "record-items"
                     prop.children [
                         g
                         |> Game.getCurrentPlayer
                         |> filledList
                         |> List.map (fun s ->
-                            Bulma.column [
+                            Html.div [
                                 prop.className "record-item"
                                 match s with
                                 | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
@@ -151,22 +147,20 @@ module internal Players =
 [<RequireQualifiedAccess>]
 module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
-        Bulma.container [
-            Bulma.columns [
+        Html.div [
+            Html.div [
                 prop.children [
-                    Bulma.column [
-                        column.is6
+                    Html.div [
                         prop.children [
                             Players.renderPlayers model.Game
-                            Bulma.button.a [
+                            Html.button [
                                 prop.className "btn-undo"
                                 prop.text "Undo Last Dart"
                                 prop.onClick (fun _ -> dispatch UndoLastAction)
                             ]
                         ]
                     ]
-                    Bulma.column [
-                        column.is6
+                    Html.div [
                         prop.children [ Dartboard dispatch ]
                     ]
                 ]

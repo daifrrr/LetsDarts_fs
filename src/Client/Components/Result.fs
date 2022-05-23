@@ -2,14 +2,13 @@
 
 open Client.Types
 open Feliz
-open Feliz.Bulma
 open Shared
 
 module Result =
     let Show (model: Model) (dispatch: Msg -> unit) =
-        Bulma.container [
+        Html.div [
             prop.children [
-                Bulma.button.a [
+                Html.button [
                     match model.Game |> Game.isFinished with
                     | true ->
                         prop.text "New Game"
