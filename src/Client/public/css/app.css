@@ -11224,17 +11224,28 @@ main .container > * {
 }
 .create-layer .player-input-group {
   margin-top: 2rem;
+  height: 50%;
 }
 .create-layer .player-input-group .player-input {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+.create-layer .btn-add-player {
+  text-align: center;
+}
+.create-layer .btn-add-player i {
+  color: #fff;
+  font-size: 2.5rem;
+}
 
-.ld-input {
+.ld-input, .ld-select, .ld-button {
   padding: 0.3rem;
   border-radius: 0.5rem;
   font-size: 2.5em;
   text-align: center;
+}
+
+.ld-input {
   border: none;
 }
 .ld-input:focus-visible {
@@ -11243,10 +11254,22 @@ main .container > * {
 
 .ld-select {
   border: none;
-  border-radius: 0.5rem;
-  font-size: 2.5em;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.ld-button {
+  border: none;
+  background: #fff;
+  color: black;
+}
+.ld-button.ld-button-green {
+  background: #528b6e;
+  color: #fff;
+}
+.ld-button.ld-button-red {
+  background: #d95652;
+  color: #fff;
 }
 
 /*# sourceMappingURL=app.css.map */

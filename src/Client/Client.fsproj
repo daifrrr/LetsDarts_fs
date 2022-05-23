@@ -23,6 +23,7 @@
       <Content Include="public\css\app.css.map" />
       <Content Include="public\css\froms.sass" />
       <Content Include="public\css\variables.sass" />
+      <Content Include="public\js\css.js" />
       <None Include="public\css\main.sass" />
       <Content Include="public\css\main.css" />
       <Content Include="public\css\main.css.map" />
