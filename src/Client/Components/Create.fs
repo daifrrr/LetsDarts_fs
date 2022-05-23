@@ -17,7 +17,7 @@ module Create =
             prop.className "container-fluid create-layer"
             prop.children [
                 Html.div [
-                    prop.className "row label-group"
+                    prop.className "row label-group g-0"
                     prop.children [
                         Html.div [
                             prop.className "col ld-label-score"
@@ -52,7 +52,7 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "input-group"
+                    prop.className "row input-group g-0"
                     prop.children [
                         Html.div [
                             prop.className "col ld-input-score"
