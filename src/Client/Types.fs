@@ -13,7 +13,7 @@ type Msg =
     | SendShot of string
     | ShotReceived of AppState * Game
     | UndoLastAction
-    | LastActionUndone of AppState * Game
+    | LastActionUndone of AppState * Game option
     | FinishRound of string
     | SwitchDoubleOut of bool
     | SwitchDoubleIn of bool

@@ -50,7 +50,14 @@ module State =
         | SendShot t -> model, Cmd.OfAsync.perform gameApi.sendThrow t ShotReceived
         | ShotReceived (s, g) -> { model with State = s; Game = g }, Cmd.none
         | UndoLastAction -> model, Cmd.OfAsync.perform gameApi.undo () LastActionUndone
-        | LastActionUndone (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | LastActionUndone (s, g) ->
+            { model with
+                State = s
+                Game =
+                    match g with
+                    | Some g -> g
+                    | None -> model.Game },
+            Cmd.none
         // SETUP SETTINGS
         // |>|> no server interaction is happening ``[ for now ]``
         | FinishRound s ->
@@ -85,7 +92,7 @@ open Feliz
 
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
-        Fable.React.Helpers.fragment [] [
+        Html.div [
             Html.header [
                 prop.className "header"
                 prop.children [
