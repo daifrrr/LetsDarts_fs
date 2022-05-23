@@ -88,12 +88,6 @@ module Views =
         Fable.React.Helpers.fragment [] [
             Html.header [
                 prop.className "header"
-                prop.children [
-                    Html.i [
-                        prop.className "fa fa-id-card-o"
-                        prop.ariaHidden true
-                    ]
-                ]
             ]
             Html.main [
                 prop.className "content"

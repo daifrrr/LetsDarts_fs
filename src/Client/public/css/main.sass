@@ -23,7 +23,7 @@ footer
     height: 2rem
 
 main
-    height: calc(100% - ($header-height + $footer-height))
+    height: calc(100vh - ($header-height + $footer-height))
     width: 100%
     .container
         display: flex
@@ -64,14 +64,28 @@ main
     .input-group
         margin-top: 1rem
         margin-bottom: 4rem
-    .player-input-group
-        margin-top: 2rem
-        height: 50%
-        .player-input
+    .outer-player-input-group
+        overflow: scroll
+        .player-input-group
             margin-top: 2rem
-            margin-bottom: 2rem
-    .btn-add-player
-        text-align: center
-        i
-            color: $white
-            font-size: 2.5rem
+            overflow: scroll
+            .player-input
+                margin-top: 2rem
+                margin-bottom: 2rem
+            .player-input:first-child
+                margin-top: 0
+            .player-input:last-child
+                margin-bottom: 0
+        .btn-add-player
+            text-align: center
+            padding: 2rem 0 0
+            background: $background
+            position: sticky
+            bottom: 0
+            cursor: pointer
+            i
+                color: $white
+                font-size: 2.5rem
+    .btn-game-bull-out
+        margin-top: 2rem
+        margin-bottom: 4rem
