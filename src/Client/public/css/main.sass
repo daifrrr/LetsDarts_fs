@@ -1,7 +1,6 @@
 ﻿
 //@import "./bulma_customize/bulma.sass"
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap')
-@import "~bootstrap"
+
 // OVERRIDES
 body, button, input, optgroup, select, textarea, label
     font-family: 'Jost', sans-serif !important
@@ -16,25 +15,18 @@ svg
     padding: 0
     box-sizing: border-box
 
-.all
+#app
     height: 100vh
-    display: flex
-    flex-direction: column
-    align-items: center
-    gap: 1rem
+    width: 100vw
     background-color: $background
-    padding: 0 1rem
 
 header
     height: 2rem
 footer
     height: 2rem
+
 main
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    height: calc(100% - 4rem)
+    height: calc(100% - ($header-height + $footer-height))
     width: 100%
     .container
         display: flex
@@ -45,5 +37,38 @@ main
 .display-none
     display: none
 
+/* LAYERS */
 
-
+// CREATE
+.create-layer
+    max-width: 575px
+    .ld-input-score,
+    .ld-input-sets,
+    .ld-input-legs,
+    .ld-label-score,
+    .ld-label-sets,
+    .ld-label-legs
+        display: flex
+        >div
+            width: 80%
+        label, select
+            text-align: center
+        label
+            font-size: 2.5rem
+            color: $names-grey
+    .ld-input-score, .ld-label-score
+        justify-content: start
+    .ld-input-sets, .ld-label-sets
+        justify-content: center
+    .ld-input-legs, .ld-label-legs
+        justify-content: end
+    .label-group
+        margin-bottom: 1rem
+    .input-group
+        margin-top: 1rem
+        margin-bottom: 4rem
+    .player-input-group
+        margin-top: 2rem
+        .player-input
+            margin-top: 2rem
+            margin-bottom: 2rem
