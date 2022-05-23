@@ -22,26 +22,28 @@ module Sort =
             model.Game |> Game.getPlayers |> moveDownAt
 
         Html.div [
-            prop.className "srt"
+            prop.className "container-fluid sort-layer"
             prop.children [
                 model.Game
                 |> Game.getPlayers
                 |> List.mapi (fun i p ->
                     Html.div [
                         Html.div [
-                            prop.className "srt-player"
+                            prop.className "srt-player ld-player-label"
                             prop.custom ("index", i)
                             prop.children [
-                                Html.button [
-                                    prop.className "left"
-                                    prop.text (sprintf "\u142F")
-                                    prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
-                                ]
-                                Html.span p.Name
-                                Html.button [
-                                    prop.className "right"
-                                    prop.text (sprintf "\u1431")
-                                    prop.onClick (fun _ -> MovePlayerPosition(i |> up) |> dispatch)
+                                Html.div [
+                                    prop.className "players"
+                                    prop.children [
+                                        Html.p [
+                                            prop.text p.Name
+                                        ]
+                                        Html.p [
+                                            prop.className "fa fa-bars"
+                                            prop.ariaHidden true
+                                            prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                        ]
+                                    ]
                                 ]
                             ]
                         ]
