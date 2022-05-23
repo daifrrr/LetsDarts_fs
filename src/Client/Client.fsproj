@@ -6,7 +6,6 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="index.html" />
-        <None Include="public\style.sass" />
         <Compile Include="Types.fs" />
         <Compile Include="Events.fs" />
         <Compile Include="Components\Create.fs" />
@@ -17,6 +16,16 @@
         <Compile Include="Index.fs" />
         <Compile Include="App.fs" />
         <ProjectReference Include="..\Shared\Shared.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="public\css\app.sass" />
+      <Content Include="public\css\app.css" />
+      <Content Include="public\css\app.css.map" />
+      <Content Include="public\css\froms.sass" />
+      <Content Include="public\css\variables.sass" />
+      <None Include="public\css\main.sass" />
+      <Content Include="public\css\main.css" />
+      <Content Include="public\css\main.css.map" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

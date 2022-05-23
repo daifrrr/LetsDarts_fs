@@ -1,22 +1,10 @@
-﻿@charset "UTF-8"
+﻿
 //@import "./bulma_customize/bulma.sass"
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap')
-// COLORS
-$app-black: #282a38
-$app-white: #fde1d0
-$red: #d95652
-$green: #528b6e
-$hover: #58a6ff
-$background: #38394d
-$dartscount: #282938
-$names-grey: #a4a4af
-$menu-gradient: linear-gradient(90deg, rgba(40,41,56,1) 0%, rgba(31,33,50,1) 100%)
-$white: #fff
-$black: #000
+@import "~bootstrap"
 // OVERRIDES
 body, button, input, optgroup, select, textarea, label
-    color: $white !important
-    font-family: 'League Spartan', sans-serif !important
+    font-family: 'Jost', sans-serif !important
     width: 100%
 
 svg
@@ -53,6 +41,9 @@ main
         flex-direction: column
         & > *
             display: flex
+
+.display-none
+    display: none
 
 
 
