@@ -1,8 +1,11 @@
-.ld-input, .ld-select, .ld-button
+.ld-input, .ld-select, .ld-button, .ld-player-label
     padding: 0.3rem
     border-radius: 0.5rem
     font-size: 2.5em
     text-align: center
+
+.ld-player-label
+    background: $white
 
 .ld-input
     border: none
@@ -11,13 +14,18 @@
 
 .ld-select
     border: none
+    text-align: center
+    color: $font-black
     -webkit-appearance: none
     -moz-appearance: none
+    >option
+        text-align: center
 
 .ld-button
     border: none
     background: $white
     color: black
+    cursor: pointer
     &.ld-button-green
         background: $green
         color: $white

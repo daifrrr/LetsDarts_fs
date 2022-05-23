@@ -17,7 +17,7 @@ module Create =
             prop.className "container-fluid create-layer"
             prop.children [
                 Html.div [
-                    prop.className "row label-group"
+                    prop.className "row label-group g-0"
                     prop.children [
                         Html.div [
                             prop.className "col ld-label-score"
@@ -52,7 +52,7 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "input-group"
+                    prop.className "row input-group g-0"
                     prop.children [
                         Html.div [
                             prop.className "col ld-input-score"
@@ -112,29 +112,35 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "player-input-group"
-                    prop.id "player-input-group"
+                    prop.className "outer-player-input-group"
+                    prop.id "outer-player-input-group"
                     prop.children [
-                        model.Game.Players
-                        |> List.mapi (fun i p ->
-                            Html.div [
-                                prop.className "player-input"
-                                prop.children [
+                        Html.div [
+                            prop.className "player-input-group"
+                            prop.id "player-input-group"
+                            prop.children [
+                                model.Game.Players
+                                |> List.mapi (fun i p ->
                                     Html.div [
-                                        prop.className "is-full"
+                                        prop.className "player-input"
                                         prop.children [
-                                            Html.input [
-                                                prop.type' "text"
-                                                prop.className "ld-input ld-player-name-input"
-                                                prop.placeholder p.Name
-                                                prop.custom ("index", i)
-                                                prop.onChange (handleInput i)
+                                            Html.div [
+                                                prop.className "is-full"
+                                                prop.children [
+                                                    Html.input [
+                                                        prop.type' "text"
+                                                        prop.className "ld-input ld-player-name-input"
+                                                        prop.placeholder p.Name
+                                                        prop.custom ("index", i)
+                                                        prop.onChange (handleInput i)
+                                                    ]
+                                                ]
                                             ]
                                         ]
-                                    ]
-                                ]
-                            ])
-                        |> Fable.React.Helpers.ofList
+                                    ])
+                                |> Fable.React.Helpers.ofList
+                            ]
+                        ]
                         Html.div [
                             prop.className "btn-add-player"
                             prop.onClick addPlayer
@@ -151,7 +157,8 @@ module Create =
                     prop.className ""
                     prop.children [
                         Html.div [
-                            prop.className "btn-game-start align-self-end ld-button ld-button-green"
+                            prop.className "btn-game-bull-out align-self-end ld-button ld-button-green"
+                            prop.id "btn-game-bull-out"
                             prop.text "Bull Out"
                             prop.onClick (fun _ -> dispatch OrderPlayers)
                         ]
