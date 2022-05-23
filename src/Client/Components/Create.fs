@@ -113,6 +113,7 @@ module Create =
                 ]
                 Html.div [
                     prop.className "player-input-group"
+                    prop.id "player-input-group"
                     prop.children [
                         model.Game.Players
                         |> List.mapi (fun i p ->
@@ -134,19 +135,25 @@ module Create =
                                 ]
                             ])
                         |> Fable.React.Helpers.ofList
-                        Html.button [
-                            prop.className "btn-player-plus"
-                            prop.onClick addPlayer
-                            prop.text "+"
-                        ]
                         Html.div [
+                            prop.className "btn-add-player"
+                            prop.onClick addPlayer
                             prop.children [
-                                Html.button [
-                                    prop.className "btn-game-start"
-                                    prop.text "Start"
-                                    prop.onClick (fun _ -> dispatch OrderPlayers)
+                                Html.i [
+                                    prop.className "fa fa-plus"
+                                    prop.ariaHidden true
                                 ]
                             ]
+                        ]
+                    ]
+                ]
+                Html.div [
+                    prop.className ""
+                    prop.children [
+                        Html.div [
+                            prop.className "btn-game-start align-self-end ld-button ld-button-green"
+                            prop.text "Bull Out"
+                            prop.onClick (fun _ -> dispatch OrderPlayers)
                         ]
                     ]
                 ]

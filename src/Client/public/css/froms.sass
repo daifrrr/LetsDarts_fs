@@ -1,15 +1,26 @@
-.ld-input
+.ld-input, .ld-select, .ld-button
     padding: 0.3rem
     border-radius: 0.5rem
     font-size: 2.5em
     text-align: center
+
+.ld-input
     border: none
     &:focus-visible
         border: none !important
 
 .ld-select
     border: none
-    border-radius: 0.5rem
-    font-size: 2.5em
     -webkit-appearance: none
     -moz-appearance: none
+
+.ld-button
+    border: none
+    background: $white
+    color: black
+    &.ld-button-green
+        background: $green
+        color: $white
+    &.ld-button-red
+        background: $red
+        color: $white
