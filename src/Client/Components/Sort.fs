@@ -24,33 +24,50 @@ module Sort =
         Html.div [
             prop.className "container-fluid sort-layer"
             prop.children [
-                model.Game
-                |> Game.getPlayers
-                |> List.mapi (fun i p ->
-                    Html.div [
+                Html.div [
+                    prop.className "vertical-space-sort"
+                ]
+                Html.div [
+                    prop.className "outer-player-input-group-sort"
+                    prop.id "outer-player-input-group-sort"
+                    prop.children [
                         Html.div [
-                            prop.className "srt-player ld-player-label"
-                            prop.custom ("index", i)
+                            prop.className "player-input-group-sort"
+                            prop.id "player-input-group-sort"
                             prop.children [
-                                Html.div [
-                                    prop.className "players"
-                                    prop.children [
-                                        Html.p [
-                                            prop.text p.Name
+                                model.Game
+                                |> Game.getPlayers
+                                |> List.mapi (fun i p ->
+                                    Html.div [
+                                        Html.div [
+                                            prop.className "srt-player"
+                                            prop.custom ("index", i)
+                                            prop.children [
+                                                Html.div [
+                                                    prop.className "players"
+                                                    prop.children [
+                                                        Html.p [
+                                                            prop.className "ld-player-label"
+                                                            prop.text p.Name
+                                                        ]
+                                                        Html.p [
+                                                            prop.className "fa fa-bars"
+                                                            prop.ariaHidden true
+                                                            prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
                                         ]
-                                        Html.p [
-                                            prop.className "fa fa-bars"
-                                            prop.ariaHidden true
-                                            prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
-                                        ]
-                                    ]
-                                ]
+                                    ])
+                                |> Fable.React.Helpers.ofList
                             ]
                         ]
-                    ])
-                |> Fable.React.Helpers.ofList
-                Html.button [
-                    prop.className "btn-game-start"
+                    ]
+                ]
+                Html.div [
+                    prop.className "btn-game-start ld-button ld-button-green"
+                    prop.id "btn-game-start"
                     prop.text "Start"
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]

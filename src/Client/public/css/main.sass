@@ -18,9 +18,9 @@ svg
     background-color: $background
 
 header
-    height: 2rem
+    height: $header-height
 footer
-    height: 2rem
+    height: $footer-height
 
 main
     height: calc(100vh - ($header-height + $footer-height))
@@ -39,7 +39,7 @@ main
 .create-layer, .sort-layer
     max-width: 575px
 
-// CREATE
+// CREATE AND SORT
 .create-layer
     .ld-input-score,
     .ld-input-sets,
@@ -61,14 +61,15 @@ main
         justify-content: center
     .ld-input-legs, .ld-label-legs
         justify-content: end
-    .label-group
+    .label-group, .vertical-space-sort
         margin-bottom: 1rem
+        height: 4rem
     .input-group
         margin-top: 1rem
         margin-bottom: 4rem
-    .outer-player-input-group
+    .outer-player-input-group-create
         overflow: scroll
-        .player-input-group
+        .player-input-group-create
             margin-top: 2rem
             overflow: scroll
             .player-input
@@ -88,17 +89,39 @@ main
             i
                 color: $white
                 font-size: 2.5rem
-    .btn-game-bull-out
+    .btn-game-bull-out, .btn-game-start
         margin-top: 2rem
         margin-bottom: 4rem
 
-// SORT
 .sort-layer
     .players
+        position: relative
         >p
-            display: inline
-            height: 100%
-            width: 2rem
-            background: $black
-
+            &:last-child
+                position: absolute
+                right: 0
+                top: 0
+                padding-top: 0.9rem
+                height: 100%
+                width: 4rem
+                font-size: 2.5rem
+                background: $white
+                text-align: center
+                border-radius: 0.5rem
+    .vertical-space-sort
+        margin-bottom: 1rem
+        height: 4rem
+    .btn-game-start
+        margin-top: 2rem
+        margin-bottom: 4rem
+    .outer-player-input-group-sort
+        overflow: scroll
+        .player-input-group-sort
+            overflow: scroll
+            >div
+                margin: 2rem 0
+                &:first-child
+                    margin-top: 0
+                &:last-child
+                    margin-bottom: 0
 

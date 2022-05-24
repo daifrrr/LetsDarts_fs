@@ -11149,7 +11149,7 @@ footer {
 }
 
 main {
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 4rem);
   width: 100%;
 }
 main .container {
@@ -11216,31 +11216,32 @@ main .container > * {
 .create-layer .ld-input-legs, .create-layer .ld-label-legs {
   justify-content: end;
 }
-.create-layer .label-group {
+.create-layer .label-group, .create-layer .vertical-space-sort {
   margin-bottom: 1rem;
+  height: 4rem;
 }
 .create-layer .input-group {
   margin-top: 1rem;
   margin-bottom: 4rem;
 }
-.create-layer .outer-player-input-group {
+.create-layer .outer-player-input-group-create {
   overflow: scroll;
 }
-.create-layer .outer-player-input-group .player-input-group {
+.create-layer .outer-player-input-group-create .player-input-group-create {
   margin-top: 2rem;
   overflow: scroll;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input:first-child {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input:first-child {
   margin-top: 0;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input:last-child {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input:last-child {
   margin-bottom: 0;
 }
-.create-layer .outer-player-input-group .btn-add-player {
+.create-layer .outer-player-input-group-create .btn-add-player {
   text-align: center;
   padding: 2rem 0 0;
   background: #38394d;
@@ -11248,20 +11249,52 @@ main .container > * {
   bottom: 0;
   cursor: pointer;
 }
-.create-layer .outer-player-input-group .btn-add-player i {
+.create-layer .outer-player-input-group-create .btn-add-player i {
   color: #fff;
   font-size: 2.5rem;
 }
-.create-layer .btn-game-bull-out {
+.create-layer .btn-game-bull-out, .create-layer .btn-game-start {
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
 
-.sort-layer .players > p {
-  display: inline;
+.sort-layer .players {
+  position: relative;
+}
+.sort-layer .players > p:last-child {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-top: 0.9rem;
   height: 100%;
-  width: 2rem;
-  background: #000;
+  width: 4rem;
+  font-size: 2.5rem;
+  background: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+}
+.sort-layer .vertical-space-sort {
+  margin-bottom: 1rem;
+  height: 4rem;
+}
+.sort-layer .btn-game-start {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+.sort-layer .outer-player-input-group-sort {
+  overflow: scroll;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort {
+  overflow: scroll;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div {
+  margin: 2rem 0;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div:first-child {
+  margin-top: 0;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div:last-child {
+  margin-bottom: 0;
 }
 
 .ld-input, .ld-select, .ld-button, .ld-player-label {
@@ -11273,6 +11306,8 @@ main .container > * {
 
 .ld-player-label {
   background: #fff;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 .ld-input {

@@ -71,7 +71,6 @@ module internal Players =
     let legsWon (p: Player) (mode: int, legs: int) =
         let wonLegs =
             (p, mode) ||> Player.getLegsWon
-
         Html.div [
             prop.className "ply-legs"
             prop.children [
@@ -149,19 +148,27 @@ module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
         Html.div [
             Html.div [
+                prop.className "container-fluid"
                 prop.children [
                     Html.div [
+                        prop.className "row g-0"
                         prop.children [
-                            Players.renderPlayers model.Game
-                            Html.button [
-                                prop.className "btn-undo"
-                                prop.text "Undo Last Dart"
-                                prop.onClick (fun _ -> dispatch UndoLastAction)
+                            Html.div [
+                                prop.className "col-6"
+                                prop.children [
+                                    Players.renderPlayers model.Game
+                                    Html.button [
+                                        prop.className "btn-undo"
+                                        prop.text "Undo Last Dart"
+                                        prop.onClick (fun _ -> dispatch UndoLastAction)
+                                    ]
+                                ]
+                            ]
+                            Html.div [
+                                prop.className "col-6"
+                                prop.children [ Dartboard dispatch ]
                             ]
                         ]
-                    ]
-                    Html.div [
-                        prop.children [ Dartboard dispatch ]
                     ]
                 ]
             ]

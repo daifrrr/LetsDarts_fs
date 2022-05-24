@@ -112,12 +112,12 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "outer-player-input-group"
-                    prop.id "outer-player-input-group"
+                    prop.className "outer-player-input-group-create"
+                    prop.id "outer-player-input-group-create"
                     prop.children [
                         Html.div [
-                            prop.className "player-input-group"
-                            prop.id "player-input-group"
+                            prop.className "player-input-group-create"
+                            prop.id "player-input-group-create"
                             prop.children [
                                 model.Game.Players
                                 |> List.mapi (fun i p ->
@@ -125,7 +125,7 @@ module Create =
                                         prop.className "player-input"
                                         prop.children [
                                             Html.div [
-                                                prop.className "is-full"
+                                                prop.className ""
                                                 prop.children [
                                                     Html.input [
                                                         prop.type' "text"
