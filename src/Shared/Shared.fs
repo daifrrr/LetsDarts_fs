@@ -160,7 +160,7 @@ type IGameApi =
     { initGame: Game -> Async<AppState * Game>
       sortPlayers: Game -> Async<AppState * Game>
       sendThrow: string -> Async<AppState * Game>
-      undo: unit -> Async<AppState * Game> }
+      undo: unit -> Async<AppState * Game option> }
 
 [<AutoOpen>]
 module Constants =

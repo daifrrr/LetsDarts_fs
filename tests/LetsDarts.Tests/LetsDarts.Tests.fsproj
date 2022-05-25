@@ -10,6 +10,7 @@
     <Compile Include="GameLogic.Tests.fs" />
     <Compile Include="Types.Tests.fs" />
     <Compile Include="Player.Client.Tests.fs" />
+    <Compile Include="GameHistory.Tests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Client\Client.fsproj" />
     <ProjectReference Include="..\..\src\LetsDarts\LetsDarts.fsproj" />
+    <ProjectReference Include="..\..\src\Server\Server.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

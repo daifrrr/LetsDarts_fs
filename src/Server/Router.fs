@@ -6,25 +6,20 @@ open Shared
 type DartsGameHistory() =
     let history = ResizeArray<_>()
 
-    member _.GetInfo() : unit =
-        for g in history do
-            printfn $"%A{g}"
-
     member _.GetGames() = List.ofSeq history
 
     member _.GetCurrentGame() : Game option =
-        match List.ofSeq history with
-        | [] -> None
-        | g -> Some(g |> List.head)
+        match history |> Seq.tryHead  with
+        | Some g -> Some g
+        | None -> None
+
+    member _.GetBeforeCurrentGame() : Game option =
+        history.RemoveAt(0)
+        match history |> Seq.isEmpty |> not with
+        | true -> history |> Seq.tryHead
+        | _ -> None
 
     member _.AddGame(game: Game) = history.Insert(0, game)
-
-    member _.GetOneBeforeLastRemoveLastGame() : Game option =
-        let OneBeforeLast = List.ofSeq history |> List.tryItem 1
-
-        history.RemoveAt(0)
-        OneBeforeLast
-
     member _.ClearGameHistory() = history.Clear()
 
 let DartsGameHistory = DartsGameHistory()
@@ -34,7 +29,6 @@ let gameApi =
         fun game ->
             async {
                 DartsGameHistory.AddGame game
-                printfn $"%A{DartsGameHistory.GetInfo()}"
                 return Order, game
             }
       initGame =
@@ -45,10 +39,10 @@ let gameApi =
                 return Run, game
             }
       sendThrow =
-        fun str ->
+        fun shot ->
             async {
                 let nextStep, newGame =
-                    Game.calcNewGame str (DartsGameHistory.GetCurrentGame().Value)
+                    Game.calcNewGame shot (DartsGameHistory.GetCurrentGame().Value)
 
                 DartsGameHistory.AddGame(newGame)
 
@@ -61,13 +55,8 @@ let gameApi =
       undo =
         fun _ ->
             async {
-                let oldGame =
-                    match DartsGameHistory.GetOneBeforeLastRemoveLastGame() with
-                    | Some g -> g
-                    | None ->
-                        match DartsGameHistory.GetCurrentGame() with
-                        | Some g -> g
-                        | None -> Game.Default
-
-                return Run, oldGame
-            } }
+                match DartsGameHistory.GetBeforeCurrentGame() with
+                | Some g -> return Run, Some g
+                | None -> return Create, None
+            }
+        }
