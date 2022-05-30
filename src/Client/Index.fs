@@ -12,7 +12,7 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model = { State = Create; Game = Game.Default }
+        let model = { State = Order; Game = Game.Default }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none

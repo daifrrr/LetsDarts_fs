@@ -9,9 +9,6 @@ module internal Players =
         ({ Fable.React.Props.__html = "&nbsp;" }
          |> Fable.React.Props.DangerouslySetInnerHTML)
 
-    let currentRecord =
-        ref (List.replicate 3 "")
-
     let filledList p =
         match (Player.getCurrentLeg p).Records with
         | [] -> [ "-"; "-"; "-" ]
@@ -124,28 +121,33 @@ module internal Players =
                         |> Fable.React.Helpers.ofList
                     ]
                 ]
-                Html.div [
-                    prop.className "record-items"
-                    prop.children [
-                        g
-                        |> Game.getCurrentPlayer
-                        |> filledList
-                        |> List.map (fun s ->
-                            Html.div [
-                                prop.className "record-item"
-                                match s with
-                                | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
-                                | _ -> prop.text s
-                            ])
-                        |> Fable.React.Helpers.ofList
-                    ]
-                ]
+//                Html.div [
+//                    prop.className "record-items"
+//                    prop.children [
+//                        g
+//                        |> Game.getCurrentPlayer
+//                        |> filledList
+//                        |> List.map (fun s ->
+//                            Html.div [
+//                                prop.className "record-item"
+//                                match s with
+//                                | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+//                                | _ -> prop.text s
+//                            ])
+//                        |> Fable.React.Helpers.ofList
+//                    ]
+//                ]
             ]
         ]
 
 [<RequireQualifiedAccess>]
 module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
+        let p = model.Game |> Game.getPlayers
+
+        let currentPlayerIndex =
+            model.Game |> Game.getCurrentPlayerIndex
+
         Html.div [
             Html.div [
                 prop.className "container-fluid"
@@ -157,6 +159,22 @@ module Play =
                                 prop.className "col-6"
                                 prop.children [
                                     Players.renderPlayers model.Game
+                                    Html.div [
+                                        prop.className "record-items"
+                                        prop.children [
+                                            model.Game
+                                            |> Game.getCurrentPlayer
+                                            |> Players.filledList
+                                            |> List.map (fun s ->
+                                                Html.div [
+                                                    prop.className "record-item"
+                                                    match s with
+                                                    | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+                                                    | _ -> prop.text s
+                                                ])
+                                            |> Fable.React.Helpers.ofList
+                                        ]
+                                    ]
                                     Html.button [
                                         prop.className "btn-undo"
                                         prop.text "Undo Last Dart"
