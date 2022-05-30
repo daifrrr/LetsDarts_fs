@@ -194,6 +194,7 @@ module Dartboard =
                                         | _ -> svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
                                         svg.textAnchor.middle
                                         svg.fill WHITE
+//                                        svg.onClick handleClick
                                     ]
                                 ]
                             ])
