@@ -12,29 +12,10 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let styleGame =
-            { Game.Default with
-                Mode = 501
-                Legs = 3
-                DoubleIn = false
-                DoubleOut = true
-                Players =
-                    [ { Name = "Kai"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "David"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Frieda"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Philipp"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
-
-
         let model =
             { State = Create; Game = Game.Default }
 
-        // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
-
         model, Cmd.none
 
 
@@ -42,7 +23,7 @@ module State =
         match msg with
         // SERVER INTERACTION
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
-        // |>|> incoming: server response           ( Form: Passive Construct )
+        // |>|> incoming: server response           ( Form: Passive )
         | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
         | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
