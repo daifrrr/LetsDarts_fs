@@ -5,7 +5,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11124,8 +11124,15 @@ body, button, input, optgroup, select, textarea, label {
   width: 100%;
 }
 
-svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
+svg use, svg circle, svg rect {
+  transition-property: fill;
+  transition-timing-function: ease-out;
+  transition-delay: 0s;
+  transition-duration: 0.5s;
+}
+svg use:hover, svg circle:hover, svg rect:hover {
   fill: #58a6ff;
+  transition: 0s;
 }
 
 * {
@@ -11298,10 +11305,62 @@ main .container > * {
 }
 
 .game-layer #outer-players {
-  width: 45%;
+  width: calc(45% - 4rem);
+  margin: 0 2rem;
+  overflow: hidden;
+  text-align: center;
+}
+.game-layer #outer-players .player-wrapper {
+  overflow: scroll;
+}
+.game-layer #outer-players .player {
+  color: #fff;
+  border-radius: 0.7vw;
+}
+.game-layer #outer-players .player .player-stats {
+  overflow: scroll;
+}
+.game-layer #outer-players .player .name {
+  margin: 1vw 0;
+  color: #fff;
+}
+.game-layer #outer-players .player .score {
+  margin: 1.8vw 0;
+  font-size: 3.4vw;
+}
+.game-layer #outer-players .player .prev-score {
+  margin-top: 0.2vw;
+  margin-bottom: 0.1vw;
+}
+.game-layer #outer-players .player .average {
+  color: #fff;
+}
+.game-layer #outer-players .player .prev-darts {
+  font-size: 0.8vw;
+}
+.game-layer #outer-players .player .name, .game-layer #outer-players .player .prev-score, .game-layer #outer-players .player .average {
+  font-size: 1.8vw;
+}
+.game-layer #outer-players .player.active {
+  background: #282a38;
+}
+.game-layer #outer-players .player.active .name {
+  color: #fff;
+}
+.game-layer #outer-players .player.inactive .name {
+  color: #a4a4af;
+}
+.game-layer #outer-players .player-record {
+  margin: 2vw 0;
+}
+.game-layer #outer-players .player-record .record-item {
+  background: #282a38;
+  border-radius: 0.7vw;
+  height: 5vw;
 }
 .game-layer #outer-dart-board {
   width: 55%;
+  color: #fff;
 }
 
 .ld-input, .ld-select, .ld-button, .ld-player-label {

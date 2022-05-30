@@ -43,22 +43,37 @@ module internal Players =
 
 
         Html.div [
-            prop.className "ply-previous"
+            prop.className "prev-record"
             prop.children [
-                Html.h3 [
-                    prop.className "ply-prevscore"
-                    prop.text $"%s{s}"
+                Html.div [
+                    prop.className "row"
+                    prop.children [
+                        Html.div [
+                            prop.className "col-12"
+                            prop.children [
+                                Html.div [
+                                    prop.className "prev-score"
+                                    prop.text $"%s{s}"
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
                 Html.div [
-                    prop.className "ply-prevshots"
+                    prop.className "row"
                     prop.children [
-                        shotList
-                        |> List.map (fun shot ->
-                            Html.div [
-                                prop.className "ply-prevshot"
-                                prop.children [ Html.span $"%s{shot}" ]
-                            ])
-                        |> Fable.React.Helpers.ofList
+                        Html.div [
+                            prop.className "col-12"
+                            prop.children [
+                                shotList
+                                    |> List.map (fun shot ->
+                                        Html.span [
+                                            prop.className "prev-darts"
+                                            prop.text $"%s{shot}"
+                                        ])
+                                    |> Fable.React.Helpers.ofList
+                            ]
+                        ]
                     ]
                 ]
             ]
@@ -93,50 +108,70 @@ module internal Players =
                 Html.div [
                     prop.className "col-12"
                     prop.children [
-                        p
-                        |> List.mapi (fun i p ->
-                            Html.div [
-                                match i = currentPlayerIndex with
-                                | true -> prop.className "ply ply-active"
-                                | _ -> prop.className "ply ply-not-active"
-                                prop.children [
-                                    Html.h2 [
-                                        prop.className "ply-name"
-                                        prop.text $"{p.Name}"
-                                    ]
-                                    match i = currentPlayerIndex with
-                                    | false -> p |> previousRecord |> lastRoundInfo
-                                    | _ -> ("-", [ "-"; "-"; "-" ]) |> lastRoundInfo
-                                    Html.h1 [
-                                        prop.className "ply-score"
-                                        prop.text $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
-                                    ]
-                                    Html.h3 [
-                                        prop.className "ply-avg"
-                                        prop.text $"%.2f{p |> Player.getAverage}"
-                                    ]
-                                    legsWon p (g.Mode, g.Legs)
-                                ]
-                            ])
-                        |> Fable.React.Helpers.ofList
+                        Html.div [
+                            prop.className "row player-wrapper flex-row flex-nowrap"
+                            prop.children [
+                                p
+                                |> List.mapi (fun i p ->
+                                    Html.div [
+                                        match i = currentPlayerIndex with
+                                        | true -> prop.className "player col-3 active"
+                                        | _ -> prop.className "player col-3 inactive"
+                                        prop.children [
+                                            Html.div [
+                                                prop.className "row"
+                                                prop.children [
+                                                    Html.div [
+                                                        prop.className "col-12"
+                                                        prop.children [
+                                                            Html.div [
+                                                                prop.className "name"
+                                                                prop.text $"{p.Name}"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            match i = currentPlayerIndex with
+                                            | false -> p |> previousRecord |> lastRoundInfo
+                                            | _ -> ("–", [ "–"; "–"; "–" ]) |> lastRoundInfo
+                                            Html.div [
+                                                prop.className "row"
+                                                prop.children [
+                                                    Html.div [
+                                                        prop.className "col-12"
+                                                        prop.children [
+                                                            Html.div [
+                                                                prop.className "score"
+                                                                prop.text $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            Html.div [
+                                                prop.className "row"
+                                                prop.children [
+                                                    Html.div [
+                                                        prop.className "col-12"
+                                                        prop.children [
+                                                            Html.div [
+                                                                prop.className "average"
+                                                                prop.text $"%.2f{p |> Player.getAverage}"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            legsWon p (g.Mode, g.Legs)
+                                        ]
+                                    ])
+                                |> Fable.React.Helpers.ofList
+                            ]
+                        ]
+
                     ]
                 ]
-//                Html.div [
-//                    prop.className "record-items"
-//                    prop.children [
-//                        g
-//                        |> Game.getCurrentPlayer
-//                        |> filledList
-//                        |> List.map (fun s ->
-//                            Html.div [
-//                                prop.className "record-item"
-//                                match s with
-//                                | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
-//                                | _ -> prop.text s
-//                            ])
-//                        |> Fable.React.Helpers.ofList
-//                    ]
-//                ]
             ]
         ]
 
@@ -156,18 +191,24 @@ module Play =
                         prop.className "row g-0"
                         prop.children [
                             Html.div [
-                                prop.className "col-6"
+                                prop.className ""
+                                prop.id "outer-players"
                                 prop.children [
-                                    Players.renderPlayers model.Game
                                     Html.div [
-                                        prop.className "record-items"
+                                        prop.className "row player-stats"
+                                        prop.children [
+                                            Players.renderPlayers model.Game
+                                        ]
+                                    ]
+                                    Html.div [
+                                        prop.className "row player-record"
                                         prop.children [
                                             model.Game
                                             |> Game.getCurrentPlayer
                                             |> Players.filledList
                                             |> List.map (fun s ->
                                                 Html.div [
-                                                    prop.className "record-item"
+                                                    prop.className "col-4 record-item"
                                                     match s with
                                                     | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
                                                     | _ -> prop.text s
@@ -175,15 +216,21 @@ module Play =
                                             |> Fable.React.Helpers.ofList
                                         ]
                                     ]
-                                    Html.button [
-                                        prop.className "btn-undo"
-                                        prop.text "Undo Last Dart"
-                                        prop.onClick (fun _ -> dispatch UndoLastAction)
+                                    Html.div [
+                                        prop.className "row"
+                                        prop.children [
+                                            Html.button [
+                                                prop.className "btn-undo"
+                                                prop.text "Undo Last Dart"
+                                                prop.onClick (fun _ -> dispatch UndoLastAction)
+                                            ]
+                                        ]
                                     ]
                                 ]
                             ]
                             Html.div [
-                                prop.className "col-6"
+                                prop.className ""
+                                prop.id "outer-dart-board"
                                 prop.children [ Dartboard dispatch ]
                             ]
                         ]

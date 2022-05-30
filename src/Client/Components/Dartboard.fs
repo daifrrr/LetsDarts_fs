@@ -184,7 +184,7 @@ module Dartboard =
                                         svg.text n
                                         svg.textAnchor.middle
                                         svg.fontSize 32
-                                        svg.custom ("fontFamily", "sans-serif")
+                                        svg.custom ("fontFamily", "Jost, sans-serif")
                                         match a with
                                         | a when a > 90. && 270. > a ->
                                             svg.custom (

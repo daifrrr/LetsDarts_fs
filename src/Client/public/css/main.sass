@@ -4,8 +4,14 @@ body, button, input, optgroup, select, textarea, label
     width: 100%
 
 svg
-    use:hover, circle:hover, rect:hover, text:hover
-        fill: $hover
+    use, circle, rect
+        transition-property: fill
+        transition-timing-function: ease-out
+        transition-delay: 0s
+        transition-duration: 0.5s
+        &:hover
+            fill: $hover
+            transition: 0s
 
 *
     margin: 0
@@ -129,6 +135,47 @@ main
 // GAME LAYER
 .game-layer
     #outer-players
-        width: 45%
+        width: calc(45% - 4rem)
+        margin: 0 2rem
+        overflow: hidden
+        text-align: center
+        .player-wrapper
+            overflow: scroll
+        .player
+            color: $white
+            border-radius: 0.7vw
+            .player-stats
+                overflow: scroll
+            .name
+                margin: 1vw 0
+                color: $white
+            .score
+                margin: 1.8vw 0
+                font-size: $fs-1
+            .prev-score
+                margin-top: 0.2vw
+                margin-bottom: 0.1vw
+            .average
+                color: $white
+            .prev-darts
+                font-size: $fs-3
+            .name, .prev-score, .average
+                font-size: $fs-2
+            &.active
+                background: $app-black
+                .name
+                    color: $white
+            &.inactive
+                .name
+                    color: $names-grey
+        .player-record
+            margin: 2vw 0
+            .record-item
+                background: $app-black
+                border-radius: 0.7vw
+                height: 5vw
     #outer-dart-board
         width: 55%
+        color: $white
+
+
