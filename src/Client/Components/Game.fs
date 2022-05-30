@@ -9,9 +9,6 @@ module internal Players =
         ({ Fable.React.Props.__html = "&nbsp;" }
          |> Fable.React.Props.DangerouslySetInnerHTML)
 
-    let currentRecord =
-        ref (List.replicate 3 "")
-
     let filledList p =
         match (Player.getCurrentLeg p).Records with
         | [] -> [ "-"; "-"; "-" ]
