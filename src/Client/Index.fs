@@ -12,29 +12,9 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let styleGame =
-            { Game.Default with
-                Mode = 501
-                Legs = 3
-                DoubleIn = false
-                DoubleOut = true
-                Players =
-                    [ { Name = "Kai"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "David"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Frieda"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] }
-                      { Name = "Philipp"
-                        Legs = [ { CurrentScore = 0; Records = [] } ] } ] }
+        let model = { State = Create; Game = Game.Default }
 
-
-        let model =
-            { State = Create; Game = Game.Default }
-
-        // let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
-
         model, Cmd.none
 
 
@@ -42,7 +22,7 @@ module State =
         match msg with
         // SERVER INTERACTION
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
-        // |>|> incoming: server response           ( Form: Passive Construct )
+        // |>|> incoming: server response           ( Form: Passive )
         | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
         | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
@@ -50,7 +30,14 @@ module State =
         | SendShot t -> model, Cmd.OfAsync.perform gameApi.sendThrow t ShotReceived
         | ShotReceived (s, g) -> { model with State = s; Game = g }, Cmd.none
         | UndoLastAction -> model, Cmd.OfAsync.perform gameApi.undo () LastActionUndone
-        | LastActionUndone (s, g) -> { model with State = s; Game = g }, Cmd.none
+        | LastActionUndone (s, g) ->
+            { model with
+                State = s
+                Game =
+                    match g with
+                    | Some g -> g
+                    | None -> model.Game },
+            Cmd.none
         // SETUP SETTINGS
         // |>|> no server interaction is happening ``[ for now ]``
         | FinishRound s ->
@@ -86,9 +73,7 @@ open Feliz
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
-            Html.header [
-                prop.className "header"
-            ]
+            Html.header [ prop.className "header" ]
             Html.main [
                 prop.className "content"
                 prop.children [
