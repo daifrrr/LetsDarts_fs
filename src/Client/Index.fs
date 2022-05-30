@@ -12,8 +12,7 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model =
-            { State = Create; Game = Game.Default }
+        let model = { State = Create; Game = Game.Default }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
@@ -74,9 +73,7 @@ open Feliz
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
-            Html.header [
-                prop.className "header"
-            ]
+            Html.header [ prop.className "header" ]
             Html.main [
                 prop.className "content"
                 prop.children [
