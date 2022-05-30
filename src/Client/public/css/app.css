@@ -11297,6 +11297,13 @@ main .container > * {
   margin-bottom: 0;
 }
 
+.game-layer #outer-players {
+  width: 45%;
+}
+.game-layer #outer-dart-board {
+  width: 55%;
+}
+
 .ld-input, .ld-select, .ld-button, .ld-player-label {
   padding: 0.3rem;
   border-radius: 0.5rem;

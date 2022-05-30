@@ -94,7 +94,7 @@ module internal Players =
         Html.div [
             prop.children [
                 Html.div [
-                    prop.className "plys"
+                    prop.className "col-12"
                     prop.children [
                         p
                         |> List.mapi (fun i p ->
@@ -148,24 +148,36 @@ module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
         Html.div [
             Html.div [
-                prop.className "container-fluid"
+                prop.className "container-fluid game-layer"
                 prop.children [
                     Html.div [
                         prop.className "row g-0"
                         prop.children [
                             Html.div [
-                                prop.className "col-6"
+                                prop.className ""
+                                prop.id "outer-players"
                                 prop.children [
-                                    Players.renderPlayers model.Game
-                                    Html.button [
-                                        prop.className "btn-undo"
-                                        prop.text "Undo Last Dart"
-                                        prop.onClick (fun _ -> dispatch UndoLastAction)
+                                    Html.div [
+                                        prop.className "row"
+                                        prop.children [
+                                            Players.renderPlayers model.Game
+                                        ]
+                                    ]
+                                    Html.div [
+                                        prop.className "row"
+                                        prop.children [
+                                            Html.button [
+                                                prop.className "btn-undo"
+                                                prop.text "Undo Last Dart"
+                                                prop.onClick (fun _ -> dispatch UndoLastAction)
+                                            ]
+                                        ]
                                     ]
                                 ]
                             ]
                             Html.div [
-                                prop.className "col-6"
+                                prop.className ""
+                                prop.id "outer-dart-board"
                                 prop.children [ Dartboard dispatch ]
                             ]
                         ]

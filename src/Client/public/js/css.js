@@ -8,8 +8,8 @@ $(window).resize(() => {
 })
 
 const setAllCSS = () => {
-    setPlayerGroupHeight($(".outer-player-input-group-create"), $("#player-input-group-create"), $("#btn-game-bull-out"))
-    setPlayerGroupHeight($(".outer-player-input-group-sort"), $("#player-input-group-sort"), $("#btn-game-start"))
+    //setPlayerGroupHeight($("#outer-player-input-group-create"), $("#player-input-group-create"), $("#btn-game-bull-out"))
+    //setPlayerGroupHeight($("#outer-player-input-group-sort"), $("#player-input-group-sort"), $("#btn-game-start"))
 }
 
 const setPlayerGroupHeight = (oPIG, pIG, btn) => {
@@ -22,7 +22,7 @@ const setPlayerGroupHeight = (oPIG, pIG, btn) => {
     const avaiableHeight = $(window).height() - ( $("header").height() + $("footer").height() )
     const newHeight = avaiableHeight - (buttonBullOutMargin + buttonBullOutHeight + playerInputGroupTop)
 
-    console.log(newHeight)
+    console.log('new height: ' + newHeight)
 
     $(outerPlayerInputGroup).height( newHeight )
 }
