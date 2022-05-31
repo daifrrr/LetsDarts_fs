@@ -5,7 +5,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11124,8 +11124,15 @@ body, button, input, optgroup, select, textarea, label {
   width: 100%;
 }
 
-svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
+svg use, svg circle, svg rect {
+  transition-property: fill;
+  transition-timing-function: ease-out;
+  transition-delay: 0s;
+  transition-duration: 0.5s;
+}
+svg use:hover, svg circle:hover, svg rect:hover {
   fill: #58a6ff;
+  transition: 0s;
 }
 
 * {
@@ -11149,7 +11156,7 @@ footer {
 }
 
 main {
-  height: calc(100vh - 8rem);
+  height: calc(100vh - 4rem);
   width: 100%;
 }
 main .container {
@@ -11216,31 +11223,32 @@ main .container > * {
 .create-layer .ld-input-legs, .create-layer .ld-label-legs {
   justify-content: end;
 }
-.create-layer .label-group {
+.create-layer .label-group, .create-layer .vertical-space-sort {
   margin-bottom: 1rem;
+  height: 4rem;
 }
 .create-layer .input-group {
   margin-top: 1rem;
   margin-bottom: 4rem;
 }
-.create-layer .outer-player-input-group {
+.create-layer .outer-player-input-group-create {
   overflow: scroll;
 }
-.create-layer .outer-player-input-group .player-input-group {
+.create-layer .outer-player-input-group-create .player-input-group-create {
   margin-top: 2rem;
   overflow: scroll;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input {
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input:first-child {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input:first-child {
   margin-top: 0;
 }
-.create-layer .outer-player-input-group .player-input-group .player-input:last-child {
+.create-layer .outer-player-input-group-create .player-input-group-create .player-input:last-child {
   margin-bottom: 0;
 }
-.create-layer .outer-player-input-group .btn-add-player {
+.create-layer .outer-player-input-group-create .btn-add-player {
   text-align: center;
   padding: 2rem 0 0;
   background: #38394d;
@@ -11248,20 +11256,111 @@ main .container > * {
   bottom: 0;
   cursor: pointer;
 }
-.create-layer .outer-player-input-group .btn-add-player i {
+.create-layer .outer-player-input-group-create .btn-add-player i {
   color: #fff;
   font-size: 2.5rem;
 }
-.create-layer .btn-game-bull-out {
+.create-layer .btn-game-bull-out, .create-layer .btn-game-start {
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
 
-.sort-layer .players > p {
-  display: inline;
+.sort-layer .players {
+  position: relative;
+}
+.sort-layer .players > p:last-child {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-top: 0.9rem;
   height: 100%;
-  width: 2rem;
-  background: #000;
+  width: 4rem;
+  font-size: 2.5rem;
+  background: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+}
+.sort-layer .vertical-space-sort {
+  margin-bottom: 1rem;
+  height: 4rem;
+}
+.sort-layer .btn-game-start {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+.sort-layer .outer-player-input-group-sort {
+  overflow: scroll;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort {
+  overflow: scroll;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div {
+  margin: 2rem 0;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div:first-child {
+  margin-top: 0;
+}
+.sort-layer .outer-player-input-group-sort .player-input-group-sort > div:last-child {
+  margin-bottom: 0;
+}
+
+.game-layer #outer-players {
+  width: calc(45% - 4rem);
+  margin: 0 2rem;
+  overflow: hidden;
+  text-align: center;
+}
+.game-layer #outer-players .player-wrapper {
+  overflow: scroll;
+}
+.game-layer #outer-players .player {
+  color: #fff;
+  border-radius: 0.7vw;
+}
+.game-layer #outer-players .player .player-stats {
+  overflow: scroll;
+}
+.game-layer #outer-players .player .name {
+  margin: 1vw 0;
+  color: #fff;
+}
+.game-layer #outer-players .player .score {
+  margin: 1.8vw 0;
+  font-size: 3.4vw;
+}
+.game-layer #outer-players .player .prev-score {
+  margin-top: 0.2vw;
+  margin-bottom: 0.1vw;
+}
+.game-layer #outer-players .player .average {
+  color: #fff;
+}
+.game-layer #outer-players .player .prev-darts {
+  font-size: 0.8vw;
+}
+.game-layer #outer-players .player .name, .game-layer #outer-players .player .prev-score, .game-layer #outer-players .player .average {
+  font-size: 1.8vw;
+}
+.game-layer #outer-players .player.active {
+  background: #282a38;
+}
+.game-layer #outer-players .player.active .name {
+  color: #fff;
+}
+.game-layer #outer-players .player.inactive .name {
+  color: #a4a4af;
+}
+.game-layer #outer-players .player-record {
+  margin: 2vw 0;
+}
+.game-layer #outer-players .player-record .record-item {
+  background: #282a38;
+  border-radius: 0.7vw;
+  height: 5vw;
+}
+.game-layer #outer-dart-board {
+  width: 55%;
+  color: #fff;
 }
 
 .ld-input, .ld-select, .ld-button, .ld-player-label {
@@ -11273,6 +11372,8 @@ main .container > * {
 
 .ld-player-label {
   background: #fff;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 .ld-input {

@@ -1,5 +1,6 @@
 namespace Client
 
+open System
 open Client.Components
 open Elmish
 open Fable.Remoting.Client
@@ -12,7 +13,22 @@ module State =
         |> Remoting.buildProxy<IGameApi>
 
     let init () : Model * Cmd<Msg> =
-        let model = { State = Create; Game = Game.Default }
+        let stylePlayers =
+            { Id = Guid.NewGuid()
+              Mode = 501
+              Legs = 3
+              DoubleIn = false
+              DoubleOut = true
+              Players =
+                [ { Player.Default with Name = "Player 1" }
+                  { Player.Default with Name = "Player 2" }
+                  { Player.Default with Name = "Player 3" }
+                  { Player.Default with Name = "Player 4" }
+                   ] }
+
+
+
+        let model = { State = Run; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
