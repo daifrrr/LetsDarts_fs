@@ -84,7 +84,7 @@ module internal Players =
         let wonLegs =
             (p, mode) ||> Player.getLegsWon
         Html.div [
-            prop.className "ply-legs"
+            prop.className "legs"
             prop.children [
                 [ 1..legs ]
                 |> List.map (fun i ->
@@ -104,19 +104,20 @@ module internal Players =
             g |> Game.getCurrentPlayerIndex
 
         Html.div [
+            prop.className "col-12"
             prop.children [
                 Html.div [
-                    prop.className "col-12"
+                    prop.className "row player-wrapper flex-row flex-nowrap"
                     prop.children [
-                        Html.div [
-                            prop.className "row player-wrapper flex-row flex-nowrap"
-                            prop.children [
-                                p
-                                |> List.mapi (fun i p ->
+                        p
+                        |> List.mapi (fun i p ->
+                            Html.div [
+                                prop.className "col-3"
+                                prop.children [
                                     Html.div [
                                         match i = currentPlayerIndex with
-                                        | true -> prop.className "player col-3 active"
-                                        | _ -> prop.className "player col-3 inactive"
+                                        | true -> prop.className "player active"
+                                        | _ -> prop.className "player inactive"
                                         prop.children [
                                             Html.div [
                                                 prop.className "row"
@@ -163,17 +164,23 @@ module internal Players =
                                                     ]
                                                 ]
                                             ]
-                                            legsWon p (g.Mode, g.Legs)
+                                            Html.div [
+                                                prop.className "row wrapper-sets-legs"
+                                                prop.children [
+                                                    legsWon p (g.Mode, g.Legs)
+                                                ]
+                                            ]
                                         ]
-                                    ])
-                                |> Fable.React.Helpers.ofList
-                            ]
-                        ]
-
+                                    ]
+                                ]
+                            ])
+                        |> Fable.React.Helpers.ofList
                     ]
                 ]
+
             ]
         ]
+
 
 [<RequireQualifiedAccess>]
 module Play =
@@ -208,10 +215,15 @@ module Play =
                                             |> Players.filledList
                                             |> List.map (fun s ->
                                                 Html.div [
-                                                    prop.className "col-4 record-item"
-                                                    match s with
-                                                    | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
-                                                    | _ -> prop.text s
+                                                    prop.className "col-4 wrapper-record-item"
+                                                    prop.children [
+                                                        Html.div [
+                                                            prop.className "record-item"
+                                                            match s with
+                                                            | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+                                                            | _ -> prop.text s
+                                                        ]
+                                                    ]
                                                 ])
                                             |> Fable.React.Helpers.ofList
                                         ]
@@ -219,10 +231,15 @@ module Play =
                                     Html.div [
                                         prop.className "row"
                                         prop.children [
-                                            Html.button [
-                                                prop.className "btn-undo"
-                                                prop.text "Undo Last Dart"
-                                                prop.onClick (fun _ -> dispatch UndoLastAction)
+                                            Html.div [
+                                                prop.className "col-12"
+                                                prop.children [
+                                                    Html.div [
+                                                        prop.className "button-undo"
+                                                        prop.text "Undo Last Dart"
+                                                        prop.onClick (fun _ -> dispatch UndoLastAction)
+                                                    ]
+                                                ]
                                             ]
                                         ]
                                     ]
