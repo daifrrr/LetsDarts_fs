@@ -8,7 +8,7 @@ $(window).resize(() => {
 })
 
 const setAllCSS = () => {
-    //setPlayerGroupHeight($("#outer-player-input-group-create"), $("#player-input-group-create"), $("#btn-game-bull-out"))
+    setPlayerGroupHeight($("#outer-player-input-group-create"), $("#player-input-group-create"), $("#btn-game-bull-out"))
     //setPlayerGroupHeight($("#outer-player-input-group-sort"), $("#player-input-group-sort"), $("#btn-game-start"))
 }
 

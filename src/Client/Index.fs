@@ -22,13 +22,13 @@ module State =
               Players =
                 [ { Player.Default with Name = "Player 1" }
                   { Player.Default with Name = "Player 2" }
-                  { Player.Default with Name = "Player 3" }
-                  { Player.Default with Name = "Player 4" }
+//                  { Player.Default with Name = "Player 3" }
+//                  { Player.Default with Name = "Player 4" }
                    ] }
 
 
 
-        let model = { State = Run; Game = stylePlayers }
+        let model = { State = Create; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
