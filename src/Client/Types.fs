@@ -17,7 +17,7 @@ type Msg =
     | FinishRound of string
     | SwitchDoubleOut of bool
     | SwitchDoubleIn of bool
-    | AddPlayer of Player
+    | AddPlayer
     | MovePlayerPosition of Player list
     | ChangePlayername of int * string
     | ChangeMode of string

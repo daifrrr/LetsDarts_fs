@@ -62,13 +62,13 @@ module State =
             | _ -> { model with State = Create }, Cmd.none
         | SwitchDoubleOut b -> { model with Game = { model.Game with DoubleOut = b } }, Cmd.none
         | SwitchDoubleIn b -> { model with Game = { model.Game with DoubleIn = b } }, Cmd.none
-        | AddPlayer p ->
+        | AddPlayer ->
             { model with
                 Game =
                     { model.Game with
                         Players =
                             model.Game.Players
-                            @ [ { p with Name = $"Player%d{model.Game.Players.Length + 1}" } ] } },
+                            @ [ { Player.Default with Name = $"Player%d{model.Game.Players.Length + 1}" } ] } },
             Cmd.none
         | MovePlayerPosition pl -> { model with Game = { model.Game with Players = pl } }, Cmd.none
         | ChangePlayername (index, name) ->
@@ -79,7 +79,6 @@ module State =
                         { p with Name = name }
                     else
                         p)
-
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
         | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none

@@ -142,7 +142,7 @@ module Create =
                         ]
                         Html.div [
                             prop.className "btn-add-player"
-                            prop.onClick addPlayer
+                            prop.onClick (fun _ -> AddPlayer |> dispatch)
                             prop.children [
                                 Html.i [
                                     prop.className "fa fa-plus"

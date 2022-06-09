@@ -1,7 +1,6 @@
 ﻿namespace Client.Events
 
 open Elmish
-open Shared
 
 [<AutoOpen>]
 module Sub =
@@ -16,9 +15,6 @@ module Sub =
             mapEvent.Publish.Add(msgSender)
 
         Cmd.ofSub sub
-
-    let addPlayer _ =
-        mapEvent.Trigger(Client.Types.Msg.AddPlayer Player.Default)
 
     let handleClick (ev: Browser.Types.Event) =
         let evm = ev |> unbox<Browser.Types.MouseEvent>
