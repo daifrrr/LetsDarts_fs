@@ -76,7 +76,9 @@ module State =
                 model.Game.Players
                 |> List.mapi (fun i p ->
                     if i = index then
-                        { p with Name = name }
+                        { p with Name = match name |> String.IsNullOrEmpty with
+                                        | true -> $"Player{i + 1}"
+                                        | _ -> name }
                     else
                         p)
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
