@@ -3,7 +3,6 @@
 open Client.Types
 open Client.Events
 open Feliz
-open Feliz.Bulma
 open Shared
 
 
@@ -84,7 +83,7 @@ module Create =
                                             prop.disabled true
                                             prop.onChange (ChangeCountOfLegs >> dispatch)
                                             prop.children [
-                                                [1;2;3;4;5;6;7;8;9;10] |> List.map (fun i -> Html.option i) |> Fable.React.Helpers.ofList
+                                                [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
                                             ]
                                         ]
                                     ]
@@ -102,7 +101,7 @@ module Create =
                                             prop.value model.Game.Legs
                                             prop.onChange (ChangeCountOfLegs >> dispatch)
                                             prop.children [
-                                                [1;2;3;4;5;6;7;8;9;10] |> List.map (fun i -> Html.option i) |> Fable.React.Helpers.ofList
+                                                [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
                                             ]
                                         ]
                                     ]
