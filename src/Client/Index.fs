@@ -88,7 +88,10 @@ open Feliz
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
-            Html.header [ prop.className "header" ]
+            Html.header [
+                prop.className "header"
+                prop.children []
+            ]
             Html.main [
                 prop.className "content"
                 prop.children [
