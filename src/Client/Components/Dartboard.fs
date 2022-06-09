@@ -1,6 +1,6 @@
 ﻿namespace Client.Components
 
-open Client.Events
+open Client.Types
 open Feliz
 open Shared
 
@@ -57,7 +57,7 @@ module Dartboard =
             ]
         ]
 
-    let internal sections (fieldValue: int, angle: float) (color: string * string) =
+    let internal sections (fieldValue: int, angle: float) (contrast, color) (dispatch: Msg -> unit) =
         Svg.g [
             svg.id (string $"f{fieldValue}")
             svg.transform.rotate -angle
@@ -69,8 +69,8 @@ module Dartboard =
                     svg.width 500
                     svg.y 0
                     svg.x 0
-                    svg.fill (fst color)
-                    svg.onClick handleClick
+                    svg.fill contrast
+                    svg.onClick (fun _ -> SendShot($"s{fieldValue}") |> dispatch)
                 ]
                 Svg.use' [
                     svg.id (string $"d{fieldValue}")
@@ -79,8 +79,8 @@ module Dartboard =
                     svg.width 500
                     svg.y 0
                     svg.x 0
-                    svg.fill (snd color)
-                    svg.onClick handleClick
+                    svg.fill color
+                    svg.onClick (fun _ -> SendShot($"d{fieldValue}") |> dispatch)
                 ]
                 Svg.use' [
                     svg.id (string $"t{fieldValue}")
@@ -89,15 +89,13 @@ module Dartboard =
                     svg.width 500
                     svg.y 0
                     svg.x 0
-                    svg.fill (snd color)
-                    svg.onClick handleClick
+                    svg.fill color
+                    svg.onClick (fun _ -> SendShot($"t{fieldValue}") |> dispatch)
                 ]
             ]
         ]
 
-
-
-    let Dartboard (dispatch: Client.Types.Msg -> unit) =
+    let Dartboard (dispatch: Msg -> unit) =
         Html.div [
             prop.className "dartboardContainer"
             prop.children [
@@ -123,7 +121,7 @@ module Dartboard =
                                     svg.children [
                                         // dartboard background
                                         Svg.rect [
-                                            svg.id (string "s0")
+                                            svg.id "s0"
                                             svg.x -300
                                             svg.y -300
                                             svg.width 600
@@ -131,7 +129,7 @@ module Dartboard =
                                             svg.stroke BACKGROUND
                                             svg.strokeWidth 1
                                             svg.fill BACKGROUND
-                                            svg.onClick handleClick
+                                            svg.onClick (fun _ -> SendShot("s0") |> dispatch)
                                         ]
                                         // dartboard background
                                         (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
@@ -139,31 +137,31 @@ module Dartboard =
                                         |> Seq.indexed
                                         |> Seq.map (fun (i, (n, a)) ->
                                             match i % 2 = 0 with
-                                            | true -> sections (n, a) (BLACK, RED)
-                                            | _ -> sections (n, a) (WHITE, GREEN))
+                                            | true -> sections (n, a) (BLACK, RED) dispatch
+                                            | _ -> sections (n, a) (WHITE, GREEN) dispatch)
                                         |> List.ofSeq
                                         |> Fable.React.Helpers.ofList
                                         // dartboard bull
                                         Svg.circle [
-                                            svg.id (string "s25")
+                                            svg.id "s25"
                                             svg.cx 0
                                             svg.cx 0
                                             svg.r 60
                                             svg.stroke BACKGROUND
                                             svg.strokeWidth 1
                                             svg.fill GREEN
-                                            svg.onClick handleClick
+                                            svg.onClick (fun _ -> SendShot("s25") |> dispatch)
                                         ]
                                         // dartboard bull's eye
                                         Svg.circle [
-                                            svg.id (string "d25")
+                                            svg.id "d25"
                                             svg.cx 0
                                             svg.cx 0
                                             svg.r 25
                                             svg.stroke BACKGROUND
                                             svg.strokeWidth 1
                                             svg.fill RED
-                                            svg.onClick handleClick
+                                            svg.onClick (fun _ -> SendShot("d25") |> dispatch)
                                         ]
                                     ]
                                 ]
@@ -194,7 +192,7 @@ module Dartboard =
                                         | _ -> svg.custom ("transform", $"rotate({a}, 0, 0) translate(0, -255)")
                                         svg.textAnchor.middle
                                         svg.fill WHITE
-//                                        svg.onClick handleClick
+                                        svg.onClick (fun _ -> SendShot("s0") |> dispatch)
                                     ]
                                 ]
                             ])
