@@ -11127,13 +11127,13 @@ body, button, input, optgroup, select, textarea, label {
 svg {
   max-height: calc(100vh - 4rem);
 }
-svg use, svg circle, svg rect {
+svg use, svg circle, svg rect, svg text {
   transition-property: fill;
   transition-timing-function: ease-out;
   transition-delay: 0s;
   transition-duration: 0.5s;
 }
-svg use:hover, svg circle:hover, svg rect:hover {
+svg use:hover, svg circle:hover, svg rect:hover, svg text:hover {
   fill: #58a6ff;
   transition: 0s;
 }
