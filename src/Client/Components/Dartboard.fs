@@ -170,13 +170,12 @@ module Dartboard =
                         // dartboard number ring
                         (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
                         ||> Seq.map2 (fun n a -> (n, a))
-                        |> Seq.indexed
-                        |> Seq.map (fun (i, (n, a)) ->
+                        |> Seq.map (fun (n, a) ->
                             Svg.g [
                                 svg.id "gText"
                                 svg.children [
                                     Svg.text [
-                                        svg.id $"t{n}"
+                                        svg.id $"n{n}"
                                         svg.x 0
                                         svg.y 0
                                         svg.text n
