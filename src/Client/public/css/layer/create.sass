@@ -1,0 +1,52 @@
+.create-layer
+    .ld-input-score,
+    .ld-input-sets,
+    .ld-input-legs,
+    .ld-label-score,
+    .ld-label-sets,
+    .ld-label-legs
+        display: flex
+        >div
+            width: 80%
+        label, select
+            text-align: center
+        label
+            font-size: 2.5rem
+            color: $names-grey
+    .ld-input-score, .ld-label-score
+        justify-content: start
+    .ld-input-sets, .ld-label-sets
+        justify-content: center
+    .ld-input-legs, .ld-label-legs
+        justify-content: end
+    .label-group, .vertical-space-sort
+        margin-bottom: 1rem
+        height: 4rem
+    .input-group
+        margin-top: 1rem
+        margin-bottom: 4rem
+    .outer-player-input-group-create
+        overflow: scroll
+        .player-input-group-create
+            margin-top: 2rem
+            overflow: scroll
+            .player-input
+                margin-top: 2rem
+                margin-bottom: 2rem
+            .player-input:first-child
+                margin-top: 0
+            .player-input:last-child
+                margin-bottom: 0
+        .btn-add-player
+            text-align: center
+            padding: 2rem 0 0
+            background: $background
+            position: sticky
+            bottom: 0
+            cursor: pointer
+            i
+                color: $white
+                font-size: 2.5rem
+    .btn-game-bull-out, .btn-game-start
+        margin-top: 2rem
+        margin-bottom: 4rem

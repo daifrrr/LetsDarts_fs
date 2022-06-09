@@ -22,6 +22,9 @@
       <Content Include="public\css\app.css" />
       <Content Include="public\css\app.css.map" />
       <Content Include="public\css\froms.sass" />
+      <Content Include="public\css\layer\create.sass" />
+      <Content Include="public\css\layer\game.sass" />
+      <Content Include="public\css\layer\sort.sass" />
       <Content Include="public\css\variables.sass" />
       <None Include="public\css\main.sass" />
       <Content Include="public\css\main.css" />
