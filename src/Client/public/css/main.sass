@@ -1,22 +1,9 @@
 ﻿@use "variables" as v
-$header-height: 2rem
-$footer-height: 2rem
 
 // OVERRIDES
 body, button, input, optgroup, select, textarea, label
     font-family: 'Jost', sans-serif !important
     width: 100%
-
-svg
-    max-height: calc(100vh - 4rem)
-    use, circle, rect
-        transition-property: fill
-        transition-timing-function: ease-out
-        transition-delay: 0s
-        transition-duration: 0.5s
-        &:hover
-            fill: v.$hover
-            transition: 0s
 
 *
     margin: 0
@@ -29,18 +16,13 @@ svg
     background-color: v.$background
 
 header
-    height: $header-height
+    height: v.$header-height
 footer
-    height: $footer-height
+    height: v.$footer-height
 
 main
-    height: 100vh - calc(#{$header-height} + #{$footer-height})
-    width: 100%
-    .container
-        display: flex
-        flex-direction: column
-        & > *
-            display: flex
+    height: v.$content-height
+    max-width: v.$content-width
 
 .display-none
     display: none
@@ -48,4 +30,6 @@ main
 /* LAYERS */
 
 .create-layer, .sort-layer
+    position: relative
+    height: 100%
     max-width: 575px

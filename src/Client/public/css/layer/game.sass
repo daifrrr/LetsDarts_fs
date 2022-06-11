@@ -1,38 +1,58 @@
+@use "./../variables" as v
+
 .game-layer
-    #outer-players
-        width: calc(45% - 4vw)
-        margin: 1.3vw 2vw 0
+    margin: 0 1rem
+    svg
+        max-height: v.$content-height
+    use, circle, rect
+        transition-property: fill
+        transition-timing-function: ease-out
+        transition-delay: 0s
+        transition-duration: 0.5s
+        &:hover
+            fill: v.$hover
+            transition: 0s
+
+    .player-stats-container
+        position: relative
+        width: calc(50% - 4vw)
+        margin: 1.3vw 2vw
         overflow: hidden
         text-align: center
         .button-undo
-            background: $red
+            position: absolute
+            bottom: 0
+            left: 0
+            width: 100%
+            background: v.$red
             border: none
             padding: 1.3vw 0
-            color: $white
-            font-size: $fs-2
+            color: v.$white
+            font-size: v.$fs-2
             border-radius: 0.7vw
             cursor: pointer
         .player-wrapper
             overflow: scroll
+            justify-content: center
         .player
-            color: $white
+            color: v.$white
             border-radius: 0.7vw
             .player-stats
                 overflow: scroll
             .name
                 margin: 1vw 0
-                color: $white
+                color: v.$white
             .score
                 margin: 1.8vw 0
-                font-size: $fs-1
+                font-size: v.$fs-1
             .prev-score
                 margin-top: 0.2vw
                 margin-bottom: 0.1vw
             .average
-                color: $white
+                color: v.$white
                 margin: 0 0 1.2vw
             .prev-darts
-                font-size: $fs-3
+                font-size: v.$fs-3
                 margin: 0 .4vw
             .wrapper-sets-legs
                 padding-bottom: 2vw
@@ -44,24 +64,24 @@
                         margin: 0 0.2vw
                         border-radius: 0.2vw
                     .empty
-                        background: $app-black
+                        background: v.$app-black
                     .filled
-                        background: $names-grey
+                        background: v.$names-grey
             .name, .prev-score, .average
-                font-size: $fs-2
+                font-size: v.$fs-2
             &.active
-                background: $app-black
+                background: v.$app-black
                 .name
-                    color: $white
+                    color: v.$white
                 .legs
                     .empty
-                        background: $background
+                        background: v.$background
             &.inactive
                 .name
-                    color: $names-grey
+                    color: v.$names-grey
                 .legs
                     .empty
-                        background: $app-black
+                        background: v.$app-black
         .player-record
             margin: 2vw 0
             .wrapper-record-item
@@ -77,15 +97,15 @@
                 .record-item
                     right: 0
             .record-item
-                background: $app-black
+                background: v.$app-black
                 border-radius: 0.7vw
                 width: 90%
                 margin: 0 auto
-                color: $white
-                font-size: $fs-1
+                color: v.$white
+                font-size: v.$fs-1
     #outer-dart-board
         width: 55%
-        color: $white
+        color: v.$white
         .dartboardContainer
-            max-height: calc(100vh - ($header-height + $footer-height))
+            max-height: v.$content-height
             text-align: center

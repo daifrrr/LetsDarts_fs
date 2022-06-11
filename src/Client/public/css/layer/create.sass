@@ -1,3 +1,5 @@
+@use "./../variables" as v
+
 .create-layer
     .ld-input-score,
     .ld-input-sets,
@@ -12,7 +14,7 @@
             text-align: center
         label
             font-size: 2.5rem
-            color: $names-grey
+            color: v.$names-grey
     .ld-input-score, .ld-label-score
         justify-content: start
     .ld-input-sets, .ld-label-sets
@@ -40,13 +42,17 @@
         .btn-add-player
             text-align: center
             padding: 2rem 0 0
-            background: $background
+            background: v.$background
             position: sticky
             bottom: 0
             cursor: pointer
-            i
-                color: $white
-                font-size: 2.5rem
-    .btn-game-bull-out, .btn-game-start
+            span
+                color: v.$white
+                font-size: 5vh
+    .btn-game-bull-out
+        position: absolute
+        bottom: 0
+        left: 0
+        width: 100%
         margin-top: 2rem
         margin-bottom: 4rem

@@ -1,11 +1,11 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap");
 /*!
  * Bootstrap v5.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11124,20 +11124,6 @@ body, button, input, optgroup, select, textarea, label {
   width: 100%;
 }
 
-svg {
-  max-height: calc(100vh - 4rem);
-}
-svg use, svg circle, svg rect {
-  transition-property: fill;
-  transition-timing-function: ease-out;
-  transition-delay: 0s;
-  transition-duration: 0.5s;
-}
-svg use:hover, svg circle:hover, svg rect:hover {
-  fill: #58a6ff;
-  transition: 0s;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -11159,15 +11145,8 @@ footer {
 }
 
 main {
-  height: calc(100vh - 4rem);
-  width: 100%;
-}
-main .container {
-  display: flex;
-  flex-direction: column;
-}
-main .container > * {
-  display: flex;
+  height: calc(100vh - (2rem + 2rem));
+  max-width: calc(100vw - 2rem);
 }
 
 .display-none {
@@ -11176,6 +11155,8 @@ main .container > * {
 
 /* LAYERS */
 .create-layer, .sort-layer {
+  position: relative;
+  height: 100%;
   max-width: 575px;
 }
 
@@ -11305,11 +11286,15 @@ main .container > * {
   bottom: 0;
   cursor: pointer;
 }
-.create-layer .outer-player-input-group-create .btn-add-player i {
+.create-layer .outer-player-input-group-create .btn-add-player span {
   color: #fff;
-  font-size: 2.5rem;
+  font-size: 5vh;
 }
-.create-layer .btn-game-bull-out, .create-layer .btn-game-start {
+.create-layer .btn-game-bull-out {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
@@ -11343,23 +11328,49 @@ main .container > * {
 .sort-layer .outer-player-input-group-sort .player-input-group-sort {
   overflow: scroll;
 }
-.sort-layer .outer-player-input-group-sort .player-input-group-sort > div {
-  margin: 2rem 0;
-}
 .sort-layer .outer-player-input-group-sort .player-input-group-sort > div:first-child {
   margin-top: 0;
 }
 .sort-layer .outer-player-input-group-sort .player-input-group-sort > div:last-child {
   margin-bottom: 0;
 }
+.sort-layer .btn-game-start {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
 
-.game-layer #outer-players {
-  width: calc(45% - 4vw);
-  margin: 1.3vw 2vw 0;
+.game-layer {
+  margin: 0 1rem;
+}
+.game-layer svg {
+  max-height: calc(100vh - (2rem + 2rem));
+}
+.game-layer use, .game-layer circle, .game-layer rect {
+  transition-property: fill;
+  transition-timing-function: ease-out;
+  transition-delay: 0s;
+  transition-duration: 0.5s;
+}
+.game-layer use:hover, .game-layer circle:hover, .game-layer rect:hover {
+  fill: #58a6ff;
+  transition: 0s;
+}
+.game-layer .player-stats-container {
+  position: relative;
+  width: calc(50% - 4vw);
+  margin: 1.3vw 2vw;
   overflow: hidden;
   text-align: center;
 }
-.game-layer #outer-players .button-undo {
+.game-layer .player-stats-container .button-undo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background: #d95652;
   border: none;
   padding: 1.3vw 0;
@@ -11368,87 +11379,88 @@ main .container > * {
   border-radius: 0.7vw;
   cursor: pointer;
 }
-.game-layer #outer-players .player-wrapper {
+.game-layer .player-stats-container .player-wrapper {
   overflow: scroll;
+  justify-content: center;
 }
-.game-layer #outer-players .player {
+.game-layer .player-stats-container .player {
   color: #fff;
   border-radius: 0.7vw;
 }
-.game-layer #outer-players .player .player-stats {
+.game-layer .player-stats-container .player .player-stats {
   overflow: scroll;
 }
-.game-layer #outer-players .player .name {
+.game-layer .player-stats-container .player .name {
   margin: 1vw 0;
   color: #fff;
 }
-.game-layer #outer-players .player .score {
+.game-layer .player-stats-container .player .score {
   margin: 1.8vw 0;
   font-size: 3.4vw;
 }
-.game-layer #outer-players .player .prev-score {
+.game-layer .player-stats-container .player .prev-score {
   margin-top: 0.2vw;
   margin-bottom: 0.1vw;
 }
-.game-layer #outer-players .player .average {
+.game-layer .player-stats-container .player .average {
   color: #fff;
   margin: 0 0 1.2vw;
 }
-.game-layer #outer-players .player .prev-darts {
+.game-layer .player-stats-container .player .prev-darts {
   font-size: 0.8vw;
   margin: 0 0.4vw;
 }
-.game-layer #outer-players .player .wrapper-sets-legs {
+.game-layer .player-stats-container .player .wrapper-sets-legs {
   padding-bottom: 2vw;
 }
-.game-layer #outer-players .player .wrapper-sets-legs .legs div {
+.game-layer .player-stats-container .player .wrapper-sets-legs .legs div {
   width: 0.6vw;
   height: 0.6vw;
   display: inline-block;
   margin: 0 0.2vw;
   border-radius: 0.2vw;
 }
-.game-layer #outer-players .player .wrapper-sets-legs .legs .empty {
+.game-layer .player-stats-container .player .wrapper-sets-legs .legs .empty {
   background: #282a38;
 }
-.game-layer #outer-players .player .wrapper-sets-legs .legs .filled {
+.game-layer .player-stats-container .player .wrapper-sets-legs .legs .filled {
   background: #a4a4af;
 }
-.game-layer #outer-players .player .name, .game-layer #outer-players .player .prev-score, .game-layer #outer-players .player .average {
+.game-layer .player-stats-container .player .name, .game-layer .player-stats-container .player .prev-score, .game-layer .player-stats-container .player .average {
   font-size: 1.8vw;
 }
-.game-layer #outer-players .player.active {
+.game-layer .player-stats-container .player.active {
   background: #282a38;
 }
-.game-layer #outer-players .player.active .name {
+.game-layer .player-stats-container .player.active .name {
   color: #fff;
 }
-.game-layer #outer-players .player.active .legs .empty {
+.game-layer .player-stats-container .player.active .legs .empty {
   background: #38394d;
 }
-.game-layer #outer-players .player.inactive .name {
+.game-layer .player-stats-container .player.inactive .name {
   color: #a4a4af;
 }
-.game-layer #outer-players .player.inactive .legs .empty {
+.game-layer .player-stats-container .player.inactive .legs .empty {
   background: #282a38;
 }
-.game-layer #outer-players .player-record {
+.game-layer .player-stats-container .player-record {
   margin: 2vw 0;
 }
-.game-layer #outer-players .player-record .wrapper-record-item {
+.game-layer .player-stats-container .player-record .wrapper-record-item {
   position: relative;
 }
-.game-layer #outer-players .player-record > div:first-child .record-item, .game-layer #outer-players .player-record > div:last-child .record-item {
+.game-layer .player-stats-container .player-record > div:first-child .record-item, .game-layer .player-stats-container .player-record > div:last-child .record-item {
   position: absolute;
   width: 80%;
 }
-.game-layer #outer-players .player-record > div:first-child .record-item {
+.game-layer .player-stats-container .player-record > div:first-child .record-item {
   left: 0;
 }
-.game-layer #outer-players .player-record > div:last-child .record-item {
+.game-layer .player-stats-container .player-record > div:last-child .record-item {
   right: 0;
 }
-.game-layer #outer-players .player-record .record-item {
+.game-layer .player-stats-container .player-record .record-item {
   background: #282a38;
   border-radius: 0.7vw;
   width: 90%;
@@ -11461,7 +11473,7 @@ main .container > * {
   color: #fff;
 }
 .game-layer #outer-dart-board .dartboardContainer {
-  max-height: calc(100vh - 4rem);
+  max-height: calc(100vh - (2rem + 2rem));
   text-align: center;
 }
 
