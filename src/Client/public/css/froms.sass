@@ -1,3 +1,5 @@
+@use "variables" as v
+
 .ld-input, .ld-select, .ld-button, .ld-player-label
     padding: 0.3rem
     border-radius: 0.5rem
@@ -5,7 +7,7 @@
     text-align: center
 
 .ld-player-label
-    background: $white
+    background: v.$white
     padding-left: 4rem
     padding-right: 4rem
 
@@ -17,7 +19,7 @@
 .ld-select
     border: none
     text-align: center
-    color: $font-black
+    color: v.$font-black
     -webkit-appearance: none
     -moz-appearance: none
     >option
@@ -25,12 +27,12 @@
 
 .ld-button
     border: none
-    background: $white
+    background: v.$white
     color: black
     cursor: pointer
     &.ld-button-green
-        background: $green
-        color: $white
+        background: v.$green
+        color: v.$white
     &.ld-button-red
-        background: $red
-        color: $white
+        background: v.$red
+        color: v.$white
