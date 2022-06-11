@@ -29,11 +29,9 @@ module Sort =
                 ]
                 Html.div [
                     prop.className "outer-player-input-group-sort"
-                    prop.id "outer-player-input-group-sort"
                     prop.children [
                         Html.div [
                             prop.className "player-input-group-sort"
-                            prop.id "player-input-group-sort"
                             prop.children [
                                 model.Game
                                 |> Game.getPlayers
@@ -66,8 +64,7 @@ module Sort =
                     ]
                 ]
                 Html.div [
-                    prop.className "btn-game-start ld-button ld-button-green"
-                    prop.id "btn-game-start"
+                    prop.className "ld-button ld-button-green btn-game-start"
                     prop.text "Start"
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]

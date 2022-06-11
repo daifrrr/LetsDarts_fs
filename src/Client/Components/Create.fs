@@ -56,18 +56,13 @@ module Create =
                         Html.div [
                             prop.className "col ld-input-score"
                             prop.children [
-                                Html.div [
-                                    prop.className ""
+                                Html.select [
+                                    prop.className "ld-select"
+                                    prop.value (model.Game.Mode |> string)
+                                    prop.onChange (ChangeMode >> dispatch)
                                     prop.children [
-                                        Html.select [
-                                            prop.className "ld-select"
-                                            prop.value (model.Game.Mode |> string)
-                                            prop.onChange (ChangeMode >> dispatch)
-                                            prop.children [
-                                                Html.option 301
-                                                Html.option 501
-                                            ]
-                                        ]
+                                        Html.option 301
+                                        Html.option 501
                                     ]
                                 ]
                             ]
@@ -76,15 +71,12 @@ module Create =
                             prop.className "col ld-input-sets"
                             prop.children [
                                 Html.div [
-                                    prop.className ""
-                                    prop.children [
-                                        Html.select [
-                                            prop.className "ld-select"
-                                            prop.disabled true
-                                            prop.onChange (ChangeCountOfLegs >> dispatch)
-                                            prop.children [
-                                                [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
-                                            ]
+                                    Html.select [
+                                        prop.className "ld-select"
+                                        prop.disabled true
+                                        prop.onChange (ChangeCountOfLegs >> dispatch)
+                                        prop.children [
+                                            [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
                                         ]
                                     ]
                                 ]
@@ -93,17 +85,12 @@ module Create =
                         Html.div [
                             prop.className "col ld-input-legs"
                             prop.children[
-                                Html.div [
-                                    prop.className ""
+                                Html.select [
+                                    prop.className "ld-select"
+                                    prop.value model.Game.Legs
+                                    prop.onChange (ChangeCountOfLegs >> dispatch)
                                     prop.children [
-                                        Html.select [
-                                            prop.className "ld-select"
-                                            prop.value model.Game.Legs
-                                            prop.onChange (ChangeCountOfLegs >> dispatch)
-                                            prop.children [
-                                                [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
-                                            ]
-                                        ]
+                                        [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
                                     ]
                                 ]
                             ]
@@ -112,28 +99,21 @@ module Create =
                 ]
                 Html.div [
                     prop.className "outer-player-input-group-create"
-                    prop.id "outer-player-input-group-create"
                     prop.children [
                         Html.div [
                             prop.className "player-input-group-create"
-                            prop.id "player-input-group-create"
                             prop.children [
                                 model.Game.Players
                                 |> List.mapi (fun i p ->
                                     Html.div [
                                         prop.className "player-input"
                                         prop.children [
-                                            Html.div [
-                                                prop.className ""
-                                                prop.children [
-                                                    Html.input [
-                                                        prop.type' "text"
-                                                        prop.className "ld-input ld-player-name-input"
-                                                        prop.placeholder p.Name
-                                                        prop.custom ("index", i)
-                                                        prop.onChange (handleInput i)
-                                                    ]
-                                                ]
+                                            Html.input [
+                                                prop.type' "text"
+                                                prop.className "ld-input ld-player-name-input"
+                                                prop.placeholder p.Name
+                                                prop.custom ("index", i)
+                                                prop.onChange (handleInput i)
                                             ]
                                         ]
                                     ])
@@ -144,24 +124,17 @@ module Create =
                             prop.className "btn-add-player"
                             prop.onClick (fun _ -> AddPlayer |> dispatch)
                             prop.children [
-                                Html.i [
-                                    prop.className "fa fa-plus"
-                                    prop.ariaHidden true
-                                ]
+                                Html.span "+"
                             ]
                         ]
                     ]
                 ]
                 Html.div [
-                    prop.className ""
+                    prop.className "ld-button ld-button-green btn-game-bull-out"
                     prop.children [
-                        Html.div [
-                            prop.className "btn-game-bull-out align-self-end ld-button ld-button-green"
-                            prop.id "btn-game-bull-out"
-                            prop.text "Bull Out"
-                            prop.onClick (fun _ -> dispatch OrderPlayers)
-                        ]
+                        Html.span "Bull Out"
                     ]
+                    prop.onClick (fun _ -> dispatch OrderPlayers)
                 ]
             ]
         ]
