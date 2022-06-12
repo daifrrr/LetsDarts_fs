@@ -11360,17 +11360,15 @@ main {
   transition: 0s;
 }
 .game-layer .player-stats-container {
-  position: relative;
   width: calc(50% - 4vw);
   margin: 1.3vw 2vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
   text-align: center;
 }
 .game-layer .player-stats-container .button-undo {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   background: #d95652;
   border: none;
   padding: 1.3vw 0;
@@ -11381,95 +11379,81 @@ main {
 }
 .game-layer .player-stats-container .player-wrapper {
   overflow: scroll;
-  justify-content: center;
+  justify-content: space-around;
 }
-.game-layer .player-stats-container .player {
+.game-layer .player-stats-container .player-wrapper .player {
   color: #fff;
   border-radius: 0.7vw;
 }
-.game-layer .player-stats-container .player .player-stats {
+.game-layer .player-stats-container .player-wrapper .player .player-stats {
   overflow: scroll;
 }
-.game-layer .player-stats-container .player .name {
+.game-layer .player-stats-container .player-wrapper .player .name {
   margin: 1vw 0;
   color: #fff;
 }
-.game-layer .player-stats-container .player .score {
+.game-layer .player-stats-container .player-wrapper .player .score {
   margin: 1.8vw 0;
   font-size: 3.4vw;
 }
-.game-layer .player-stats-container .player .prev-score {
+.game-layer .player-stats-container .player-wrapper .player .prev-score {
   margin-top: 0.2vw;
   margin-bottom: 0.1vw;
 }
-.game-layer .player-stats-container .player .average {
+.game-layer .player-stats-container .player-wrapper .player .average {
   color: #fff;
   margin: 0 0 1.2vw;
 }
-.game-layer .player-stats-container .player .prev-darts {
+.game-layer .player-stats-container .player-wrapper .player .prev-darts {
   font-size: 0.8vw;
   margin: 0 0.4vw;
 }
-.game-layer .player-stats-container .player .wrapper-sets-legs {
+.game-layer .player-stats-container .player-wrapper .player .wrapper-sets-legs {
   padding-bottom: 2vw;
 }
-.game-layer .player-stats-container .player .wrapper-sets-legs .legs div {
+.game-layer .player-stats-container .player-wrapper .player .wrapper-sets-legs .legs div {
   width: 0.6vw;
   height: 0.6vw;
   display: inline-block;
   margin: 0 0.2vw;
   border-radius: 0.2vw;
 }
-.game-layer .player-stats-container .player .wrapper-sets-legs .legs .empty {
+.game-layer .player-stats-container .player-wrapper .player .wrapper-sets-legs .legs .empty {
   background: #282a38;
 }
-.game-layer .player-stats-container .player .wrapper-sets-legs .legs .filled {
+.game-layer .player-stats-container .player-wrapper .player .wrapper-sets-legs .legs .filled {
   background: #a4a4af;
 }
-.game-layer .player-stats-container .player .name, .game-layer .player-stats-container .player .prev-score, .game-layer .player-stats-container .player .average {
+.game-layer .player-stats-container .player-wrapper .player .name, .game-layer .player-stats-container .player-wrapper .player .prev-score, .game-layer .player-stats-container .player-wrapper .player .average {
   font-size: 1.8vw;
 }
-.game-layer .player-stats-container .player.active {
+.game-layer .player-stats-container .player-wrapper .player.active {
   background: #282a38;
 }
-.game-layer .player-stats-container .player.active .name {
+.game-layer .player-stats-container .player-wrapper .player.active .name {
   color: #fff;
 }
-.game-layer .player-stats-container .player.active .legs .empty {
+.game-layer .player-stats-container .player-wrapper .player.active .legs .empty {
   background: #38394d;
 }
-.game-layer .player-stats-container .player.inactive .name {
+.game-layer .player-stats-container .player-wrapper .player.inactive .name {
   color: #a4a4af;
 }
-.game-layer .player-stats-container .player.inactive .legs .empty {
+.game-layer .player-stats-container .player-wrapper .player.inactive .legs .empty {
   background: #282a38;
 }
 .game-layer .player-stats-container .player-record {
   margin: 2vw 0;
-}
-.game-layer .player-stats-container .player-record .wrapper-record-item {
-  position: relative;
-}
-.game-layer .player-stats-container .player-record > div:first-child .record-item, .game-layer .player-stats-container .player-record > div:last-child .record-item {
-  position: absolute;
-  width: 80%;
-}
-.game-layer .player-stats-container .player-record > div:first-child .record-item {
-  left: 0;
-}
-.game-layer .player-stats-container .player-record > div:last-child .record-item {
-  right: 0;
+  justify-content: space-between;
 }
 .game-layer .player-stats-container .player-record .record-item {
   background: #282a38;
   border-radius: 0.7vw;
-  width: 90%;
-  margin: 0 auto;
+  margin: 0;
   color: #fff;
   font-size: 3.4vw;
 }
 .game-layer #outer-dart-board {
-  width: 55%;
   color: #fff;
 }
 .game-layer #outer-dart-board .dartboardContainer {

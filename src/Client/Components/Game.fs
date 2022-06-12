@@ -99,76 +99,71 @@ module internal Players =
         ]
 
     let renderPlayers g =
-        let p = g |> Game.getPlayers
+        let ps = g |> Game.getPlayers
 
         let currentPlayerIndex =
             g |> Game.getCurrentPlayerIndex
 
         Html.div [
-            prop.className "row player-wrapper flex-nowrap col-12"
+            prop.className "row player-wrapper flex-nowrap col-12 g-0"
             prop.children [
-                p
+                ps
                 |> List.mapi (fun i p ->
                     Html.div [
-                        prop.className "col-3"
+                        match i = currentPlayerIndex with
+                        | true -> prop.className "col-3 player active"
+                        | _ -> prop.className "col-3 player inactive"
                         prop.children [
                             Html.div [
-                                match i = currentPlayerIndex with
-                                | true -> prop.className "player active"
-                                | _ -> prop.className "player inactive"
+                                prop.className "row"
                                 prop.children [
                                     Html.div [
-                                        prop.className "row"
+                                        prop.className "col-12"
                                         prop.children [
                                             Html.div [
-                                                prop.className "col-12"
-                                                prop.children [
-                                                    Html.div [
-                                                        prop.className "name"
-                                                        prop.text $"{p.Name}"
-                                                    ]
-                                                ]
+                                                prop.className "name"
+                                                prop.text $"{p.Name}"
                                             ]
                                         ]
                                     ]
-                                    match i = currentPlayerIndex with
-                                    | false -> p |> previousRecord |> lastRoundInfo
-                                    | _ -> ("–", [ "–"; "–"; "–" ]) |> lastRoundInfo
+                                ]
+                            ]
+                            match i = currentPlayerIndex with
+                            | false -> p |> previousRecord |> lastRoundInfo
+                            | _ -> ("–", [ "–"; "–"; "–" ]) |> lastRoundInfo
+                            Html.div [
+                                prop.className "row"
+                                prop.children [
                                     Html.div [
-                                        prop.className "row"
+                                        prop.className "col-12"
                                         prop.children [
                                             Html.div [
-                                                prop.className "col-12"
-                                                prop.children [
-                                                    Html.div [
-                                                        prop.className "score"
-                                                        prop.text
-                                                            $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
-                                                    ]
-                                                ]
+                                                prop.className "score"
+                                                prop.text
+                                                    $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
                                             ]
                                         ]
                                     ]
+                                ]
+                            ]
+                            Html.div [
+                                prop.className "row"
+                                prop.children [
                                     Html.div [
-                                        prop.className "row"
+                                        prop.className "col-12"
                                         prop.children [
                                             Html.div [
-                                                prop.className "col-12"
-                                                prop.children [
-                                                    Html.div [
-                                                        prop.className "average"
-                                                        prop.text $"%.2f{p |> Player.getAverage}"
-                                                    ]
-                                                ]
+                                                prop.className "average"
+                                                prop.text $"%.2f{p |> Player.getAverage}"
                                             ]
                                         ]
                                     ]
-                                    Html.div [
-                                        prop.className "row wrapper-sets-legs"
-                                        prop.children [
-                                            legsWon p (g.Mode, g.Legs)
-                                        ]
-                                    ]
+                                ]
+                            ]
+                            Html.div [
+                                prop.className "row wrapper-sets-legs"
+                                prop.children [
+                                    legsWon p (g.Mode, g.Legs)
                                 ]
                             ]
                         ]
@@ -181,10 +176,6 @@ module internal Players =
 [<RequireQualifiedAccess>]
 module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
-        let p = model.Game |> Game.getPlayers
-
-        let currentPlayerIndex =
-            model.Game |> Game.getCurrentPlayerIndex
 
         Html.div [
             prop.className "container-fluid row g-0 game-layer"
@@ -201,28 +192,20 @@ module Play =
                                 |> Players.filledList
                                 |> List.map (fun s ->
                                     Html.div [
-                                        prop.className "col-4 wrapper-record-item"
-                                        prop.children [
-                                            Html.div [
-                                                prop.className "record-item"
-                                                match s with
-                                                | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
-                                                | _ -> prop.text s
-                                            ]
-                                        ]
+                                        prop.className "col-3 record-item"
+                                        match s with
+                                        | "-" -> prop.dangerouslySetInnerHTML "&nbsp;"
+                                        | _ -> prop.text s
                                     ])
                                 |> Fable.React.Helpers.ofList
                             ]
                         ]
                         Html.div [
-                            prop.className "row col-12"
+                            prop.className "row col-12 g-0 button-undo"
                             prop.children [
-                                Html.div [
-                                    prop.className "button-undo"
-                                    prop.text "Undo Last Dart"
-                                    prop.onClick (fun _ -> dispatch UndoLastAction)
-                                ]
+                                Html.span "Undo Last Dart"
                             ]
+                            prop.onClick (fun _ -> dispatch UndoLastAction)
                         ]
                     ]
                 ]

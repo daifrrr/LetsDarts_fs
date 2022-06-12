@@ -14,16 +14,14 @@
             transition: 0s
 
     .player-stats-container
-        position: relative
         width: calc(50% - 4vw)
         margin: 1.3vw 2vw
+        display: flex
+        flex-direction: column
+        justify-content: space-between
         overflow: hidden
         text-align: center
         .button-undo
-            position: absolute
-            bottom: 0
-            left: 0
-            width: 100%
             background: v.$red
             border: none
             padding: 1.3vw 0
@@ -33,78 +31,65 @@
             cursor: pointer
         .player-wrapper
             overflow: scroll
-            justify-content: center
-        .player
-            color: v.$white
-            border-radius: 0.7vw
-            .player-stats
-                overflow: scroll
-            .name
-                margin: 1vw 0
+            justify-content: space-around
+            .player
                 color: v.$white
-            .score
-                margin: 1.8vw 0
-                font-size: v.$fs-1
-            .prev-score
-                margin-top: 0.2vw
-                margin-bottom: 0.1vw
-            .average
-                color: v.$white
-                margin: 0 0 1.2vw
-            .prev-darts
-                font-size: v.$fs-3
-                margin: 0 .4vw
-            .wrapper-sets-legs
-                padding-bottom: 2vw
-                .legs
-                    div
-                        width: 0.6vw
-                        height: 0.6vw
-                        display: inline-block
-                        margin: 0 0.2vw
-                        border-radius: 0.2vw
-                    .empty
-                        background: v.$app-black
-                    .filled
-                        background: v.$names-grey
-            .name, .prev-score, .average
-                font-size: v.$fs-2
-            &.active
-                background: v.$app-black
+                border-radius: 0.7vw
+                .player-stats
+                    overflow: scroll
                 .name
+                    margin: 1vw 0
                     color: v.$white
-                .legs
-                    .empty
-                        background: v.$background
-            &.inactive
-                .name
-                    color: v.$names-grey
-                .legs
-                    .empty
-                        background: v.$app-black
+                .score
+                    margin: 1.8vw 0
+                    font-size: v.$fs-1
+                .prev-score
+                    margin-top: 0.2vw
+                    margin-bottom: 0.1vw
+                .average
+                    color: v.$white
+                    margin: 0 0 1.2vw
+                .prev-darts
+                    font-size: v.$fs-3
+                    margin: 0 .4vw
+                .wrapper-sets-legs
+                    padding-bottom: 2vw
+                    .legs
+                        div
+                            width: 0.6vw
+                            height: 0.6vw
+                            display: inline-block
+                            margin: 0 0.2vw
+                            border-radius: 0.2vw
+                        .empty
+                            background: v.$app-black
+                        .filled
+                            background: v.$names-grey
+                .name, .prev-score, .average
+                    font-size: v.$fs-2
+                &.active
+                    background: v.$app-black
+                    .name
+                        color: v.$white
+                    .legs
+                        .empty
+                            background: v.$background
+                &.inactive
+                    .name
+                        color: v.$names-grey
+                    .legs
+                        .empty
+                            background: v.$app-black
         .player-record
             margin: 2vw 0
-            .wrapper-record-item
-                position: relative
-            &>div:first-child, &>div:last-child
-                .record-item
-                    position: absolute
-                    width: 80%
-            &>div:first-child
-                .record-item
-                    left: 0
-            &>div:last-child
-                .record-item
-                    right: 0
+            justify-content: space-between
             .record-item
                 background: v.$app-black
                 border-radius: 0.7vw
-                width: 90%
-                margin: 0 auto
+                margin: 0
                 color: v.$white
                 font-size: v.$fs-1
     #outer-dart-board
-        width: 55%
         color: v.$white
         .dartboardContainer
             max-height: v.$content-height
