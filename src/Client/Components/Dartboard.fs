@@ -95,8 +95,6 @@ module Dartboard =
             ]
         ]
 
-
-
     let Dartboard (dispatch: Client.Types.Msg -> unit) =
         Svg.svg [
             svg.id "svg"
@@ -170,7 +168,7 @@ module Dartboard =
                 (Constants.DARTNUMBERS, seq { 0.0..18.0..342.0 })
                 ||> Seq.map2 (fun n a -> (n, a))
                 |> Seq.indexed
-                |> Seq.map (fun (i, (n, a)) ->
+                |> Seq.map (fun (_, (n, a)) ->
                     Svg.g [
                         svg.id "gText"
                         svg.children [
