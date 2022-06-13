@@ -5,6 +5,7 @@
         <DefineConstants>FABLE_COMPILER</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <None Include="css\main.sass" />
         <None Include="index.html" />
         <Compile Include="Types.fs" />
         <Compile Include="Events.fs" />
@@ -18,17 +19,17 @@
         <ProjectReference Include="..\Shared\Shared.fsproj" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="public\css\app.sass" />
-      <Content Include="public\css\app.css" />
-      <Content Include="public\css\app.css.map" />
-      <Content Include="public\css\froms.sass" />
-      <Content Include="public\css\layer\create.sass" />
-      <Content Include="public\css\layer\game.sass" />
-      <Content Include="public\css\layer\sort.sass" />
-      <Content Include="public\css\variables.sass" />
-      <None Include="public\css\main.sass" />
-      <Content Include="public\css\main.css" />
-      <Content Include="public\css\main.css.map" />
+      <Content Include="css\app.css" />
+      <Content Include="css\app.css.map" />
+      <Content Include="css\app.sass" />
+      <Content Include="css\froms.sass" />
+      <Content Include="css\layer\create.sass" />
+      <Content Include="css\layer\game.sass" />
+      <Content Include="css\layer\sort.sass" />
+      <Content Include="css\main.css" />
+      <Content Include="css\main.css.map" />
+      <Content Include="css\variables.sass" />
+      <Folder Include="public" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
