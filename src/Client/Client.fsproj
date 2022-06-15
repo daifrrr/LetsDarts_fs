@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <DefineConstants>FABLE_COMPILER</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="css\main.sass" />
+        <None Include="index.html" />
+        <Compile Include="Types.fs" />
+        <Compile Include="Events.fs" />
+        <Compile Include="Components\Create.fs" />
+        <Compile Include="Components\Sort.fs" />
+        <Compile Include="Components\Dartboard.fs" />
+        <Compile Include="Components\Game.fs" />
+        <Compile Include="Components\Result.fs" />
+        <Compile Include="Index.fs" />
+        <Compile Include="App.fs" />
+        <ProjectReference Include="..\Shared\Shared.fsproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="css\app.css" />
+      <Content Include="css\app.css.map" />
+      <Content Include="css\app.sass" />
+      <Content Include="css\froms.sass" />
+      <Content Include="css\layer\create.sass" />
+      <Content Include="css\layer\game.sass" />
+      <Content Include="css\layer\sort.sass" />
+      <Content Include="css\main.css" />
+      <Content Include="css\main.css.map" />
+      <Content Include="css\variables.sass" />
+      <Folder Include="public" />
+    </ItemGroup>
+    <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
