@@ -3,3 +3,4 @@ Fake.IO.FileSystem
 Farmer
 Expecto.VisualStudio.TestAdapter
 FsUnit.xUnit
+Fable.Elmish.Debugger
