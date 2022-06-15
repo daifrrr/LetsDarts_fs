@@ -22,11 +22,8 @@ module Sort =
             model.Game |> Game.getPlayers |> moveDownAt
 
         Html.div [
-            prop.className "container-fluid sort-layer"
+            prop.className "container-fluid row g-0 sort-layer"
             prop.children [
-                Html.div [
-                    prop.className "vertical-space-sort"
-                ]
                 Html.div [
                     prop.className "outer-player-input-group-sort"
                     prop.children [
@@ -49,7 +46,8 @@ module Sort =
                                                             prop.text p.Name
                                                         ]
                                                         Html.p [
-                                                            prop.className "fa fa-bars"
+                                                            prop.className "burger"
+                                                            prop.text "\u2630"
                                                             prop.ariaHidden true
                                                             prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
                                                         ]

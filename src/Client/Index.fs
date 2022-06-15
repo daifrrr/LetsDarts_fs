@@ -28,7 +28,7 @@ module State =
 
 
 
-        let model = { State = Create; Game = stylePlayers }
+        let model = { State = Order; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
