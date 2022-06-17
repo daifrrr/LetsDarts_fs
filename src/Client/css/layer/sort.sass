@@ -1,37 +1,21 @@
 @use "./../variables" as v
 
 .sort-layer
-    margin: 0 autok
-    .players
-        position: relative
-        >p
-            &:last-child
+    display: flex
+    margin: 0 auto
+    align-items: center
+    .player-list
+        overflow: scroll
+        flex: 1 0 auto
+        .player
+            position: relative
+            background-color: v.$white
+            margin: 2rem 0 0
+            .sort-icon
                 position: absolute
                 right: 0
-                top: 0
-                padding-top: 0.9rem
-                height: 100%
-                width: 4rem
-                font-size: 2.5rem
-                background: v.$white
-                text-align: center
-                border-radius: 0.5rem
+                padding: 0 1rem
     .btn-game-start
-        margin-top: 2rem
-        margin-bottom: 4rem
-    .outer-player-input-group-sort
-        overflow: scroll
-        .player-input-group-sort
-            overflow: scroll
-            >div
-                &:first-child
-                    margin-top: 0
-                &:last-child
-                    margin-bottom: 0
-    .btn-game-start
-        position: absolute
-        bottom: 0
-        left: 0
+        align-self: flex-end
         width: 100%
-        margin-top: 2rem
-        margin-bottom: 4rem
+        margin: 2rem 0 4rem
