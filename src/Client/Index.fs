@@ -3,6 +3,7 @@ namespace Client
 open System
 open Client.Components
 open Elmish
+open Elmish.DragAndDrop
 open Fable.Remoting.Client
 open Shared
 
@@ -28,7 +29,10 @@ module State =
 
 
 
-        let model = { State = Order; Game = stylePlayers }
+        let model = { State = Order
+                      Game = stylePlayers
+                      DragAndDrop = DragAndDropModel.Empty()
+                      ContentMap = Map.empty }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
