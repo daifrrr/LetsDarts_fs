@@ -23,7 +23,7 @@ module State =
               Players =
                 [ { Player.Default with Name = "Player 1" }
                   { Player.Default with Name = "Player 2" }
-//                  { Player.Default with Name = "Player 3" }
+                  { Player.Default with Name = "Player 3" }
 //                  { Player.Default with Name = "Player 4" }
                    ] }
 
@@ -88,6 +88,7 @@ module State =
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
         | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
+        | DndMsg msg -> model, Cmd.none
 
 open Feliz
 
