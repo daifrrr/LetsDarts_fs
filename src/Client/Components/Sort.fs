@@ -1,8 +1,11 @@
 ﻿namespace Client.Components
 
 open Client.Types
+open Fable.React
+open Fable.React.Props
 open Feliz
 open Shared
+open Elmish.DragAndDrop
 
 module Sort =
     let Form (model: Model) (dispatch: Msg -> unit) =
@@ -21,9 +24,10 @@ module Sort =
         let down =
             model.Game |> Game.getPlayers |> moveDownAt
 
-        Html.div [
-            prop.className "container-fluid row g-0 sort-layer"
-            prop.children [
+        DragDropContext.context model.DragAndDrop (DndMsg >> dispatch)
+            div [
+                Class "container-fluid row g-0 sort-layer"
+            ] [
                 Html.div [
                     prop.className "player-list"
                     prop.children [
@@ -42,7 +46,7 @@ module Sort =
                                         prop.className "sort-icon"
                                         prop.text "\u2630"
                                         prop.ariaHidden true
-                                        prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                        prop.onClick (fun _ -> MovePlayerPosition(i |> down) |> dispatch)
                                     ]
                                 ]
                             ])
@@ -55,4 +59,3 @@ module Sort =
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]
             ]
-        ]
