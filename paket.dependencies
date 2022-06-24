@@ -2,7 +2,7 @@ source https://api.nuget.org/v3/index.json
 framework: net6.0
 storage: none
 
-nuget Elmish.DragAndDrop
+nuget Elmish.DragAndDrop 0.4.0-rc2 rc
 nuget Expecto.VisualStudio.TestAdapter
 nuget Fable.Remoting.Giraffe
 nuget FsUnit.xUnit

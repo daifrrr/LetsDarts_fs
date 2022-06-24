@@ -2,7 +2,7 @@ STORAGE: NONE
 RESTRICTION: == net6.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Elmish.DragAndDrop (0.3)
+    Elmish.DragAndDrop (0.4.0-rc2)
       Fable.Browser.Dom (>= 2.4)
       Fable.Browser.Event (>= 1.4)
       Fable.Core (>= 3.2.7)
