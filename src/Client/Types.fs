@@ -2,13 +2,12 @@
 module Client.Types
 
 open Elmish.DragAndDrop
-open Fable.React
 open Shared
 
 type Model = { State: AppState
                Game: Game
                DragAndDrop: DragAndDropModel
-               ContentMap: Map<string, ReactElement> }
+               ContentMap: Map<string, string> }
 
 type Msg =
     | OrderPlayers

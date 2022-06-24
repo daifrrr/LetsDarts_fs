@@ -29,7 +29,7 @@ module State =
 
 
 
-        let model = { State = Order
+        let model = { State = Create
                       Game = stylePlayers
                       DragAndDrop = DragAndDropModel.Empty()
                       ContentMap = Map.empty }
@@ -43,7 +43,21 @@ module State =
         // SERVER INTERACTION
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
         // |>|> incoming: server response           ( Form: Passive )
-        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
+        | OrderPlayers ->
+            let content = model.Game.Players |> List.mapi (fun i p -> $"player-{i}", p.Name)
+            let elementIds = content |> List.map fst
+            let m = content |> Map.ofList
+
+            let dndModel =
+                DragAndDropModel.createWithItems elementIds
+            { model with
+                DragAndDrop = dndModel
+                ContentMap = m }
+            , Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
+        | DndMsg msg ->
+            let dndModel, cmd =
+                dragAndDropUpdate msg model.DragAndDrop
+            { model with DragAndDrop = dndModel }, Cmd.map DndMsg cmd
         | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
         | GameSettingsSubmitted (s, g) -> { model with State = s; Game = g }, Cmd.none
