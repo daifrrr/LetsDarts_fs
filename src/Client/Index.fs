@@ -4,6 +4,7 @@ open System
 open Client.Components
 open Elmish
 open Elmish.DragAndDrop
+open Feliz
 open Fable.Remoting.Client
 open Shared
 
@@ -44,7 +45,23 @@ module State =
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
         // |>|> incoming: server response           ( Form: Passive )
         | OrderPlayers ->
-            let content = model.Game.Players |> List.mapi (fun i p -> $"player-{i}", p.Name)
+            let content = model.Game.Players
+                          |> List.map (fun p ->
+                              Html.div [
+                                prop.className "player ld-input ld-player-name-input"
+                                prop.children [
+                                    Html.span [
+                                        prop.className "player-name"
+                                        prop.text p.Name
+                                    ]
+                                    Html.span [
+                                        prop.className "sort-icon"
+                                        prop.text "\u2630"
+                                        prop.ariaHidden true
+                                    ]
+                                ]
+                            ]
+                          ) |> List.mapi(fun i c -> (sprintf $"player-{i}"), c)
             let elementIds = content |> List.map fst
             let m = content |> Map.ofList
 
@@ -104,7 +121,6 @@ module State =
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
         | DndMsg msg -> model, Cmd.none
 
-open Feliz
 
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
