@@ -19,37 +19,9 @@ module Create =
                     prop.className "row g-0"
                     prop.children [
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col-3"
                             prop.children [
-                                Html.label [
-                                    prop.text "Score"
-                                ]
-                            ]
-                        ]
-                        Html.div [
-                            prop.className "col-4"
-                            prop.children [
-                                Html.label [
-                                    prop.text "Sets"
-                                ]
-                            ]
-                        ]
-                        Html.div [
-                            prop.className "col-4"
-                            prop.children [
-                                Html.label [
-                                    prop.text "Legs"
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-                Html.div [
-                    prop.className "row g-0"
-                    prop.children [
-                        Html.div [
-                            prop.className "col-4"
-                            prop.children [
+                                Html.span "Score"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.value (model.Game.Mode |> string)
@@ -62,27 +34,33 @@ module Create =
                             ]
                         ]
                         Html.div [
-                            prop.className "col-4"
+                            prop.className "col-3"
                             prop.children [
+                                Html.span "Sets"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.disabled true
                                     prop.onChange (ChangeCountOfLegs >> dispatch)
                                     prop.children [
-                                        [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
+                                        [ 1..10 ]
+                                        |> List.map Html.option
+                                        |> Fable.React.Helpers.ofList
                                     ]
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col-4"
-                            prop.children[
+                            prop.className "col-3"
+                            prop.children [
+                                Html.span "Legs"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.value model.Game.Legs
                                     prop.onChange (ChangeCountOfLegs >> dispatch)
                                     prop.children [
-                                        [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
+                                        [ 1..10 ]
+                                        |> List.map Html.option
+                                        |> Fable.React.Helpers.ofList
                                     ]
                                 ]
                             ]
