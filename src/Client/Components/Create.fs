@@ -13,48 +13,42 @@ open Shared
 module Create =
     let Form (model: Model) (dispatch: Msg -> unit) =
         Html.div [
-            prop.className "container-fluid create-layer"
+            prop.className "container-fluid row g-0 create-layer"
             prop.children [
                 Html.div [
-                    prop.className "row label-group g-0"
+                    prop.className "row g-0"
                     prop.children [
                         Html.div [
-                            prop.className "col ld-label-score"
+                            prop.className "col-4"
                             prop.children [
-                                Html.div [
-                                    Html.label [
-                                        prop.text "Score"
-                                    ]
+                                Html.label [
+                                    prop.text "Score"
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col ld-label-sets"
+                            prop.className "col-4"
                             prop.children [
-                                Html.div [
-                                    Html.label [
-                                        prop.text "Sets"
-                                    ]
+                                Html.label [
+                                    prop.text "Sets"
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col ld-label-legs"
+                            prop.className "col-4"
                             prop.children [
-                                Html.div [
-                                    Html.label [
-                                        prop.text "Legs"
-                                    ]
+                                Html.label [
+                                    prop.text "Legs"
                                 ]
                             ]
                         ]
                     ]
                 ]
                 Html.div [
-                    prop.className "row input-group g-0"
+                    prop.className "row g-0"
                     prop.children [
                         Html.div [
-                            prop.className "col ld-input-score"
+                            prop.className "col-4"
                             prop.children [
                                 Html.select [
                                     prop.className "ld-select"
@@ -68,22 +62,20 @@ module Create =
                             ]
                         ]
                         Html.div [
-                            prop.className "col ld-input-sets"
+                            prop.className "col-4"
                             prop.children [
-                                Html.div [
-                                    Html.select [
-                                        prop.className "ld-select"
-                                        prop.disabled true
-                                        prop.onChange (ChangeCountOfLegs >> dispatch)
-                                        prop.children [
-                                            [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
-                                        ]
+                                Html.select [
+                                    prop.className "ld-select"
+                                    prop.disabled true
+                                    prop.onChange (ChangeCountOfLegs >> dispatch)
+                                    prop.children [
+                                        [1 .. 10] |> List.map Html.option |> Fable.React.Helpers.ofList
                                     ]
                                 ]
                             ]
                         ]
                         Html.div [
-                            prop.className "col ld-input-legs"
+                            prop.className "col-4"
                             prop.children[
                                 Html.select [
                                     prop.className "ld-select"
@@ -98,7 +90,7 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "outer-player-input-group-create"
+                    prop.className "row g-0"
                     prop.children [
                         Html.div [
                             prop.className "player-input-group-create"

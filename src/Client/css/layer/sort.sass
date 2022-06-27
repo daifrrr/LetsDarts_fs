@@ -7,14 +7,18 @@
     .player-list
         overflow: scroll
         flex: 1 0 auto
+        cursor: default
         .player
             position: relative
             background-color: v.$white
             margin: 2rem 0 0
             .sort-icon
                 position: absolute
-                right: 0
                 padding: 0 1rem
+                &.right
+                    right: 0
+                &.left
+                    left: 0
     .btn-game-start
         align-self: flex-end
         width: 100%

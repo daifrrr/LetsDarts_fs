@@ -34,16 +34,28 @@ module Sort =
                                 prop.id $"player-{i}"
                                 prop.className "player ld-input ld-player-name-input"
                                 prop.children [
+                                    match i = 0 |> not with
+                                    | true -> Html.span [
+                                                prop.className "sort-icon left"
+                                                prop.text "\u25b2"
+                                                prop.ariaHidden true
+                                                prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                            ]
+                                    | _ -> Html.none
                                     Html.span [
                                         prop.className "player-name"
                                         prop.text p.Name
                                     ]
-                                    Html.span [
-                                        prop.className "sort-icon"
-                                        prop.text "\u2630"
-                                        prop.ariaHidden true
-                                        prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
-                                    ]
+                                    match i = ((-) (model.Game
+                                                   |> Game.getPlayers
+                                                   |> List.length) 1) |> not with
+                                    | true -> Html.span [
+                                                prop.className "sort-icon right"
+                                                prop.text "\u25bc"
+                                                prop.ariaHidden true
+                                                prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                            ]
+                                    | _ -> Html.none
                                 ]
                             ])
                         |> Fable.React.Helpers.ofList
