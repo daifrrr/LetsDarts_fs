@@ -26,9 +26,7 @@ module State =
 //                  { Player.Default with Name = "Player 4" }
                    ] }
 
-
-
-        let model = { State = Order; Game = stylePlayers }
+        let model = { State = Create; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
@@ -39,7 +37,7 @@ module State =
         // SERVER INTERACTION
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
         // |>|> incoming: server response           ( Form: Passive )
-        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
+        | OrderPlayers -> { model with State = Order }, Cmd.none
         | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
         | GameSettingsSubmitted (s, g) -> { model with State = s; Game = g }, Cmd.none

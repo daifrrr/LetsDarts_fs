@@ -54,7 +54,8 @@ type Leg =
     { CurrentScore: int
       Records: Shot list }
 
-    static member Default = { CurrentScore = 0; Records = [] }
+    static member Default =
+        { CurrentScore = 0; Records = [] }
 
     static member calcCurrentScore(s: Shot list) : int =
         match s with
@@ -149,16 +150,11 @@ type Game =
     static member getCurrentPlayer(g: Game) : Player =
         (g |> Game.getPlayers)[g |> Game.getCurrentPlayerIndex]
 
-
-
-
-
 module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
 type IGameApi =
     { initGame: Game -> Async<AppState * Game>
-      sortPlayers: Game -> Async<AppState * Game>
       sendThrow: string -> Async<AppState * Game>
       undo: unit -> Async<AppState * Game option> }
 
