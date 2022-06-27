@@ -39,7 +39,7 @@ module Sort =
                                                 prop.className "sort-icon left"
                                                 prop.text "\u25b2"
                                                 prop.ariaHidden true
-                                                prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                                prop.onClick (fun _ -> MovePlayerPosition(i |> up) |>  dispatch)
                                             ]
                                     | _ -> Html.none
                                     Html.span [
