@@ -89,11 +89,9 @@ module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
             Html.header [
-                prop.className "header"
                 prop.children []
             ]
             Html.main [
-                prop.className "content"
                 prop.children [
                     match model.State with
                     | Create -> Create.Form model dispatch
@@ -104,7 +102,6 @@ module Views =
                 ]
             ]
             Html.footer [
-                prop.className "footer"
                 prop.children []
             ]
         ]

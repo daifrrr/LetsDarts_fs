@@ -62,7 +62,7 @@ module Sort =
                     ]
                 ]
                 Html.div [
-                    prop.className "ld-button ld-button-green btn-game-start"
+                    prop.className "ld-button green"
                     prop.text "Start"
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]

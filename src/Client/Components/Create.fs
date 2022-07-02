@@ -16,7 +16,7 @@ module Create =
             prop.className "container-fluid row g-0 create-layer"
             prop.children [
                 Html.div [
-                    prop.className "row g-0"
+                    prop.className "game-setup"
                     prop.children [
                         Html.div [
                             prop.className "col-3"
@@ -68,42 +68,33 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "row g-0"
+                    prop.className "player-setup"
                     prop.children [
+                        model.Game.Players
+                        |> List.mapi (fun i p ->
+                            Html.div [
+                                prop.className "player-input"
+                                prop.children [
+                                    Html.input [
+                                        prop.type' "text"
+                                        prop.className "ld-input ld-player-name-input"
+                                        prop.placeholder p.Name
+                                        prop.custom ("index", i)
+                                        prop.onChange (handleInput i)
+                                    ]
+                                ]
+                            ])
+                        |> Fable.React.Helpers.ofList
                         Html.div [
-                            prop.className "player-input-group-create"
-                            prop.children [
-                                model.Game.Players
-                                |> List.mapi (fun i p ->
-                                    Html.div [
-                                        prop.className "player-input"
-                                        prop.children [
-                                            Html.input [
-                                                prop.type' "text"
-                                                prop.className "ld-input ld-player-name-input"
-                                                prop.placeholder p.Name
-                                                prop.custom ("index", i)
-                                                prop.onChange (handleInput i)
-                                            ]
-                                        ]
-                                    ])
-                                |> Fable.React.Helpers.ofList
-                            ]
-                        ]
-                        Html.div [
-                            prop.className "btn-add-player"
+                            prop.className "player-add"
                             prop.onClick (fun _ -> AddPlayer |> dispatch)
-                            prop.children [
-                                Html.span "+"
-                            ]
+                            prop.text "+"
                         ]
                     ]
                 ]
                 Html.div [
-                    prop.className "ld-button ld-button-green btn-game-bull-out"
-                    prop.children [
-                        Html.span "Bull Out"
-                    ]
+                    prop.className "ld-button green"
+                    prop.children [ Html.span "Bull Out" ]
                     prop.onClick (fun _ -> dispatch OrderPlayers)
                 ]
             ]

@@ -43,37 +43,27 @@ module internal Players =
 
 
         Html.div [
-            prop.className "prev-record"
+            prop.className "row"
             prop.children [
                 Html.div [
-                    prop.className "row"
+                    prop.className "prev-record"
                     prop.children [
                         Html.div [
-                            prop.className "col-12"
-                            prop.children [
-                                Html.div [
-                                    prop.className "prev-score"
-                                    prop.text $"%s{s}"
-                                ]
-                            ]
+                            prop.className "prev-score"
+                            prop.text $"%s{s}"
                         ]
                     ]
                 ]
                 Html.div [
                     prop.className "row"
                     prop.children [
-                        Html.div [
-                            prop.className "col-12"
-                            prop.children [
-                                shotList
-                                |> List.map (fun shot ->
-                                    Html.span [
-                                        prop.className "prev-darts"
-                                        prop.text $"%s{shot}"
-                                    ])
-                                |> Fable.React.Helpers.ofList
-                            ]
-                        ]
+                        shotList
+                        |> List.map (fun shot ->
+                            Html.span [
+                                prop.className "prev-darts"
+                                prop.text $"%s{shot}"
+                            ])
+                        |> Fable.React.Helpers.ofList
                     ]
                 ]
             ]
@@ -105,7 +95,7 @@ module internal Players =
             g |> Game.getCurrentPlayerIndex
 
         Html.div [
-            prop.className "row player-wrapper flex-nowrap col-12 g-0"
+            prop.className "player-wrapper g-0"
             prop.children [
                 ps
                 |> List.mapi (fun i p ->
@@ -139,8 +129,7 @@ module internal Players =
                                         prop.children [
                                             Html.div [
                                                 prop.className "score"
-                                                prop.text
-                                                    $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
+                                                prop.text $"{((-) g.Mode (p |> Player.getCurrentLeg).CurrentScore)}"
                                             ]
                                         ]
                                     ]
@@ -181,7 +170,7 @@ module Play =
             prop.className "container-fluid row g-0 game-layer"
             prop.children [
                 Html.div [
-                    prop.className "col-6 player-stats-container"
+                    prop.className "player-stats-container"
                     prop.children [
                         Players.renderPlayers model.Game
                         Html.div [
@@ -201,7 +190,7 @@ module Play =
                             ]
                         ]
                         Html.div [
-                            prop.className "row col-12 g-0 button-undo"
+                            prop.className "ld-button red"
                             prop.children [
                                 Html.span "Undo Last Dart"
                             ]
@@ -210,7 +199,7 @@ module Play =
                     ]
                 ]
                 Html.div [
-                    prop.className "col-6 dartboard-container"
+                    prop.className "dartboard-container"
                     prop.children [ Dartboard dispatch ]
                 ]
             ]

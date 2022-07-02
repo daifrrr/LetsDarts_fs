@@ -1,25 +1,35 @@
 @use "./../variables" as v
 
 .sort-layer
+    height: 100%
     display: flex
     margin: 0 auto
-    align-items: center
+    flex-direction: column
+    flex-wrap: nowrap
+    max-width: 576px
+
+    & > div
+        display: flex
+        margin: 0 0 2vh
+        justify-content: center
+
     .player-list
         overflow: scroll
-        flex: 1 0 auto
         cursor: default
+        flex: 1 1 100%
+        flex-direction: column
+        gap: 2vh
+
         .player
             position: relative
             background-color: v.$white
-            margin: 2rem 0 0
+
             .sort-icon
                 position: absolute
                 padding: 0 1rem
+
                 &.right
                     right: 0
+
                 &.left
                     left: 0
-    .btn-game-start
-        align-self: flex-end
-        width: 100%
-        margin: 2rem 0 4rem

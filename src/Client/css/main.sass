@@ -1,21 +1,17 @@
 ﻿@use "variables" as v
 
 body, button, input, optgroup, select, textarea, label
-    font-family: 'Jost', sans-serif !important
     width: 100%
+    font-family: 'Jost', sans-serif
 
-*
-    margin: 0
-    padding: 0
-    box-sizing: border-box
-
-#app
+#app-root
     height: 100vh
     width: 100vw
     background-color: v.$background
 
 header
     height: v.$header-height
+
 footer
     height: v.$footer-height
 
@@ -23,13 +19,3 @@ main
     height: v.$content-height
     max-width: v.$content-width
     margin: auto
-
-.display-none
-    display: none
-
-/* LAYERS */
-
-.create-layer, .sort-layer
-    position: relative
-    height: 100%
-    max-width: 575px

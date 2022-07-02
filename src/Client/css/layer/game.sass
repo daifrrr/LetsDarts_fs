@@ -1,59 +1,59 @@
 @use "./../variables" as v
 
 .game-layer
-    width: v.$content-width
-    svg
-        max-height: v.$content-height
-    use, circle, rect
-        transition-property: fill
-        transition-timing-function: ease-out
-        transition-delay: 0s
-        transition-duration: 0.5s
-        &:hover
-            fill: v.$hover
-            transition: 0s
+    height: 100%
+    display: flex
+    flex-direction: column
+    flex-wrap: nowrap
+    max-width: 576px
+
+    & > div
+        display: flex
+
 
     .player-stats-container
-        width: calc(50% - 4vw)
-        margin: 2vw
         display: flex
         flex-direction: column
         justify-content: space-between
         overflow: hidden
         text-align: center
-        .button-undo
-            background: v.$red
-            border: none
-            padding: 1vw 0
-            color: v.$white
-            font-size: v.$fs-2
-            border-radius: 0.7vw
-            cursor: pointer
+        flex: 1 1 50%
+
         .player-wrapper
+            display: flex
+            justify-content: space-evenly
             overflow: scroll
-            justify-content: space-around
+
             .player
                 color: v.$white
                 border-radius: 0.7vw
+
                 .player-stats
                     overflow: scroll
+
                 .name
                     margin: 1vw 0
                     color: v.$white
+
                 .score
                     margin: 1.8vw 0
-                    font-size: v.$fs-1
+                    //font-size: v.$fs-1
+
                 .prev-score
                     margin-top: 0.2vw
                     margin-bottom: 0.1vw
+
                 .average
                     color: v.$white
                     margin: 0 0 1.2vw
+
                 .prev-darts
                     font-size: v.$fs-3
                     margin: 0 .4vw
+
                 .wrapper-sets-legs
-                    padding-bottom: 2vw
+                    padding: 0 0 2vw
+
                     .legs
                         div
                             width: 0.6vw
@@ -61,36 +61,56 @@
                             display: inline-block
                             margin: 0 0.2vw
                             border-radius: 0.2vw
+
                         .empty
                             background: v.$app-black
+
                         .filled
                             background: v.$names-grey
+
                 .name, .prev-score, .average
                     font-size: v.$fs-2
+
                 &.active
                     background: v.$app-black
+
                     .name
                         color: v.$white
+
                     .legs
                         .empty
                             background: v.$background
+
                 &.inactive
                     .name
                         color: v.$names-grey
+
                     .legs
                         .empty
                             background: v.$app-black
+
         .player-record
             margin: 2vw 0
             justify-content: space-between
+
             .record-item
                 background: v.$app-black
                 border-radius: 0.7vw
                 margin: 0
                 color: v.$white
                 font-size: v.$fs-1
-    #outer-dart-board
-        color: v.$white
-        .dartboardContainer
+
+    .dartboard-container
+        justify-content: center
+        svg
             max-height: v.$content-height
-            text-align: center
+
+        use, circle, rect
+            transition-property: fill
+            transition-timing-function: ease-out
+            transition-delay: 0s
+            transition-duration: 1s
+
+            &:hover
+                fill: v.$hover
+                transition: 0s

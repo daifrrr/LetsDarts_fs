@@ -1,28 +1,36 @@
 @use "./../variables" as v
 
 .create-layer
+    height: 100%
     display: flex
     margin: 0 auto
     flex-direction: column
+    flex-wrap: nowrap
+    max-width: 576px
+
     & > div
         display: flex
-        justify-content: space-between
-        div
-            text-align: center
-            flex: 0 0 auto
-            align-self: center
+        margin: 0 0 2vh
+
         &:first-child
             align-self: flex-start
-            margin: 0 0 2vh
+            justify-content: space-between
+            & > div
+                text-align: center
+                color: v.$white
+
+        &.player-setup
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            flex: 1 1 100%
+            gap: 2vh
+            & > div
+                text-align: center
+                width: 100%
+            .player-add
+                color: v.$white
+
         &:last-child
             align-self: flex-end
-    span
-        margin: auto
-        text-align: center
-        font-size: v.$fs-1
-        color: v.$names-grey
-
-
-    .btn-game-bull-out
-        width: 100%
-        margin: 2vh 0 6vh 0
+            justify-content: center

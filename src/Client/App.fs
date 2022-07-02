@@ -13,7 +13,7 @@ Program.mkProgram Client.State.init Client.State.update Client.Views.view
 #if DEBUG
 |> Program.withConsoleTrace
 #endif
-|> Program.withReactSynchronous "app"
+|> Program.withReactSynchronous "app-root"
 #if DEBUG
 |> Program.withDebugger
 #endif
