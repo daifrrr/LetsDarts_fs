@@ -2,20 +2,34 @@
 
 body, button, input, optgroup, select, textarea, label
     width: 100%
-    font-family: 'Jost', sans-serif
-
-#app-root
     height: 100vh
-    width: 100vw
+    font-family: 'Jost', sans-serif
     background-color: v.$background
 
-header
-    height: v.$header-height
+.layout-container
+    width: 100%
+    height: 100%
+    display: grid
+    grid-template-rows: 2.5vh 1fr 2.5vh
+    grid-template-columns: 1fr
+    @media screen and (max-width: 991px)
+        grid-template-rows: 1fr
 
-footer
-    height: v.$footer-height
+    header, footer
+        @media screen and (max-width 991px)
+            display: none
 
-main
-    height: v.$content-height
-    max-width: v.$content-width
-    margin: auto
+    main
+        background-color: grey
+        display: grid
+        grid-template-columns: 1fr 2fr
+        grid-template-rows: 1fr
+
+        @media screen and (max-width: 767px)
+            grid-template-columns: 1fr
+            grid-template-rows: 1fr 2fr
+
+        @media screen and (max-width: 478px)
+            // switch layout to evenly spaced tiles
+            grid-template-columns: 1fr
+            grid-template-rows: 1fr 1fr
