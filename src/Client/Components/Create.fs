@@ -13,10 +13,10 @@ open Shared
 module Create =
     let Form (model: Model) (dispatch: Msg -> unit) =
         Html.div [
-            prop.className "container-fluid row g-0 create-layer"
+            prop.className "container create-layer"
             prop.children [
                 Html.div [
-                    prop.className "game-setup"
+                    prop.className "row game-setup"
                     prop.children [
                         Html.div [
                             prop.className "col-3"
@@ -68,7 +68,7 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "player-setup"
+                    prop.className "row player-setup"
                     prop.children [
                         model.Game.Players
                         |> List.mapi (fun i p ->
@@ -93,7 +93,7 @@ module Create =
                     ]
                 ]
                 Html.div [
-                    prop.className "ld-button green"
+                    prop.className "row ld-button green"
                     prop.children [ Html.span "Bull Out" ]
                     prop.onClick (fun _ -> dispatch OrderPlayers)
                 ]

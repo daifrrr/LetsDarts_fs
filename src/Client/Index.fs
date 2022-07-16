@@ -91,16 +91,12 @@ module Views =
             Html.header [
                 prop.children []
             ]
-            Html.main [
-                prop.children [
-                    match model.State with
-                    | Create -> Create.Form model dispatch
-                    | Order -> Sort.Form model dispatch
-                    | Run -> Play.Game model dispatch
-                    | Show -> Result.Show model dispatch
-                    | End -> Result.Show model dispatch
-                ]
-            ]
+            match model.State with
+            | Create -> Create.Form model dispatch
+            | Order -> Sort.Form model dispatch
+            | Run -> Play.Game model dispatch
+            | Show -> Result.Show model dispatch
+            | End -> Result.Show model dispatch
             Html.footer [
                 prop.children []
             ]
