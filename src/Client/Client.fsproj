@@ -25,7 +25,7 @@
       <Content Include="css\layer\game.sass" />
       <Content Include="css\layer\sort.sass" />
       <Content Include="css\variables.sass" />
-      <Folder Include="public" />
+      <Content Include="public\breakpoints.png" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -21,7 +21,7 @@ module Create =
                         Html.div [
                             prop.className "col-3"
                             prop.children [
-                                Html.span "Score"
+                                Html.p "Score"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.value (model.Game.Mode |> string)
@@ -36,7 +36,7 @@ module Create =
                         Html.div [
                             prop.className "col-3"
                             prop.children [
-                                Html.span "Sets"
+                                Html.p "Sets"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.disabled true
@@ -52,7 +52,7 @@ module Create =
                         Html.div [
                             prop.className "col-3"
                             prop.children [
-                                Html.span "Legs"
+                                Html.p "Legs"
                                 Html.select [
                                     prop.className "ld-select"
                                     prop.value model.Game.Legs

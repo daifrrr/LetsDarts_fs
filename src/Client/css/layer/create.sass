@@ -1,19 +1,13 @@
 @use "./../variables" as v
 
 .create-layer
-    height: 100%
-    max-height: calc(100vh - 5vh)
-    width: 100%
-    max-width: 575px
-    align-self: stretch
-    justify-self: center
     display: flex
     flex-direction: column
-    flex-wrap: nowrap
 
     & > div
         display: flex
         margin: 0 0 2vh
+        width: 100%
 
         &:first-child
             align-self: flex-start
