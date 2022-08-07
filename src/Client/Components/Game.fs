@@ -167,7 +167,7 @@ module Play =
     let Game (model: Model) (dispatch: Msg -> unit) =
 
         Html.div [
-            prop.className "container-fluid row g-0 game-layer"
+            prop.className "game-layer"
             prop.children [
                 Html.div [
                     prop.className "player-stats-container"

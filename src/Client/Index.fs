@@ -91,7 +91,6 @@ module Views =
             Html.header [
                 prop.children []
             ]
-            Html.div [ prop.className "breakpoint" ]
             match model.State with
             | Create -> Create.Form model dispatch
             | Order -> Sort.Form model dispatch

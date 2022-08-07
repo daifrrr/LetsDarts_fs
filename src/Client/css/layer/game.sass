@@ -1,20 +1,29 @@
 @use "./../variables" as v
 
 .game-layer
-    display: flex
-    flex-direction: column
-    flex-wrap: wrap
+    display: grid
     max-height: v.$content-height
-
-    & > div
-        display: flex
-
+    grid-template-columns: 1fr 2fr
+    grid-template-rows: 1fr
 
     .player-stats-container
-        flex-direction: column
-        justify-content: space-between
-        overflow: hidden
-        text-align: center
+        border: 1px solid white
+
+        height: 100%
+        max-height: v.$content-height
+        width: 100%
+        max-width: 478px
+        align-self: stretch
+        justify-self: center
+
+        @media screen and (max-width: 991px)
+            max-height: 100vh
+
+        @media screen and (max-width: 767px)
+            height: 100%
+            max-height: calc(95vh - 2.5vh)
+            max-width: 95vw
+            width: 95vw
 
         .player-wrapper
             display: flex
@@ -98,6 +107,15 @@
                 font-size: v.$fs-1
 
     .dartboard-container
+        border: 1px solid white
+
+        display: grid
+        height: v.$content-height
+        width: 100%
+        max-width: calc(100vh - 150px)
+        align-self: stretch
+        justify-self: center
+        align-content: center
 
         use, circle, rect
             transition-property: fill
