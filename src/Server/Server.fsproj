@@ -13,5 +13,9 @@
     <ProjectReference Include="..\Shared\Shared.fsproj" />
     <ProjectReference Include="..\LetsDarts\LetsDarts.fsproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+    <PackageReference Include="MongoDB.FSharp2" Version="1.0.1" />
+  </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
