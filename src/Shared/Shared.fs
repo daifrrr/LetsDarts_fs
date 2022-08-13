@@ -73,21 +73,17 @@ type Player =
 
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
-
     static member getLegsWon (p: Player) (mode: int) : int =
         p.Legs
         |> List.where (fun l -> l.CurrentScore = mode)
         |> List.length
-
     static member getAverage(p: Player) : float =
         match (p |> Player.getCurrentLeg).Records
               |> List.map (fun s -> s.Result |> float)
             with
         | [] -> 0.0
         | ss -> (ss |> List.average) * 3.0
-
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
-
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
 

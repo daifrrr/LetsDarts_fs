@@ -22,7 +22,7 @@ module Sort =
             model.Game |> Game.getPlayers |> moveDownAt
 
         Html.div [
-            prop.className "container-fluid row g-0 sort-layer"
+            prop.className "content-container sort-layer"
             prop.children [
                 Html.div [
                     prop.className "player-list"

@@ -6,14 +6,11 @@ open Feliz
 open Shared
 
 
-// Html.div [prop.className "container-fluid create-layer"prop.children [
-// ]]
-
 [<RequireQualifiedAccess>]
 module Create =
     let Form (model: Model) (dispatch: Msg -> unit) =
         Html.div [
-            prop.className "container create-layer"
+            prop.className "content-container create-layer"
             prop.children [
                 Html.div [
                     prop.className "row game-setup"

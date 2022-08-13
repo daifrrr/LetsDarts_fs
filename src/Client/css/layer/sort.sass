@@ -1,16 +1,20 @@
 @use "./../variables" as v
 
 .sort-layer
-    height: 100%
     display: flex
-    margin: 0 auto
     flex-direction: column
-    flex-wrap: nowrap
-    max-width: 576px
+    justify-content: center
+    gap: 20px
+    height: 100%
+    width: 100%
+    max-width: 478px
+    max-height: v.$content-height
+    @media screen and (max-width: 575px)
+        max-height: 98vh
 
     & > div
         display: flex
-        margin: 0 0 2vh
+        flex-direction: column
         justify-content: center
 
     .player-list

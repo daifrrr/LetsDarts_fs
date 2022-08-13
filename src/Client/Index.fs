@@ -22,11 +22,12 @@ module State =
               Players =
                 [ { Player.Default with Name = "Player 1" }
                   { Player.Default with Name = "Player 2" }
-//                  { Player.Default with Name = "Player 3" }
+                  //                  { Player.Default with Name = "Player 3" }
 //                  { Player.Default with Name = "Player 4" }
-                   ] }
+                  ] }
 
-        let model = { State = Create; Game = stylePlayers }
+        let model =
+            { State = Create; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
@@ -74,11 +75,14 @@ module State =
                 model.Game.Players
                 |> List.mapi (fun i p ->
                     if i = index then
-                        { p with Name = match name |> String.IsNullOrEmpty with
-                                        | true -> $"Player{i + 1}"
-                                        | _ -> name }
+                        { p with
+                            Name =
+                                match name |> String.IsNullOrEmpty with
+                                | true -> $"Player{i + 1}"
+                                | _ -> name }
                     else
                         p)
+
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
         | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
@@ -88,16 +92,12 @@ open Feliz
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
-            Html.header [
-                prop.children []
-            ]
+            Html.header [ prop.children [] ]
             match model.State with
             | Create -> Create.Form model dispatch
             | Order -> Sort.Form model dispatch
             | Run -> Play.Game model dispatch
             | Show -> Result.Show model dispatch
             | End -> Result.Show model dispatch
-            Html.footer [
-                prop.children []
-            ]
+            Html.footer [ prop.children [] ]
         ]

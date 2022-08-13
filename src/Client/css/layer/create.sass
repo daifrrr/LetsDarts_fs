@@ -3,15 +3,22 @@
 .create-layer
     display: flex
     flex-direction: column
+    justify-content: center
+    gap: 20px
+    height: 100%
+    width: 100%
+    max-width: 478px
+    max-height: v.$content-height
+    @media screen and (max-width: 575px)
+        max-height: 98vh
 
     & > div
         display: flex
-        margin: 0 0 2vh
         width: 100%
 
         &:first-child
             align-self: flex-start
-            justify-content: space-between
+            justify-content: space-around
             & > div
                 text-align: center
                 color: v.$white

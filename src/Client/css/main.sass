@@ -11,6 +11,11 @@ body
     font-family: 'Jost', sans-serif
     background-color: v.$background
 
+header, footer
+    height: 2.5vh
+    @media screen and (max-width: 575px)
+        display: none
+
 button, input, optgroup, select, textarea, label
     width: 100%
     background-color: v.$white
@@ -22,20 +27,9 @@ button, input, optgroup, select, textarea, label
     display: grid
     grid-template-rows: 2.5vh 1fr 2.5vh
     grid-template-columns: 1fr
-    @media screen and (max-width: 767px)
+    @media screen and (max-width: 575px)
         grid-template-rows: 1fr
 
-    header, footer
-        @media screen and (max-width 991px)
-            display: none
-
-    div:not(:first-child, :last-child)
-        border: 1px solid rgba(255, 255, 255, 0.5)
-        @media screen and (max-width: 767px)
-            grid-template-columns: 1fr
-            grid-template-rows: 1fr 2fr
-
-        @media screen and (max-width: 575px)
-            // switch layout to evenly spaced tiles
-            grid-template-columns: 1fr
-            grid-template-rows: 1fr 1fr
+.content-container
+    justify-self: center
+    align-self: center
