@@ -1,39 +1,39 @@
 @use "./../variables" as v
 
 .sort-layer
-    .players
-        position: relative
-        >p
-            &:last-child
-                position: absolute
-                right: 0
-                top: 0
-                padding-top: 0.9rem
-                height: 100%
-                width: 4rem
-                font-size: 2.5rem
-                background: v.$white
-                text-align: center
-                border-radius: 0.5rem
-    .vertical-space-sort
-        margin-bottom: 1rem
-        height: 4rem
-    .btn-game-start
-        margin-top: 2rem
-        margin-bottom: 4rem
-    .outer-player-input-group-sort
+    display: flex
+    flex-direction: column
+    justify-content: center
+    gap: 20px
+    height: 100%
+    width: 100%
+    max-width: 478px
+    max-height: v.$content-height
+    @media screen and (max-width: 575px)
+        max-height: 98vh
+
+    & > div
+        display: flex
+        flex-direction: column
+        justify-content: center
+
+    .player-list
         overflow: scroll
-        .player-input-group-sort
-            overflow: scroll
-            >div
-                &:first-child
-                    margin-top: 0
-                &:last-child
-                    margin-bottom: 0
-    .btn-game-start
-        position: absolute
-        bottom: 0
-        left: 0
-        width: 100%
-        margin-top: 2rem
-        margin-bottom: 4rem
+        cursor: default
+        flex: 1 1 100%
+        flex-direction: column
+        gap: 2vh
+
+        .player
+            position: relative
+            background-color: v.$white
+
+            .sort-icon
+                position: absolute
+                padding: 0 1rem
+
+                &.right
+                    right: 0
+
+                &.left
+                    left: 0

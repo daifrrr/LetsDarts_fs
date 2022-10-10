@@ -25,13 +25,7 @@ type DartsGameHistory() =
 let DartsGameHistory = DartsGameHistory()
 
 let gameApi =
-    { sortPlayers =
-        fun game ->
-            async {
-                DartsGameHistory.AddGame game
-                return Order, game
-            }
-      initGame =
+    { initGame =
         fun game ->
             async {
                 DartsGameHistory.ClearGameHistory()

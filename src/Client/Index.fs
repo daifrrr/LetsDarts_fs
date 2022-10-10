@@ -22,13 +22,12 @@ module State =
               Players =
                 [ { Player.Default with Name = "Player 1" }
                   { Player.Default with Name = "Player 2" }
-//                  { Player.Default with Name = "Player 3" }
+                  //                  { Player.Default with Name = "Player 3" }
 //                  { Player.Default with Name = "Player 4" }
-                   ] }
+                  ] }
 
-
-
-        let model = { State = Create; Game = stylePlayers }
+        let model =
+            { State = Create; Game = stylePlayers }
 
         //let cmd = Cmd.OfAsync.perform gameApi.initGame model.Game ChangeGameState
         model, Cmd.none
@@ -39,7 +38,7 @@ module State =
         // SERVER INTERACTION
         // server interaction which send a request  ( Form: Verb + Object ) |>|> outgoing
         // |>|> incoming: server response           ( Form: Passive )
-        | OrderPlayers -> model, Cmd.OfAsync.perform gameApi.sortPlayers model.Game PlayersOrdered
+        | OrderPlayers -> { model with State = Order }, Cmd.none
         | PlayersOrdered (s, g) -> { model with State = s; Game = g }, Cmd.none
         | SubmitGameSettings -> model, Cmd.OfAsync.perform gameApi.initGame model.Game GameSettingsSubmitted
         | GameSettingsSubmitted (s, g) -> { model with State = s; Game = g }, Cmd.none
@@ -76,11 +75,14 @@ module State =
                 model.Game.Players
                 |> List.mapi (fun i p ->
                     if i = index then
-                        { p with Name = match name |> String.IsNullOrEmpty with
-                                        | true -> $"Player{i + 1}"
-                                        | _ -> name }
+                        { p with
+                            Name =
+                                match name |> String.IsNullOrEmpty with
+                                | true -> $"Player{i + 1}"
+                                | _ -> name }
                     else
                         p)
+
             { model with Game = { model.Game with Players = newPlayerList } }, Cmd.none
         | ChangeMode m -> { model with Game = { model.Game with Mode = m |> int } }, Cmd.none
         | ChangeCountOfLegs l -> { model with Game = { model.Game with Legs = l |> int } }, Cmd.none
@@ -90,23 +92,12 @@ open Feliz
 module Views =
     let view (model: Model) (dispatch: Msg -> unit) =
         Fable.React.Helpers.fragment [] [
-            Html.header [
-                prop.className "header"
-                prop.children []
-            ]
-            Html.main [
-                prop.className "content"
-                prop.children [
-                    match model.State with
-                    | Create -> Create.Form model dispatch
-                    | Order -> Sort.Form model dispatch
-                    | Run -> Play.Game model dispatch
-                    | Show -> Result.Show model dispatch
-                    | End -> Result.Show model dispatch
-                ]
-            ]
-            Html.footer [
-                prop.className "footer"
-                prop.children []
-            ]
+            Html.header [ prop.children [] ]
+            match model.State with
+            | Create -> Create.Form model dispatch
+            | Order -> Sort.Form model dispatch
+            | Run -> Play.Game model dispatch
+            | Show -> Result.Show model dispatch
+            | End -> Result.Show model dispatch
+            Html.footer [ prop.children [] ]
         ]

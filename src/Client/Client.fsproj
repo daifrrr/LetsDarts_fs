@@ -19,15 +19,11 @@
         <ProjectReference Include="..\Shared\Shared.fsproj" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="css\app.css" />
-      <Content Include="css\app.css.map" />
       <Content Include="css\app.sass" />
       <Content Include="css\froms.sass" />
       <Content Include="css\layer\create.sass" />
       <Content Include="css\layer\game.sass" />
       <Content Include="css\layer\sort.sass" />
-      <Content Include="css\main.css" />
-      <Content Include="css\main.css.map" />
       <Content Include="css\variables.sass" />
       <Folder Include="public" />
     </ItemGroup>

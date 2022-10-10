@@ -54,7 +54,8 @@ type Leg =
     { CurrentScore: int
       Records: Shot list }
 
-    static member Default = { CurrentScore = 0; Records = [] }
+    static member Default =
+        { CurrentScore = 0; Records = [] }
 
     static member calcCurrentScore(s: Shot list) : int =
         match s with
@@ -72,21 +73,17 @@ type Player =
 
     static member getCurrentLeg(p: Player) : Leg = p.Legs |> List.head
     static member getLegForPlayer(p: Player) = p.Legs
-
     static member getLegsWon (p: Player) (mode: int) : int =
         p.Legs
         |> List.where (fun l -> l.CurrentScore = mode)
         |> List.length
-
     static member getAverage(p: Player) : float =
         match (p |> Player.getCurrentLeg).Records
               |> List.map (fun s -> s.Result |> float)
             with
         | [] -> 0.0
         | ss -> (ss |> List.average) * 3.0
-
     static member getLegsPerPlayer(pl: Player list) = pl |> List.map (fun pl -> pl.Legs)
-
     static member getLegs(pl: Player list) =
         pl |> List.map (fun pl -> pl.Legs) |> List.concat
 
@@ -149,16 +146,11 @@ type Game =
     static member getCurrentPlayer(g: Game) : Player =
         (g |> Game.getPlayers)[g |> Game.getCurrentPlayerIndex]
 
-
-
-
-
 module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
 type IGameApi =
     { initGame: Game -> Async<AppState * Game>
-      sortPlayers: Game -> Async<AppState * Game>
       sendThrow: string -> Async<AppState * Game>
       undo: unit -> Async<AppState * Game option> }
 

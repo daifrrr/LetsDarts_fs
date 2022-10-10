@@ -79,16 +79,16 @@ let createProcess exe arg dir =
 
 let dotnet = createProcess "dotnet"
 
-let yarn =
-    let yarnPath =
-        match ProcessUtils.tryFindFileOnPath "yarn" with
+let npm =
+    let npmPath =
+        match ProcessUtils.tryFindFileOnPath "npm" with
         | Some path -> path
         | None ->
             "npm was not found in path. Please install it and make sure it's available from your path. "
             + "See https://safe-stack.github.io/docs/quickstart/#install-pre-requisites for more info"
             |> failwith
 
-    createProcess yarnPath
+    createProcess npmPath
 
 let run proc arg dir = proc arg dir |> Proc.run |> ignore
 

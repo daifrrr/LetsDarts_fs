@@ -22,49 +22,47 @@ module Sort =
             model.Game |> Game.getPlayers |> moveDownAt
 
         Html.div [
-            prop.className "container-fluid sort-layer"
+            prop.className "content-container sort-layer"
             prop.children [
                 Html.div [
-                    prop.className "vertical-space-sort"
-                ]
-                Html.div [
-                    prop.className "outer-player-input-group-sort"
+                    prop.className "player-list"
                     prop.children [
-                        Html.div [
-                            prop.className "player-input-group-sort"
-                            prop.children [
-                                model.Game
-                                |> Game.getPlayers
-                                |> List.mapi (fun i p ->
-                                    Html.div [
-                                        Html.div [
-                                            prop.className "srt-player"
-                                            prop.custom ("index", i)
-                                            prop.children [
-                                                Html.div [
-                                                    prop.className "players"
-                                                    prop.children [
-                                                        Html.p [
-                                                            prop.className "ld-player-label"
-                                                            prop.text p.Name
-                                                        ]
-                                                        Html.p [
-                                                            prop.className "fa fa-bars"
-                                                            prop.ariaHidden true
-                                                            prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
-                                                        ]
-                                                    ]
-                                                ]
+                        model.Game
+                        |> Game.getPlayers
+                        |> List.mapi (fun i p ->
+                            Html.div [
+                                prop.id $"player-{i}"
+                                prop.className "player ld-input ld-player-name-input"
+                                prop.children [
+                                    match i = 0 |> not with
+                                    | true -> Html.span [
+                                                prop.className "sort-icon left"
+                                                prop.text "\u25b2"
+                                                prop.ariaHidden true
+                                                prop.onClick (fun _ -> MovePlayerPosition(i |> up) |>  dispatch)
                                             ]
-                                        ]
-                                    ])
-                                |> Fable.React.Helpers.ofList
-                            ]
-                        ]
+                                    | _ -> Html.none
+                                    Html.span [
+                                        prop.className "player-name"
+                                        prop.text p.Name
+                                    ]
+                                    match i = ((-) (model.Game
+                                                   |> Game.getPlayers
+                                                   |> List.length) 1) |> not with
+                                    | true -> Html.span [
+                                                prop.className "sort-icon right"
+                                                prop.text "\u25bc"
+                                                prop.ariaHidden true
+                                                prop.onClick (fun _ -> MovePlayerPosition(i |> down) |>  dispatch)
+                                            ]
+                                    | _ -> Html.none
+                                ]
+                            ])
+                        |> Fable.React.Helpers.ofList
                     ]
                 ]
                 Html.div [
-                    prop.className "ld-button ld-button-green btn-game-start"
+                    prop.className "ld-button green"
                     prop.text "Start"
                     prop.onClick (fun _ -> dispatch SubmitGameSettings)
                 ]
