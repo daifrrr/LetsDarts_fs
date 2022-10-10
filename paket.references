@@ -4,3 +4,4 @@ Farmer
 Expecto.VisualStudio.TestAdapter
 FsUnit.xUnit
 Fable.Elmish.Debugger
+Fable.Elmish.React
